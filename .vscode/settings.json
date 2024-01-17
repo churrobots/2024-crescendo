@@ -1,0 +1,72 @@
+{
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.server.launchMode": "Standard",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "bin/": true,
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true,
+    "**/*~": true,
+    // Churrobots: Prevent editing of typical hidden files for Java
+    // projects under source control.
+    "**/.gitignore": true,
+    "**/.gitattributes": true,
+    ".classpath": true,
+    ".project": true,
+    // Churrobots: Hide development environment settings to keep workspace clear
+    // of files that FRC students should not typically update.
+    "**/.vscode": true,
+    // Churrobots: Hide build products and build settings to keep workspace clear
+    // of files that FRC students should not typically update.
+    "**/.wpilib": true,
+    "**/.gradle": true,
+    "**/gradle": true,
+    "gradlew": true,
+    "gradlew.bat": true,
+    "build.gradle": true,
+    "settings.gradle": true,
+    "**/vendordeps": true,
+    "**/build": true,
+    "**/Main.java": true,
+    "**/WPILib-License.md": true,
+    "simgui*": true,
+    "networktables.json": true,
+    // Churrobots: Robot.java used to be important to edit, but the new
+    // command-based robot architecture has a RobotContainer
+    // that looks like a better abstraction to work with.
+    "**/Robot.java": true
+  },
+  // Churrobots: Ensure builds don't require internet connection, since we might not
+  // have that connection at competition.
+  "wpilib.offline": true,
+  // Churrobots: Keep workspace clean. Don't show git branch since we want to generally
+  // keep workflow in Github Desktop for consistency.
+  "wpilib.autoStartRioLog": false,
+  // Churrobots: Don't show Extension recommendations, it confuses things. Also make
+  // the editor help us keep things formatted and clean.
+  "extensions.ignoreRecommendations": true,
+  "editor.detectIndentation": false,
+  "editor.tabSize": 2,
+  "workbench.editor.highlightModifiedTabs": true,
+  "editor.formatOnType": true,
+  "java.test.config": [
+    {
+      "name": "WPIlibUnitTests",
+      "workingDirectory": "${workspaceFolder}/build/jni/release",
+      "vmargs": [
+        "-Djava.library.path=${workspaceFolder}/build/jni/release"
+      ],
+      "env": {
+        "LD_LIBRARY_PATH": "${workspaceFolder}/build/jni/release",
+        "DYLD_LIBRARY_PATH": "${workspaceFolder}/build/jni/release"
+      }
+    },
+  ],
+  "java.test.defaultConfig": "WPIlibUnitTests"
+}
