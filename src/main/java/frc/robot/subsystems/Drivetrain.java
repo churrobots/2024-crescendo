@@ -42,7 +42,7 @@ public class Drivetrain extends SubsystemBase {
    * This includes the CAN configuration as well as dimensions,
    * max speeds, etc that are particular to TurboSwervo.
    */
-  private static final class SpeedyHedgehogConstants {
+  private static final class Constants {
 
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(18.5);
@@ -100,40 +100,40 @@ public class Drivetrain extends SubsystemBase {
     // SpeedyHedgehog is a Rev MAXSwerve
 
     m_frontLeft = new RevMAXSwerveModule(
-        SpeedyHedgehogConstants.kFrontLeftDrivingCanId,
-        SpeedyHedgehogConstants.kFrontLeftTurningCanId,
-        SpeedyHedgehogConstants.kFrontLeftChassisAngularOffset);
+        Constants.kFrontLeftDrivingCanId,
+        Constants.kFrontLeftTurningCanId,
+        Constants.kFrontLeftChassisAngularOffset);
 
     m_frontRight = new RevMAXSwerveModule(
-        SpeedyHedgehogConstants.kFrontRightDrivingCanId,
-        SpeedyHedgehogConstants.kFrontRightTurningCanId,
-        SpeedyHedgehogConstants.kFrontRightChassisAngularOffset);
+        Constants.kFrontRightDrivingCanId,
+        Constants.kFrontRightTurningCanId,
+        Constants.kFrontRightChassisAngularOffset);
 
     m_rearLeft = new RevMAXSwerveModule(
-        SpeedyHedgehogConstants.kRearLeftDrivingCanId,
-        SpeedyHedgehogConstants.kRearLeftTurningCanId,
-        SpeedyHedgehogConstants.kRearLeftChassisAngularOffset);
+        Constants.kRearLeftDrivingCanId,
+        Constants.kRearLeftTurningCanId,
+        Constants.kRearLeftChassisAngularOffset);
 
     m_rearRight = new RevMAXSwerveModule(
-        SpeedyHedgehogConstants.kRearRightDrivingCanId,
-        SpeedyHedgehogConstants.kRearRightTurningCanId,
-        SpeedyHedgehogConstants.kRearRightChassisAngularOffset);
+        Constants.kRearRightDrivingCanId,
+        Constants.kRearRightTurningCanId,
+        Constants.kRearRightChassisAngularOffset);
 
     m_kinematics = new SwerveDriveKinematics(
-        new Translation2d(SpeedyHedgehogConstants.kWheelBase / 2, SpeedyHedgehogConstants.kTrackWidth / 2),
-        new Translation2d(SpeedyHedgehogConstants.kWheelBase / 2, -SpeedyHedgehogConstants.kTrackWidth / 2),
-        new Translation2d(-SpeedyHedgehogConstants.kWheelBase / 2, SpeedyHedgehogConstants.kTrackWidth / 2),
-        new Translation2d(-SpeedyHedgehogConstants.kWheelBase / 2, -SpeedyHedgehogConstants.kTrackWidth / 2));
+        new Translation2d(Constants.kWheelBase / 2, Constants.kTrackWidth / 2),
+        new Translation2d(Constants.kWheelBase / 2, -Constants.kTrackWidth / 2),
+        new Translation2d(-Constants.kWheelBase / 2, Constants.kTrackWidth / 2),
+        new Translation2d(-Constants.kWheelBase / 2, -Constants.kTrackWidth / 2));
 
-    m_gyro = new WPI_Pigeon2(SpeedyHedgehogConstants.kGyroCanId);
-    m_gyroIsReversed = SpeedyHedgehogConstants.kGyroReversed;
+    m_gyro = new WPI_Pigeon2(Constants.kGyroCanId);
+    m_gyroIsReversed = Constants.kGyroReversed;
 
-    m_magLimiter = new SlewRateLimiter(SpeedyHedgehogConstants.kMagnitudeSlewRate);
-    m_rotLimiter = new SlewRateLimiter(SpeedyHedgehogConstants.kRotationalSlewRate);
+    m_magLimiter = new SlewRateLimiter(Constants.kMagnitudeSlewRate);
+    m_rotLimiter = new SlewRateLimiter(Constants.kRotationalSlewRate);
 
-    m_directionSlewRate = SpeedyHedgehogConstants.kDirectionSlewRate;
-    m_maxAngularSpeedRadiansPerSecond = SpeedyHedgehogConstants.kMaxAngularSpeed;
-    m_maxSpeedMetersPerSecond = SpeedyHedgehogConstants.kMaxSpeedMetersPerSecond;
+    m_directionSlewRate = Constants.kDirectionSlewRate;
+    m_maxAngularSpeedRadiansPerSecond = Constants.kMaxAngularSpeed;
+    m_maxSpeedMetersPerSecond = Constants.kMaxSpeedMetersPerSecond;
 
     // Slew rate filter variables for controlling lateral acceleration
     m_currentRotation = 0.0;
