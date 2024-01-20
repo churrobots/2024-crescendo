@@ -7,12 +7,17 @@ package frc.robot;
 import java.util.HashMap;
 import java.util.List;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -29,8 +34,8 @@ public class RobotContainer {
   private final Intake m_intake = new Intake(m_arm);
   private final LightShow m_lightShow = new LightShow();
 
-  SendableChooser<Command> m_autoScoringChoice = new SendableChooser<Command>();
-  SendableChooser<Command> m_autoPathChoice = new SendableChooser<Command>();
+  private final SendableChooser<Command> autoChooser;
+
 
   private static final class OIConstants {
     public static final int kDriverControllerPort = 0;
@@ -48,7 +53,11 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-
+    NamedCommands.registerCommand("sayHello", Commands.none());
+    NamedCommands.registerCommand("sayBye", Commands.none());
+  
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData(autoChooser);
     double slowDriveScaling = 0.4;
     slowDrive = new RunCommand(
         () -> m_drivetrain.drive(
@@ -149,9 +158,7 @@ public class RobotContainer {
    * mode begins.
    */
   public Command getAutonomousCommand() {
-    // FIXME: implement autonomous
-    var doNothing = new InstantCommand();
-    return doNothing;
+    return autoChooser.getSelected();
   }
 
 }
