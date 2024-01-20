@@ -5,11 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -21,13 +17,9 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.WPIUtilJNI;
-import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.helpers.RevMAXSwerveModule;
 import frc.robot.helpers.SubsystemInspector;
 import frc.robot.helpers.SwerveUtils;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
@@ -63,28 +55,6 @@ public class Drivetrain extends SubsystemBase {
     public static final double kRearLeftChassisAngularOffset = Math.PI;
     public static final double kRearRightChassisAngularOffset = Math.PI / 2;
 
-    // Autonomous: PID contants
-    // TODO: we cribbed these from the Eastbots who have a maxswerve but we don't
-    // know if it's comparable characteristics so we might want to reconsider, the
-    // original values were all 1.0
-    public static final double kPXController = 2;
-    public static final double kPYController = 4;
-    public static final double kPThetaController = 0.04;
-
-    // Autonomous: Trajectory speed constants
-    // FIXME: were both 3.0 before, but we slowed it down for balancing and safety
-    public static final double kTrajectoryMaxSpeedMetersPerSecond = 2;
-    public static final double kTrajectoryMaxAccelerationMetersPerSecondSquared = 0.8;
-
-    // Note: at this point, we probably don't want to change these speeds too much
-    // since we've tuned the PID values to work at these speeds.
-    public static final double kTrajectoryMaxSpeedMetersPerSecondForAutoBuilder = 2.4;
-    public static final double kTrajectoryMaxAccelerationMetersPerSecondSquaredForAutoBuilder = 1.0;
-
-    // Note: these are for fast autos with events
-    public static final double kFastTrajectoryMaxSpeedMetersPerSecondForAutoBuilder = 2.5;
-    public static final double kFastTrajectoryMaxAccelerationMetersPerSecondSquaredForAutoBuilder = 1.7;
-
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
     public static final double kMaxSpeedMetersPerSecond = 4.8;
@@ -100,11 +70,11 @@ public class Drivetrain extends SubsystemBase {
     public static final int kFrontRightDrivingCanId = 6;
     public static final int kRearRightDrivingCanId = 8;
 
+    // NOTE: this error caused the swerve module to "twitch" periodically
+    // https://www.chiefdelphi.com/t/vmx-pi-can-spark-max-ids-1-timed-out-while-waiting-for-periodic-status-0/402177/8
     public static final int kFrontLeftTurningCanId = 1;
     public static final int kRearLeftTurningCanId = 3;
     public static final int kFrontRightTurningCanId = 2;
-    // TODO: we got this error one day, causes turning to "twitch" periodically
-    // https://www.chiefdelphi.com/t/vmx-pi-can-spark-max-ids-1-timed-out-while-waiting-for-periodic-status-0/402177/8
     public static final int kRearRightTurningCanId = 4;
 
     // Gyro config
@@ -236,12 +206,16 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void resetGyroForAuto() {
-    if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
-      m_gyro.setYaw(180);
-
-    } else {
-      m_gyro.setYaw(-180);
-    }
+    // TODO: might not be needed anymore since PathPlanner auto origin is blue now
+    // TODO: also, alliance API is different this year
+    // https://docs.wpilib.org/en/stable/docs/software/basic-programming/alliancecolor.html
+    // var alliance = DriverStation.getAlliance();
+    // var isRed = alliance.get() == DriverStation.Alliance.Red;
+    // if (isRed) {
+    // m_gyro.setYaw(180);
+    // } else {
+    // m_gyro.setYaw(-180);
+    // }
   }
 
   /**
@@ -397,59 +371,7 @@ public class Drivetrain extends SubsystemBase {
     m_rearRight.assertModuleIsPointedForwardAndStoreCalibration();
   }
 
-  // Assuming this method is part of a drivetrain subsystem that provides the
-  // necessary methods
-  public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
-    return new SequentialCommandGroup(
-        new InstantCommand(() -> {
-          // Reset odometry for the first path you run during auto
-          if (isFirstPath) {
-            this.resetPose(traj.getInitialHolonomicPose());
-          }
-        }),
-
-        new PPSwerveControllerCommand(
-            traj,
-            this::getPose, // Pose supplier
-            this.m_kinematics, // SwerveDriveKinematics
-            new PIDController(
-                SpeedyHedgehogConstants.kPXController,
-                0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use
-                       // feedforwards.
-            new PIDController(
-                SpeedyHedgehogConstants.kPYController,
-                0, 0), // Y controller (usually the same values as
-                       // X controller)
-            new PIDController(
-                SpeedyHedgehogConstants.kPThetaController,
-                0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will
-                       // only use feedforwards.
-            this::setModuleStates, // Module states consumer
-            false, // Should the path be automatically mirrored depending on alliance color.
-                   // Optional, defaults to true
-            this // Requires this drive subsystem
-        ));
-  }
-
   public double getPitch() {
     return m_gyro.getPitch();
-  }
-
-  public PathConstraints getPathPlannerConstraints() {
-    return new PathConstraints(
-        SpeedyHedgehogConstants.kTrajectoryMaxSpeedMetersPerSecond,
-        SpeedyHedgehogConstants.kTrajectoryMaxAccelerationMetersPerSecondSquared);
-  }
-
-  public PathConstraints getPathPlannerConstraintsForAutoBuilder() {
-    return new PathConstraints(
-        SpeedyHedgehogConstants.kTrajectoryMaxSpeedMetersPerSecondForAutoBuilder,
-        SpeedyHedgehogConstants.kTrajectoryMaxAccelerationMetersPerSecondSquaredForAutoBuilder);
-  }
-
-  public PathConstraints getPathPlannerConstraintsForFastAutoBuilder() {
-    return new PathConstraints(
-        SpeedyHedgehogConstants.kFastTrajectoryMaxSpeedMetersPerSecondForAutoBuilder,
-        SpeedyHedgehogConstants.kFastTrajectoryMaxAccelerationMetersPerSecondSquaredForAutoBuilder);
   }
 }

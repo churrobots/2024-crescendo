@@ -12,13 +12,15 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.RelativeEncoder;
 
 /**
  * Build on top of the Rev MAX sample code
  * https://github.com/REVrobotics/MAXSwerve-Java-Template/blob/main/src/main/java/frc/robot/subsystems/MAXSwerveModule.java
+ * More RevLib examples:
+ * https://github.com/REVrobotics/SPARK-MAX-Examples/tree/master/Java
  */
 public class RevMAXSwerveModule {
   private final CANSparkMax m_drivingSparkMax;
