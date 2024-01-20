@@ -34,7 +34,7 @@ public class Arm extends SubsystemBase {
     private static final int restingCounts = 3000;
     private static final int aimBottomCounts = 12400;
     private static final int aimMidCounts = 6500;
-    private static final int receiveFromSubstationCounts = 8000; 
+    private static final int receiveFromSubstationCounts = 8000;
     private static final int receiveFromGroundCounts = 18000;
 
     public static final TunableDouble kP = new TunableDouble("kP", 0.04);
@@ -56,9 +56,7 @@ public class Arm extends SubsystemBase {
   private boolean m_isCalibrated = false;
 
   public Arm() {
-    armMotor.configFactoryDefault();
-    armMotor.setNeutralMode(NeutralMode.Brake);
-    FalconUtils.configureSafeCurrentLimits(armMotor);
+    FalconUtils.initializeMotorWithConsistentSettings(armMotor, NeutralMode.Brake);
     updateArmTuning();
   }
 

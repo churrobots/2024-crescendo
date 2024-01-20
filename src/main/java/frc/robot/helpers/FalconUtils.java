@@ -4,6 +4,7 @@
 
 package frc.robot.helpers;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -71,10 +72,14 @@ public class FalconUtils {
   }
 
   /**
-   * Attempt to set safe current limits according to their documentation example.
+   * Initialize a Falcon500 to factory defaults with a consistent brake mode.
+   * Also attempt to set safe current limits according to their docs:
    * https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/d70cab6060617bbed5e207c2eaf8747af09a15f6/Java%20Talon%20FX%20(Falcon%20500)/Current%20Limit/src/main/java/frc/robot/Robot.java#L82-L92
    */
-  public static void configureSafeCurrentLimits(WPI_TalonFX motor) {
+  public static void initializeMotorWithConsistentSettings(WPI_TalonFX motor, NeutralMode neutralMode) {
+    motor.configFactoryDefault();
+    motor.setNeutralMode(neutralMode);
     motor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 10, 15, 0.5));
   }
+
 }
