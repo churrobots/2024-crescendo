@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -53,11 +54,14 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    NamedCommands.registerCommand("sayHello", Commands.none());
+    var showPurple = new RunCommand(m_lightShow::setPurple, m_lightShow);
+    NamedCommands.registerCommand("sayHello", showPurple);
     NamedCommands.registerCommand("sayBye", Commands.none());
   
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData(autoChooser);
+    SmartDashboard.putData(m_intake);
+    SmartDashboard.putData(CommandScheduler.getInstance());
     double slowDriveScaling = 0.4;
     slowDrive = new RunCommand(
         () -> m_drivetrain.drive(
@@ -145,11 +149,14 @@ public class RobotContainer {
 
     var safelyRestTheArm = new RunCommand(m_arm::restTheArm, m_arm);
     var showBlue = new RunCommand(m_lightShow::setBlue, m_lightShow);
+    var stopIntake = new RunCommand(m_intake::stopThePlan, m_intake);
 
     // Set defaults for all subsystems
     m_drivetrain.setDefaultCommand(fastDrive);
     m_arm.setDefaultCommand(safelyRestTheArm);
     m_lightShow.setDefaultCommand(showBlue);
+    m_intake.setDefaultCommand(stopIntake);
+
   }
 
   /**

@@ -22,6 +22,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.helpers.RevMAXSwerveModule;
 import frc.robot.helpers.SubsystemInspector;
 import frc.robot.helpers.SwerveUtils;
@@ -95,11 +97,13 @@ public class Drivetrain extends SubsystemBase {
 
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry;
+  private final Field2d m_field = new Field2d();
 
   // Subsystem Inspector
   private final SubsystemInspector m_inspector = new SubsystemInspector(getSubsystem());
-
+  
   public Drivetrain() {
+    SmartDashboard.putData("Field", m_field);
     // All other subsystem initialization
     // ...
 
@@ -203,6 +207,7 @@ public class Drivetrain extends SubsystemBase {
     m_inspector.set("Roll", m_gyro.getRoll());
     m_inspector.set("Angle", m_gyro.getAngle());
     m_inspector.set("Compass", m_gyro.getAbsoluteCompassHeading());
+    m_field.setRobotPose(m_odometry.getPoseMeters());
   }
 
   ChassisSpeeds getRobotRelativeSpeeds() {
