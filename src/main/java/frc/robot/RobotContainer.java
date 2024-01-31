@@ -4,12 +4,8 @@
 
 package frc.robot;
 
-import java.util.HashMap;
-import java.util.List;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
@@ -17,9 +13,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -30,91 +24,98 @@ import frc.robot.subsystems.LightShow;
 
 public class RobotContainer {
 
-  private final Drivetrain m_drivetrain = new Drivetrain();
-  private final Arm m_arm = new Arm();
-  private final Intake m_intake = new Intake(m_arm);
-  private final LightShow m_lightShow = new LightShow();
-
-  private final SendableChooser<Command> autoChooser;
-
-
-  private static final class OIConstants {
+  static final class Constants {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorrControllerPort = 1;
     public static final double kDriveDeadband = 0.1;
+    public static final double slowDriveScaling = 0.4;
   }
 
-  private final XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-  private final XboxController m_operatorController = new XboxController(OIConstants.kOperatorrControllerPort);
+  // Drive and Operator interface.
+  final XboxController m_driverController = new XboxController(Constants.kDriverControllerPort);
+  final XboxController m_operatorController = new XboxController(Constants.kOperatorrControllerPort);
+  SendableChooser<Command> autoChooser;
 
-  Command slowDrive;
-  Command fastDrive;
+  // All of the subsystems.
+  final Drivetrain m_drivetrain = new Drivetrain();
+  final Arm m_arm = new Arm();
+  final Intake m_intake = new Intake(m_arm);
+  final LightShow m_lightShow = new LightShow();
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
+  // All of the commands the robot can do.
+  final Command doNothing = Commands.none();
+
+  final Command safelyRestTheArm = new RunCommand(m_arm::restTheArm, m_arm);
+  final Command showBlue = new RunCommand(m_lightShow::setBlue, m_lightShow);
+  final Command stopIntake = new RunCommand(m_intake::stopThePlan, m_intake);
+
+  final Command anchorInPlace = new RunCommand(() -> m_drivetrain.setXFormation(), m_drivetrain);
+  final Command resetGyro = new RunCommand(() -> m_drivetrain.resetGyro(), m_drivetrain);
+
+  final Command yeet = new RunCommand(m_intake::yeetTheCubes, m_intake);
+  final Command yoink = new RunCommand(m_intake::yoinkTheCubes, m_intake);
+
+  final Command moveArmIntoCalibration = new RunCommand(m_arm::moveIntoCalibrationPosition, m_arm);
+  final Command resetArmCalibration = new RunCommand(m_arm::resetCalibration, m_arm);
+  final Command moveToReceive = new RunCommand(
+      () -> m_arm.receiveFromSingleSubstation(-m_operatorController.getLeftY()),
+      m_arm);
+  final Command moveToLow = new RunCommand(() -> m_arm.moveToLow(-m_operatorController.getLeftY()), m_arm);
+  final Command moveToMid = new RunCommand(() -> m_arm.moveToMid(-m_operatorController.getLeftY()), m_arm);
+  final Command moveToGroundPickup = new RunCommand(m_arm::receiveFromGround, m_arm);
+
+  final Command showPurple = new RunCommand(m_lightShow::setPurple, m_lightShow);
+
+  final Command slowDrive = new RunCommand(
+      () -> m_drivetrain.drive(
+          -MathUtil.applyDeadband(m_driverController.getLeftY() * Constants.slowDriveScaling,
+              Constants.kDriveDeadband),
+          -MathUtil.applyDeadband(m_driverController.getLeftX() * Constants.slowDriveScaling,
+              Constants.kDriveDeadband),
+          -MathUtil.applyDeadband(m_driverController.getRightX() * Constants.slowDriveScaling,
+              Constants.kDriveDeadband),
+          true, true),
+      m_drivetrain);
+
+  final Command fastDrive = new RunCommand(
+      () -> m_drivetrain.drive(
+          -MathUtil.applyDeadband(m_driverController.getLeftY(),
+              Constants.kDriveDeadband),
+          -MathUtil.applyDeadband(m_driverController.getLeftX(),
+              Constants.kDriveDeadband),
+          -MathUtil.applyDeadband(m_driverController.getRightX(),
+              Constants.kDriveDeadband),
+          true, true),
+      m_drivetrain);
+
   public RobotContainer() {
-    var showPurple = new RunCommand(m_lightShow::setPurple, m_lightShow);
-    NamedCommands.registerCommand("sayHello", showPurple);
-    NamedCommands.registerCommand("sayBye", Commands.none());
-  
-    autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData(autoChooser);
-    SmartDashboard.putData(m_intake);
-    SmartDashboard.putData(CommandScheduler.getInstance());
-    double slowDriveScaling = 0.4;
-    slowDrive = new RunCommand(
-        () -> m_drivetrain.drive(
-            -MathUtil.applyDeadband(m_driverController.getLeftY() * slowDriveScaling,
-                OIConstants.kDriveDeadband),
-            -MathUtil.applyDeadband(m_driverController.getLeftX() * slowDriveScaling,
-                OIConstants.kDriveDeadband),
-            -MathUtil.applyDeadband(m_driverController.getRightX() * slowDriveScaling,
-                OIConstants.kDriveDeadband),
-            true, true),
-        m_drivetrain);
-
-    fastDrive = new RunCommand(
-        () -> m_drivetrain.drive(
-            -MathUtil.applyDeadband(m_driverController.getLeftY(),
-                OIConstants.kDriveDeadband),
-            -MathUtil.applyDeadband(m_driverController.getLeftX(),
-                OIConstants.kDriveDeadband),
-            -MathUtil.applyDeadband(m_driverController.getRightX(),
-                OIConstants.kDriveDeadband),
-            true, true),
-        m_drivetrain);
-
     configureButtonBindings();
     ensureSubsystemsHaveDefaultCommands();
     createAutonomousSelector();
   }
 
   public void handleDisable() {
+    // TODO: we're not sure if we need this still
     createAutonomousSelector();
   }
 
-  public void createAutonomousSelector() {
-    // FIXME: need to instantiate the autonomous selector
+  /**
+   * This is called by the system when automomous runs, and it
+   * should return the command you want to execute when automous
+   * mode begins.
+   */
+  public Command getAutonomousCommand() {
+    return autoChooser.getSelected();
   }
 
-  private void configureButtonBindings() {
+  public void createAutonomousSelector() {
+    NamedCommands.registerCommand("sayHello", showPurple);
+    NamedCommands.registerCommand("sayBye", doNothing);
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData(autoChooser);
+  }
 
-    // Teleop commands for the driver and operator.
-
-    Command anchorInPlace = new RunCommand(() -> m_drivetrain.setXFormation(), m_drivetrain);
-    Command resetGyro = new RunCommand(() -> m_drivetrain.resetGyro(), m_drivetrain);
-
-    Command yeet = new RunCommand(m_intake::yeetTheCubes, m_intake);
-    Command yoink = new RunCommand(m_intake::yoinkTheCubes, m_intake);
-
-    Command moveArmIntoCalibration = new RunCommand(m_arm::moveIntoCalibrationPosition, m_arm);
-    Command resetArmCalibration = new RunCommand(m_arm::resetCalibration, m_arm);
-    Command moveToReceive = new RunCommand(() -> m_arm.receiveFromSingleSubstation(-m_operatorController.getLeftY()),
-        m_arm);
-    Command moveToLow = new RunCommand(() -> m_arm.moveToLow(-m_operatorController.getLeftY()), m_arm);
-    Command moveToMid = new RunCommand(() -> m_arm.moveToMid(-m_operatorController.getLeftY()), m_arm);
-    Command moveToGroundPickup = new RunCommand(m_arm::receiveFromGround, m_arm);
+  void configureButtonBindings() {
 
     // Driver
     var startButton = new JoystickButton(m_driverController, Button.kStart.value);
@@ -145,27 +146,11 @@ public class RobotContainer {
     bOpButton.whileTrue(moveToGroundPickup);
   }
 
-  private void ensureSubsystemsHaveDefaultCommands() {
-
-    var safelyRestTheArm = new RunCommand(m_arm::restTheArm, m_arm);
-    var showBlue = new RunCommand(m_lightShow::setBlue, m_lightShow);
-    var stopIntake = new RunCommand(m_intake::stopThePlan, m_intake);
-
-    // Set defaults for all subsystems
+  void ensureSubsystemsHaveDefaultCommands() {
     m_drivetrain.setDefaultCommand(fastDrive);
     m_arm.setDefaultCommand(safelyRestTheArm);
     m_lightShow.setDefaultCommand(showBlue);
     m_intake.setDefaultCommand(stopIntake);
-
-  }
-
-  /**
-   * This is called by the system when automomous runs, and it
-   * should return the command you want to execute when automous
-   * mode begins.
-   */
-  public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
   }
 
 }
