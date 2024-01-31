@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.helpers.SubsystemInspector;
 
 public class Intake extends SubsystemBase {
   private static final class Constants {
@@ -19,11 +20,13 @@ public class Intake extends SubsystemBase {
 
     private static final double aimBottomUpperRollerSpeedPercent = -0.40;
     private static final double aimBottomLowerRollerSpeedPercent = -0.35;
+
     private static final double defaultUpperRollerSpeedPercent = -1.00;
     private static final double defaultLowerRollerSpeedPercent = -1.00;
 
   }
 
+  private final SubsystemInspector inspector = new SubsystemInspector("Intake");
   private final WPI_VictorSPX topCubeYoinker = new WPI_VictorSPX(Constants.topRollerMotorID);
   private final WPI_VictorSPX bottomCubeYoinker = new WPI_VictorSPX(Constants.bottomRollerMotorID);
   private Arm arm;
@@ -33,18 +36,20 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean isYoinking() {
-    boolean yoinking = false;
-    if (topCubeYoinker.get() > 0.5 && bottomCubeYoinker.get() > 0.5) {
-      yoinking = true;
+    boolean topYoinkerIsIntaking = topCubeYoinker.get() > 0.5;
+    boolean bottomYoinkerIsIntaking = bottomCubeYoinker.get() > 0.5;
+    if (topYoinkerIsIntaking && bottomYoinkerIsIntaking) {
+      return true;
+    } else {
+      return false;
     }
-    return yoinking;
   }
 
   public void yoinkTheCubes() {
     topCubeYoinker.set(.75);
     bottomCubeYoinker.set(.75);
   }
-  
+
   public boolean isYeeting() {
     boolean yeeting = false;
     if (topCubeYoinker.get() < 0 && bottomCubeYoinker.get() < 0) {
@@ -52,6 +57,7 @@ public class Intake extends SubsystemBase {
     }
     return yeeting;
   }
+
   public void yeetTheCubes() {
 
     if (arm.isAimingMid()) {
@@ -73,6 +79,7 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    inspector.set("top roller speed", topCubeYoinker.get());
+    inspector.set("bottom roller speed", bottomCubeYoinker.get());
   }
 }
