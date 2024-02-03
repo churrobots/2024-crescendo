@@ -13,22 +13,17 @@ public class Intake extends SubsystemBase {
   private static final class Constants {
 
     private static final int topRollerMotorID = 10;
-    private static final int bottomRollerMotorID = 11;
 
     private static final double aimMidUpperRollerSpeedPercent = -0.70;
-    private static final double aimMidLowerRollerSpeedPercent = -1.00;
 
     private static final double aimBottomUpperRollerSpeedPercent = -0.40;
-    private static final double aimBottomLowerRollerSpeedPercent = -0.35;
 
     private static final double defaultUpperRollerSpeedPercent = -1.00;
-    private static final double defaultLowerRollerSpeedPercent = -1.00;
 
   }
 
   private final SubsystemInspector inspector = new SubsystemInspector("Intake");
-  private final WPI_VictorSPX topCubeYoinker = new WPI_VictorSPX(Constants.topRollerMotorID);
-  private final WPI_VictorSPX bottomCubeYoinker = new WPI_VictorSPX(Constants.bottomRollerMotorID);
+  private final WPI_VictorSPX FanumTaxIntaker = new WPI_VictorSPX(Constants.topRollerMotorID);
   private Arm arm;
 
   public Intake(Arm arm) {
@@ -36,50 +31,43 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean isYoinking() {
-    boolean topYoinkerIsIntaking = topCubeYoinker.get() > 0.5;
-    boolean bottomYoinkerIsIntaking = bottomCubeYoinker.get() > 0.5;
-    if (topYoinkerIsIntaking && bottomYoinkerIsIntaking) {
+    boolean FanumTaxerIsIntaking = FanumTaxIntaker.get() > 0.5;
+    if (FanumTaxerIsIntaking) {
       return true;
     } else {
       return false;
     }
   }
 
-  public void yoinkTheCubes() {
-    topCubeYoinker.set(.75);
-    bottomCubeYoinker.set(.75);
+  public void yoinkTheRings() {
+    FanumTaxIntaker.set(.75);
   }
 
   public boolean isYeeting() {
     boolean yeeting = false;
-    if (topCubeYoinker.get() < 0 && bottomCubeYoinker.get() < 0) {
+    if (FanumTaxIntaker.get() < 0) {
       yeeting = true;
     }
     return yeeting;
   }
 
-  public void yeetTheCubes() {
+  public void yeetTheRings() {
 
     if (arm.isAimingMid()) {
-      topCubeYoinker.set(Constants.aimMidUpperRollerSpeedPercent);
-      bottomCubeYoinker.set(Constants.aimMidLowerRollerSpeedPercent);
+      FanumTaxIntaker.set(Constants.aimMidUpperRollerSpeedPercent);
     } else if (arm.isAimingGround()) {
-      topCubeYoinker.set(Constants.aimBottomUpperRollerSpeedPercent);
-      bottomCubeYoinker.set(Constants.aimBottomLowerRollerSpeedPercent);
+      FanumTaxIntaker.set(Constants.aimBottomUpperRollerSpeedPercent);
     } else {
-      topCubeYoinker.set(Constants.defaultUpperRollerSpeedPercent);
-      bottomCubeYoinker.set(Constants.defaultLowerRollerSpeedPercent);
+      FanumTaxIntaker.set(Constants.defaultUpperRollerSpeedPercent);
     }
   }
 
   public void stopThePlan() {
-    topCubeYoinker.set(0);
-    bottomCubeYoinker.set(0);
+    FanumTaxIntaker.set(0);
   }
 
   @Override
   public void periodic() {
-    inspector.set("top roller speed", topCubeYoinker.get());
-    inspector.set("bottom roller speed", bottomCubeYoinker.get());
+    inspector.set("top roller speed", FanumTaxIntaker.get());
   }
 }

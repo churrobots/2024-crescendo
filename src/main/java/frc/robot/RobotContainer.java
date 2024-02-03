@@ -52,16 +52,16 @@ public class RobotContainer {
   final Command anchorInPlace = new RunCommand(() -> m_drivetrain.setXFormation(), m_drivetrain);
   final Command resetGyro = new RunCommand(() -> m_drivetrain.resetGyro(), m_drivetrain);
 
-  final Command yeet = new RunCommand(m_intake::yeetTheCubes, m_intake);
-  final Command yoink = new RunCommand(m_intake::yoinkTheCubes, m_intake);
+  final Command yeet = new RunCommand(m_intake::yeetTheRings, m_intake);
+  final Command yoink = new RunCommand(m_intake::yoinkTheRings, m_intake);
 
   final Command moveArmIntoCalibration = new RunCommand(m_arm::moveIntoCalibrationPosition, m_arm);
   final Command resetArmCalibration = new RunCommand(m_arm::resetCalibration, m_arm);
   final Command moveToReceive = new RunCommand(
       () -> m_arm.receiveFromSingleSubstation(-m_operatorController.getLeftY()),
       m_arm);
-  final Command moveToLow = new RunCommand(() -> m_arm.moveToLow(-m_operatorController.getLeftY()), m_arm);
-  final Command moveToMid = new RunCommand(() -> m_arm.moveToMid(-m_operatorController.getLeftY()), m_arm);
+  final Command moveToLow = new RunCommand(() -> m_arm.moveToIntake(-m_operatorController.getLeftY()), m_arm);
+  final Command moveToMid = new RunCommand(() -> m_arm.moveToSpeaker(-m_operatorController.getLeftY()), m_arm);
   final Command moveToGroundPickup = new RunCommand(m_arm::receiveFromGround, m_arm);
 
   final Command showPurple = new RunCommand(m_lightShow::setPurple, m_lightShow);

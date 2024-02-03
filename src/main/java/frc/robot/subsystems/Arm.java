@@ -32,10 +32,9 @@ public class Arm extends SubsystemBase {
     private static final int offsetMaxCounts = 1000;
 
     private static final int restingCounts = 3000;
-    private static final int aimBottomCounts = 12400;
-    private static final int aimMidCounts = 6500;
-    private static final int receiveFromSubstationCounts = 8000;
-    private static final int receiveFromGroundCounts = 18000;
+    private static final int aimSpeakerManCounts = 12400;
+    private static final int aimAMPCounts = 6500;
+    private static final int receiveIntakeFromGroundCounts = 18000;
 
     public static final TunableDouble kP = new TunableDouble("kP", 0.04);
     public static final TunableDouble kF = new TunableDouble("kF", 0.0); // 0.05
@@ -74,10 +73,10 @@ public class Arm extends SubsystemBase {
   private void runMotorWithSafety(TalonFXControlMode mode, double value) {
     if (m_isCalibrated) {
       if (mode == TalonFXControlMode.MotionMagic) {
-        if (value >= Constants.aimMidCounts - Constants.offsetMaxCounts
-            && value <= Constants.aimMidCounts + Constants.offsetMaxCounts) {
+        if (value >= Constants.aimAMPCounts - Constants.offsetMaxCounts
+            && value <= Constants.aimAMPCounts + Constants.offsetMaxCounts) {
           level = Level.MID;
-        } else if (value > Constants.aimMidCounts + Constants.offsetMaxCounts) {
+        } else if (value > Constants.aimAMPCounts + Constants.offsetMaxCounts) {
           level = Level.LOW;
         } else {
           level = Level.RESTING;
@@ -115,34 +114,35 @@ public class Arm extends SubsystemBase {
 
   public void receiveFromSingleSubstation(double offset) {
     offset *= Constants.offsetMaxCounts;
-    runMotorWithSafety(TalonFXControlMode.MotionMagic, Constants.receiveFromSubstationCounts + offset);
+
   }
 
   public void receiveFromGround() {
-    var gravityWillTakeItTheRestOfTheWay = armMotor.getSelectedSensorPosition() > Constants.receiveFromGroundCounts;
+    var gravityWillTakeItTheRestOfTheWay = armMotor
+        .getSelectedSensorPosition() > Constants.receiveIntakeFromGroundCounts;
     if (gravityWillTakeItTheRestOfTheWay) {
       armMotor.set(TalonFXControlMode.PercentOutput, 0);
     } else {
-      runMotorWithSafety(TalonFXControlMode.MotionMagic, 1.15 * Constants.receiveFromGroundCounts);
+      runMotorWithSafety(TalonFXControlMode.MotionMagic, 1.15 * Constants.receiveIntakeFromGroundCounts);
     }
   }
 
-  public void moveToLow() {
-    runMotorWithSafety(TalonFXControlMode.MotionMagic, Constants.aimBottomCounts);
+  public void moveToRest() {
+    runMotorWithSafety(TalonFXControlMode.MotionMagic, Constants.aimSpeakerManCounts);
   }
 
-  public void moveToLow(double offset) {
+  public void moveToIntake(double offset) {
     offset *= Constants.offsetMaxCounts;
-    runMotorWithSafety(TalonFXControlMode.MotionMagic, Constants.aimBottomCounts + offset);
+    runMotorWithSafety(TalonFXControlMode.MotionMagic, Constants.aimSpeakerManCounts + offset);
   }
 
-  public void moveToMid() {
-    runMotorWithSafety(TalonFXControlMode.MotionMagic, Constants.aimMidCounts);
+  public void moveToAMP() {
+    runMotorWithSafety(TalonFXControlMode.MotionMagic, Constants.aimAMPCounts);
   }
 
-  public void moveToMid(double offset) {
+  public void moveToSpeaker(double offset) {
     offset *= Constants.offsetMaxCounts;
-    runMotorWithSafety(TalonFXControlMode.MotionMagic, Constants.aimMidCounts + offset);
+    runMotorWithSafety(TalonFXControlMode.MotionMagic, Constants.aimAMPCounts + offset);
   }
 
   public void restTheArm() {
