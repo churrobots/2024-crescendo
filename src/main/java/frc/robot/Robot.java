@@ -62,7 +62,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    m_robotContainer.handleDisable();
+    // TODO: we could put this back in later if we want it
+    // m_robotContainer.handleDisable();
   }
 
   @Override

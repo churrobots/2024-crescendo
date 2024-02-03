@@ -94,11 +94,6 @@ public class RobotContainer {
     createAutonomousSelector();
   }
 
-  public void handleDisable() {
-    // TODO: we're not sure if we need this still
-    createAutonomousSelector();
-  }
-
   /**
    * This is called by the system when automomous runs, and it
    * should return the command you want to execute when automous
