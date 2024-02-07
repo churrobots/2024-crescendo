@@ -45,6 +45,12 @@ public class RobotContainer {
   // All of the commands the robot can do.
   final Command doNothing = Commands.none();
 
+  // 2024 commands.
+  final Command yeetFar = new RunCommand(m_lightShow::setRed, m_lightShow);
+  final Command yeetClose = new RunCommand(m_lightShow::setYellow, m_lightShow);
+  final Command yoinkNote = new RunCommand(m_lightShow::setBlue, m_lightShow);
+
+  // All the old commands from last year.
   final Command safelyRestTheArm = new RunCommand(m_arm::restTheArm, m_arm);
   final Command showBlue = new RunCommand(m_lightShow::setBlue, m_lightShow);
   final Command stopIntake = new RunCommand(m_intake::stopThePlan, m_intake);
@@ -54,7 +60,6 @@ public class RobotContainer {
 
   final Command yeet = new RunCommand(m_intake::yeetTheRings, m_intake);
   final Command yoink = new RunCommand(m_intake::yoinkTheRings, m_intake);
-
   final Command moveArmIntoCalibration = new RunCommand(m_arm::moveIntoCalibrationPosition, m_arm);
   final Command resetArmCalibration = new RunCommand(m_arm::resetCalibration, m_arm);
   final Command moveToReceive = new RunCommand(
@@ -104,8 +109,9 @@ public class RobotContainer {
   }
 
   public void createAutonomousSelector() {
-    NamedCommands.registerCommand("sayHello", showPurple);
-    NamedCommands.registerCommand("sayBye", doNothing);
+    NamedCommands.registerCommand("yeetClose", yeetClose);
+    NamedCommands.registerCommand("yeetFar", yeetFar.withTimeout(4));
+    NamedCommands.registerCommand("yoinkNote", yoinkNote.withTimeout(4));
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData(autoChooser);
   }
@@ -144,7 +150,7 @@ public class RobotContainer {
   void ensureSubsystemsHaveDefaultCommands() {
     m_drivetrain.setDefaultCommand(fastDrive);
     m_arm.setDefaultCommand(safelyRestTheArm);
-    m_lightShow.setDefaultCommand(showBlue);
+    m_lightShow.setDefaultCommand(showPurple);
     m_intake.setDefaultCommand(stopIntake);
   }
 

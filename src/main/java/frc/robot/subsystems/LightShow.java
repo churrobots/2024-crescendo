@@ -43,6 +43,9 @@ public class LightShow extends SubsystemBase {
     fillPercentage(0, 0, defaultBrightness);
   }
 
+    public void setYellow() {
+    fillPercentage(defaultBrightness, defaultBrightness, 0);
+  }
   public void setPurple() {
     fillPercentage(defaultBrightness, 0, defaultBrightness);
   }
