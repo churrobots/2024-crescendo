@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -42,7 +44,7 @@ public class RobotContainer {
   final Intake m_intake = new Intake(m_arm);
   final LightShow m_lightShow = new LightShow();
 
-  // All of the commands the robot can do.
+  // Commands the robot can do.
   final Command doNothing = Commands.none();
 
   final Command yeetFar = new RunCommand(m_lightShow::setRed, m_lightShow);
@@ -53,6 +55,9 @@ public class RobotContainer {
   final Command resetGyro = new RunCommand(() -> m_drivetrain.resetGyro(), m_drivetrain);
 
   final Command showPurple = new RunCommand(m_lightShow::setPurple, m_lightShow);
+
+  // Sensors for robot states.
+  final BooleanSupplier isShooting = () -> m_intake.isYeeting();
 
   final Command slowDrive = new RunCommand(
       () -> m_drivetrain.drive(
