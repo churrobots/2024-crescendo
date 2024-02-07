@@ -45,29 +45,12 @@ public class RobotContainer {
   // All of the commands the robot can do.
   final Command doNothing = Commands.none();
 
-  // 2024 commands.
   final Command yeetFar = new RunCommand(m_lightShow::setRed, m_lightShow);
   final Command yeetClose = new RunCommand(m_lightShow::setYellow, m_lightShow);
   final Command yoinkNote = new RunCommand(m_lightShow::setBlue, m_lightShow);
 
-  // All the old commands from last year.
-  final Command safelyRestTheArm = new RunCommand(m_arm::restTheArm, m_arm);
-  final Command showBlue = new RunCommand(m_lightShow::setBlue, m_lightShow);
-  final Command stopIntake = new RunCommand(m_intake::stopThePlan, m_intake);
-
   final Command anchorInPlace = new RunCommand(() -> m_drivetrain.setXFormation(), m_drivetrain);
   final Command resetGyro = new RunCommand(() -> m_drivetrain.resetGyro(), m_drivetrain);
-
-  final Command yeet = new RunCommand(m_intake::yeetTheRings, m_intake);
-  final Command yoink = new RunCommand(m_intake::yoinkTheRings, m_intake);
-  final Command moveArmIntoCalibration = new RunCommand(m_arm::moveIntoCalibrationPosition, m_arm);
-  final Command resetArmCalibration = new RunCommand(m_arm::resetCalibration, m_arm);
-  final Command moveToReceive = new RunCommand(
-      () -> m_arm.receiveFromSingleSubstation(-m_operatorController.getLeftY()),
-      m_arm);
-  final Command moveToLow = new RunCommand(() -> m_arm.moveToIntake(-m_operatorController.getLeftY()), m_arm);
-  final Command moveToMid = new RunCommand(() -> m_arm.moveToSpeaker(-m_operatorController.getLeftY()), m_arm);
-  final Command moveToGroundPickup = new RunCommand(m_arm::receiveFromGround, m_arm);
 
   final Command showPurple = new RunCommand(m_lightShow::setPurple, m_lightShow);
 
@@ -137,21 +120,24 @@ public class RobotContainer {
     var startOpButton = new JoystickButton(m_operatorController, Button.kStart.value);
     var backOpButton = new JoystickButton(m_operatorController, Button.kBack.value);
 
-    leftBumperOpButton.whileTrue(yoink);
-    rightBumperOpButton.whileTrue(yeet);
-    backOpButton.whileTrue(moveArmIntoCalibration);
-    startOpButton.whileTrue(resetArmCalibration);
-    xOpButton.whileTrue(moveToLow);
-    aOpButton.whileTrue(moveToMid);
-    yOpButton.whileTrue(moveToReceive);
-    bOpButton.whileTrue(moveToGroundPickup);
+    // TODO: wire up commands to the operator buttons
+    leftBumperOpButton.whileTrue(doNothing);
+    rightBumperOpButton.whileTrue(doNothing);
+    backOpButton.whileTrue(doNothing);
+    startOpButton.whileTrue(doNothing);
+    xOpButton.whileTrue(doNothing);
+    aOpButton.whileTrue(doNothing);
+    yOpButton.whileTrue(doNothing);
+    bOpButton.whileTrue(doNothing);
   }
 
   void ensureSubsystemsHaveDefaultCommands() {
+    // TODO: set up default commands for these
+    m_arm.setDefaultCommand(doNothing);
+    m_intake.setDefaultCommand(doNothing);
     m_drivetrain.setDefaultCommand(fastDrive);
-    m_arm.setDefaultCommand(safelyRestTheArm);
     m_lightShow.setDefaultCommand(showPurple);
-    m_intake.setDefaultCommand(stopIntake);
+    m_lightShow.setPurple(); // manually init color since default commands don't run until robot is enabled
   }
 
 }
