@@ -95,21 +95,6 @@ public class RobotContainer {
           true, true),
       drivetrain);
 
-  // All the old commands from last year.
-  final Command safelyRestTheArm = new RunCommand(arm::restTheArm, arm);
-  final Command stopIntake = new RunCommand(intake::stopThePlan, intake);
-
-  final Command yeet = new RunCommand(intake::yeetTheRings, intake);
-  final Command yoink = new RunCommand(intake::yoinkTheRings, intake);
-  final Command moveArmIntoCalibration = new RunCommand(arm::moveIntoCalibrationPosition, arm);
-  final Command resetArmCalibration = new RunCommand(arm::resetCalibration, arm);
-  final Command moveToReceive = new RunCommand(
-      () -> arm.receiveFromSingleSubstation(-operatorController.getLeftY()),
-      arm);
-  final Command moveToLow = new RunCommand(() -> arm.moveToIntake(-operatorController.getLeftY()), arm);
-  final Command moveToMid = new RunCommand(() -> arm.moveToSpeaker(-operatorController.getLeftY()), arm);
-  final Command moveToGroundPickup = new RunCommand(arm::receiveFromGround, arm);
-
   public RobotContainer() {
     configureButtonBindings();
     ensureSubsystemsHaveDefaultCommands();
@@ -134,27 +119,16 @@ public class RobotContainer {
   }
 
   void configureButtonBindings() {
-
     leftBumperDriver.whileTrue(anchorInPlace);
     rightBumperDriver.whileTrue(slowDrive);
     startButtonDriver.whileTrue(resetGyro);
-
-    leftBumperOperator.whileTrue(yoink);
-    rightBumperOperator.whileTrue(yeet);
-    backButtonOperator.whileTrue(moveArmIntoCalibration);
-    startButtonOperator.whileTrue(resetArmCalibration);
-    xButtonOperator.whileTrue(moveToLow);
-    aButtonOperator.whileTrue(moveToMid);
-    yButtonOperator.whileTrue(moveToReceive);
-    bButtonOperator.whileTrue(moveToGroundPickup);
-
+    // TODO: wire up all the operator buttons
   }
 
   void ensureSubsystemsHaveDefaultCommands() {
     drivetrain.setDefaultCommand(fastDrive);
-    arm.setDefaultCommand(safelyRestTheArm);
-    intake.setDefaultCommand(stopIntake);
     lightShow.setDefaultCommand(showDefaultColor);
+    // TODO: set default commands
   }
 
 }
