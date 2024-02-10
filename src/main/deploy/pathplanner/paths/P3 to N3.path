@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 0.6872433146088806,
+        "y": 4.366663219726902
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.196308704177015,
+        "y": 4.1639142825088316
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.5662784688561278,
+        "y": 4.205628096549885
+      },
+      "prevControl": {
+        "x": 2.1157811540883498,
+        "y": 4.971917151516594
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Angled Note 3"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -60.43088684957187,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": null,
+  "previewStartingState": {
+    "rotation": -58.529795229467105,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

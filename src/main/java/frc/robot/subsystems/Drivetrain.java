@@ -24,7 +24,6 @@ import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.helpers.AdvantageScopeUtils;
 import frc.robot.helpers.RevMAXSwerveModule;
 import frc.robot.helpers.SubsystemInspector;
 import frc.robot.helpers.SwerveUtils;
@@ -197,7 +196,6 @@ public class Drivetrain extends SubsystemBase {
     m_inspector.set("Angle", m_gyro.getAngle());
     m_inspector.set("Compass", m_gyro.getAbsoluteCompassHeading());
     m_field.setRobotPose(getPose());
-    AdvantageScopeUtils.logRobotPose(getPose());
   }
 
   ChassisSpeeds getRobotRelativeSpeeds() {

@@ -109,7 +109,7 @@ public class RobotContainer {
   }
 
   public void createAutonomousSelector() {
-    NamedCommands.registerCommand("yeetClose", yeetClose);
+    NamedCommands.registerCommand("yeetClose", yeetClose.withTimeout(2));
     NamedCommands.registerCommand("yeetFar", yeetFar.withTimeout(4));
     NamedCommands.registerCommand("yoinkNote", yoinkNote.withTimeout(4));
     autoChooser = AutoBuilder.buildAutoChooser();
