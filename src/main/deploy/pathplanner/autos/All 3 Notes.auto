@@ -1,0 +1,118 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.6872433146088806,
+      "y": 4.366663219726902
+    },
+    "rotation": -61.883456482031036
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "yeetClose"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "P3 to N3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "yoinkNote"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "N3 to Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "yeetClose"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "shoot to N2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "yoinkNote"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "N2 to P2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "yeetClose"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "P2 to N1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "yoinkNote"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "N1 to P1 "
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "yeetClose"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
