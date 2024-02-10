@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -28,69 +28,82 @@ public class RobotContainer {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorrControllerPort = 1;
     public static final double kDriveDeadband = 0.1;
-    public static final double slowDriveScaling = 0.4;
+    public static final double kSlowDriveScaling = 0.4;
   }
 
-  // Drive and Operator interface.
-  final XboxController m_driverController = new XboxController(Constants.kDriverControllerPort);
-  final XboxController m_operatorController = new XboxController(Constants.kOperatorrControllerPort);
+  // SmartDashboard interface.
   SendableChooser<Command> autoChooser;
 
+  // Driver controller.
+  final XboxController driverController = new XboxController(Constants.kDriverControllerPort);
+  final Trigger startButtonDriver = new JoystickButton(driverController, Button.kStart.value);
+  final Trigger leftBumperDriver = new JoystickButton(driverController, Button.kLeftBumper.value);
+  final Trigger rightBumperDriver = new JoystickButton(driverController, Button.kRightBumper.value);
+
+  // Operator controller.
+  final XboxController operatorController = new XboxController(Constants.kOperatorrControllerPort);
+  final Trigger leftBumperOperator = new JoystickButton(operatorController, Button.kLeftBumper.value);
+  final Trigger rightBumperOperator = new JoystickButton(operatorController, Button.kRightBumper.value);
+  final Trigger aButtonOperator = new JoystickButton(operatorController, Button.kA.value);
+  final Trigger xButtonOperator = new JoystickButton(operatorController, Button.kX.value);
+  final Trigger yButtonOperator = new JoystickButton(operatorController, Button.kY.value);
+  final Trigger bButtonOperator = new JoystickButton(operatorController, Button.kB.value);
+  final Trigger startButtonOperator = new JoystickButton(operatorController, Button.kStart.value);
+  final Trigger backButtonOperator = new JoystickButton(operatorController, Button.kBack.value);
+
   // All of the subsystems.
-  final Drivetrain m_drivetrain = new Drivetrain();
-  final Arm m_arm = new Arm();
-  final Intake m_intake = new Intake(m_arm);
-  final LightShow m_lightShow = new LightShow();
+  final Drivetrain drivetrain = new Drivetrain();
+  final Arm arm = new Arm();
+  final Intake intake = new Intake(arm);
+  final LightShow lightShow = new LightShow();
 
   // All of the commands the robot can do.
-  final Command doNothing = Commands.none();
-
-  final Command yeetFar = new RunCommand(m_lightShow::setRed, m_lightShow);
-  final Command yeetClose = new RunCommand(m_lightShow::setYellow, m_lightShow);
-  final Command yoinkNote = new RunCommand(m_lightShow::setBlue, m_lightShow);
-
-  // All the old commands from last year.
-  final Command safelyRestTheArm = new RunCommand(m_arm::restTheArm, m_arm);
-  final Command showBlue = new RunCommand(m_lightShow::setBlue, m_lightShow);
-  final Command stopIntake = new RunCommand(m_intake::stopThePlan, m_intake);
-
-  final Command anchorInPlace = new RunCommand(() -> m_drivetrain.setXFormation(), m_drivetrain);
-  final Command resetGyro = new RunCommand(() -> m_drivetrain.resetGyro(), m_drivetrain);
-
-  final Command yeet = new RunCommand(m_intake::yeetTheRings, m_intake);
-  final Command yoink = new RunCommand(m_intake::yoinkTheRings, m_intake);
-  final Command moveArmIntoCalibration = new RunCommand(m_arm::moveIntoCalibrationPosition, m_arm);
-  final Command resetArmCalibration = new RunCommand(m_arm::resetCalibration, m_arm);
-  final Command moveToReceive = new RunCommand(
-      () -> m_arm.receiveFromSingleSubstation(-m_operatorController.getLeftY()),
-      m_arm);
-  final Command moveToLow = new RunCommand(() -> m_arm.moveToIntake(-m_operatorController.getLeftY()), m_arm);
-  final Command moveToMid = new RunCommand(() -> m_arm.moveToSpeaker(-m_operatorController.getLeftY()), m_arm);
-  final Command moveToGroundPickup = new RunCommand(m_arm::receiveFromGround, m_arm);
-
-  final Command showPurple = new RunCommand(m_lightShow::setPurple, m_lightShow);
+  final Command yeetFar = new RunCommand(lightShow::setRed, lightShow);
+  final Command yeetClose = new RunCommand(lightShow::setYellow, lightShow);
+  final Command yoinkNote = new RunCommand(lightShow::setBlue, lightShow);
 
   final Command slowDrive = new RunCommand(
-      () -> m_drivetrain.drive(
-          -MathUtil.applyDeadband(m_driverController.getLeftY() * Constants.slowDriveScaling,
+      () -> drivetrain.drive(
+          -MathUtil.applyDeadband(driverController.getLeftY() * Constants.kSlowDriveScaling,
               Constants.kDriveDeadband),
-          -MathUtil.applyDeadband(m_driverController.getLeftX() * Constants.slowDriveScaling,
+          -MathUtil.applyDeadband(driverController.getLeftX() * Constants.kSlowDriveScaling,
               Constants.kDriveDeadband),
-          -MathUtil.applyDeadband(m_driverController.getRightX() * Constants.slowDriveScaling,
+          -MathUtil.applyDeadband(driverController.getRightX() * Constants.kSlowDriveScaling,
               Constants.kDriveDeadband),
           true, true),
-      m_drivetrain);
+      drivetrain);
 
   final Command fastDrive = new RunCommand(
-      () -> m_drivetrain.drive(
-          -MathUtil.applyDeadband(m_driverController.getLeftY(),
+      () -> drivetrain.drive(
+          -MathUtil.applyDeadband(driverController.getLeftY(),
               Constants.kDriveDeadband),
-          -MathUtil.applyDeadband(m_driverController.getLeftX(),
+          -MathUtil.applyDeadband(driverController.getLeftX(),
               Constants.kDriveDeadband),
-          -MathUtil.applyDeadband(m_driverController.getRightX(),
+          -MathUtil.applyDeadband(driverController.getRightX(),
               Constants.kDriveDeadband),
           true, true),
-      m_drivetrain);
+      drivetrain);
+
+  // All the old commands from last year.
+  final Command safelyRestTheArm = new RunCommand(arm::restTheArm, arm);
+  final Command showBlue = new RunCommand(lightShow::setBlue, lightShow);
+  final Command stopIntake = new RunCommand(intake::stopThePlan, intake);
+
+  final Command anchorInPlace = new RunCommand(() -> drivetrain.setXFormation(), drivetrain);
+  final Command resetGyro = new RunCommand(() -> drivetrain.resetGyro(), drivetrain);
+
+  final Command yeet = new RunCommand(intake::yeetTheRings, intake);
+  final Command yoink = new RunCommand(intake::yoinkTheRings, intake);
+  final Command moveArmIntoCalibration = new RunCommand(arm::moveIntoCalibrationPosition, arm);
+  final Command resetArmCalibration = new RunCommand(arm::resetCalibration, arm);
+  final Command moveToReceive = new RunCommand(
+      () -> arm.receiveFromSingleSubstation(-operatorController.getLeftY()),
+      arm);
+  final Command moveToLow = new RunCommand(() -> arm.moveToIntake(-operatorController.getLeftY()), arm);
+  final Command moveToMid = new RunCommand(() -> arm.moveToSpeaker(-operatorController.getLeftY()), arm);
+  final Command moveToGroundPickup = new RunCommand(arm::receiveFromGround, arm);
+
+  final Command showPurple = new RunCommand(lightShow::setPurple, lightShow);
 
   public RobotContainer() {
     configureButtonBindings();
@@ -117,40 +130,26 @@ public class RobotContainer {
 
   void configureButtonBindings() {
 
-    // Driver
-    var startButton = new JoystickButton(m_driverController, Button.kStart.value);
-    var leftBumper = new JoystickButton(m_driverController, Button.kLeftBumper.value);
-    var rightBumper = new JoystickButton(m_driverController, Button.kRightBumper.value);
+    leftBumperDriver.whileTrue(anchorInPlace);
+    rightBumperDriver.whileTrue(slowDrive);
+    startButtonDriver.whileTrue(resetGyro);
 
-    leftBumper.whileTrue(anchorInPlace);
-    rightBumper.whileTrue(slowDrive);
-    startButton.whileTrue(resetGyro);
+    leftBumperOperator.whileTrue(yoink);
+    rightBumperOperator.whileTrue(yeet);
+    backButtonOperator.whileTrue(moveArmIntoCalibration);
+    startButtonOperator.whileTrue(resetArmCalibration);
+    xButtonOperator.whileTrue(moveToLow);
+    aButtonOperator.whileTrue(moveToMid);
+    yButtonOperator.whileTrue(moveToReceive);
+    bButtonOperator.whileTrue(moveToGroundPickup);
 
-    // Operator
-    var leftBumperOpButton = new JoystickButton(m_operatorController, Button.kLeftBumper.value);
-    var rightBumperOpButton = new JoystickButton(m_operatorController, Button.kRightBumper.value);
-    var aOpButton = new JoystickButton(m_operatorController, Button.kA.value);
-    var xOpButton = new JoystickButton(m_operatorController, Button.kX.value);
-    var yOpButton = new JoystickButton(m_operatorController, Button.kY.value);
-    var bOpButton = new JoystickButton(m_operatorController, Button.kB.value);
-    var startOpButton = new JoystickButton(m_operatorController, Button.kStart.value);
-    var backOpButton = new JoystickButton(m_operatorController, Button.kBack.value);
-
-    leftBumperOpButton.whileTrue(yoink);
-    rightBumperOpButton.whileTrue(yeet);
-    backOpButton.whileTrue(moveArmIntoCalibration);
-    startOpButton.whileTrue(resetArmCalibration);
-    xOpButton.whileTrue(moveToLow);
-    aOpButton.whileTrue(moveToMid);
-    yOpButton.whileTrue(moveToReceive);
-    bOpButton.whileTrue(moveToGroundPickup);
   }
 
   void ensureSubsystemsHaveDefaultCommands() {
-    m_drivetrain.setDefaultCommand(fastDrive);
-    m_arm.setDefaultCommand(safelyRestTheArm);
-    m_lightShow.setDefaultCommand(showPurple);
-    m_intake.setDefaultCommand(stopIntake);
+    drivetrain.setDefaultCommand(fastDrive);
+    arm.setDefaultCommand(safelyRestTheArm);
+    lightShow.setDefaultCommand(showPurple);
+    intake.setDefaultCommand(stopIntake);
   }
 
 }
