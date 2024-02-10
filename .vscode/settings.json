@@ -68,5 +68,15 @@
       }
     },
   ],
-  "java.test.defaultConfig": "WPIlibUnitTests"
+  "java.test.defaultConfig": "WPIlibUnitTests",
+  // Churrobots: don't autofill arguments with potentially bogus params.
+  "java.completion.guessMethodArguments": "insertParameterNames",
+  // Churrobots: general consistent DX
+  "editor.formatOnSave": true,
+  "files.autoSave": "afterDelay",
+  "editor.inlayHints.enabled": "offUnlessPressed",
+  "redhat.telemetry.enabled": false,
+  "workbench.startupEditor": "none",
+  "editor.minimap.size": "fit",
+  "terminal.integrated.tabs.enabled": false
 }
