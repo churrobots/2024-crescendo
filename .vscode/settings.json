@@ -40,7 +40,11 @@
     // Churrobots: Robot.java used to be important to edit, but the new
     // command-based robot architecture has a RobotContainer
     // that looks like a better abstraction to work with.
-    "**/Robot.java": true
+    "**/Robot.java": true,
+    // Churrobots: pathplanner and deploy dirs shouldn't be edited
+    // since they are edited directly by the PathPlanner app.
+    "**/.pathplanner": true,
+    "**/deploy": true,
   },
   // Churrobots: Ensure builds don't require internet connection, since we might not
   // have that connection at competition.
