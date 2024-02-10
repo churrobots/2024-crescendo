@@ -54,7 +54,7 @@ public class RobotContainer {
   // All of the subsystems.
   final Drivetrain drivetrain = new Drivetrain();
   final Arm arm = new Arm();
-  final Intake intake = new Intake(arm);
+  final Intake intake = new Intake();
   final LightShow lightShow = new LightShow();
 
   // All of the commands the robot can do.

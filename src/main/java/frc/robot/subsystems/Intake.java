@@ -7,32 +7,22 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.helpers.SubsystemInspector;
 
 public class Intake extends SubsystemBase {
   private static final class Constants {
 
     private static final int topRollerMotorID = 10;
 
-    private static final double aimMidUpperRollerSpeedPercent = -0.70;
-
-    private static final double aimBottomUpperRollerSpeedPercent = -0.40;
-
-    private static final double defaultUpperRollerSpeedPercent = -1.00;
-
   }
 
-  private final SubsystemInspector inspector = new SubsystemInspector("Intake");
-  private final WPI_VictorSPX FanumTaxIntaker = new WPI_VictorSPX(Constants.topRollerMotorID);
-  private Arm arm;
+  private final WPI_VictorSPX fanumTaxIntaker = new WPI_VictorSPX(Constants.topRollerMotorID);
 
-  public Intake(Arm arm) {
-    this.arm = arm;
+  public Intake() {
   }
 
   public boolean isYoinking() {
-    boolean FanumTaxerIsIntaking = FanumTaxIntaker.get() > 0.5;
-    if (FanumTaxerIsIntaking) {
+    boolean fanumTaxerIsIntaking = fanumTaxIntaker.get() > 0.5;
+    if (fanumTaxerIsIntaking) {
       return true;
     } else {
       return false;
@@ -40,34 +30,27 @@ public class Intake extends SubsystemBase {
   }
 
   public void yoinkTheRings() {
-    FanumTaxIntaker.set(.75);
+    fanumTaxIntaker.set(.75);
   }
 
-  public boolean isYeeting() {
-    boolean yeeting = false;
-    if (FanumTaxIntaker.get() < 0) {
-      yeeting = true;
-    }
-    return yeeting;
+  public void deuceTheRings() {
+    fanumTaxIntaker.set(-.75);
   }
 
-  public void yeetTheRings() {
-
-    if (arm.isAimingMid()) {
-      FanumTaxIntaker.set(Constants.aimMidUpperRollerSpeedPercent);
-    } else if (arm.isAimingGround()) {
-      FanumTaxIntaker.set(Constants.aimBottomUpperRollerSpeedPercent);
-    } else {
-      FanumTaxIntaker.set(Constants.defaultUpperRollerSpeedPercent);
+  public boolean isDeucing() {
+    boolean deucing = false;
+    if (fanumTaxIntaker.get() < 0) {
+      deucing = true;
     }
+    return deucing;
   }
 
   public void stopThePlan() {
-    FanumTaxIntaker.set(0);
+    fanumTaxIntaker.set(0);
   }
 
   @Override
   public void periodic() {
-    inspector.set("top roller speed", FanumTaxIntaker.get());
+    // if you need anything ongoing
   }
 }
