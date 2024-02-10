@@ -8,6 +8,9 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 /**
  * Set of helpers for Falcon 500 motors.
@@ -77,11 +80,32 @@ public class FalconUtils {
    * https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/d70cab6060617bbed5e207c2eaf8747af09a15f6/Java%20Talon%20FX%20(Falcon%20500)/Current%20Limit/src/main/java/frc/robot/Robot.java#L82-L92
    */
   public static void initializeMotorWithConsistentSettings(WPI_TalonFX motor, NeutralMode neutralMode) {
-    // TODO: migrate to Phoenix 6
-    // https://v6.docs.ctr-electronics.com/en/stable/docs/migration/migration-guide/feature-replacements-guide.html
     motor.configFactoryDefault();
     motor.setNeutralMode(neutralMode);
     motor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 10, 15, 0.5));
+  }
+
+  /**
+   * Initialize a Falcon500 to factory defaults with a consistent brake mode.
+   * This enables Phoenix6 setups.
+   * https://v6.docs.ctr-electronics.com/en/stable/docs/migration/migration-guide/feature-replacements-guide.html
+   * https://v6.docs.ctr-electronics.com/en/stable/docs/migration/migration-guide/index.html
+   * https://www.chiefdelphi.com/t/2024-migration/447374/20
+   * Also attempt to set safe current limits according to their docs:
+   * https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/d70cab6060617bbed5e207c2eaf8747af09a15f6/Java%20Talon%20FX%20(Falcon%20500)/Current%20Limit/src/main/java/frc/robot/Robot.java#L82-L92
+   */
+  public static void initializeMotorWithConsistentSettings(TalonFX motor, NeutralMode neutralMode) {
+    var config = new TalonFXConfiguration();
+    if (neutralMode == NeutralMode.Coast) {
+      config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    } else {
+      config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    }
+    config.CurrentLimits.SupplyCurrentLimitEnable = true;
+    config.CurrentLimits.SupplyCurrentLimit = 10;
+    config.CurrentLimits.SupplyCurrentThreshold = 15;
+    config.CurrentLimits.SupplyTimeThreshold = 0.5;
+    motor.getConfigurator().apply(config);
   }
 
 }

@@ -5,21 +5,25 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.helpers.FalconUtils;
 
 public class Climber extends SubsystemBase {
 
-  final WPI_TalonFX climberMotor = new WPI_TalonFX(10);
+  final TalonFX climberMotor = new TalonFX(10);
 
   public Climber() {
     FalconUtils.initializeMotorWithConsistentSettings(climberMotor, NeutralMode.Brake);
   }
 
+  double getEncoderCounts() {
+    return climberMotor.getPosition().getValueAsDouble();
+  }
+
   public void goUp() {
-    var isAtTheTop = climberMotor.getSelectedSensorPosition() >= 9000;
+    var isAtTheTop = getEncoderCounts() >= 9000;
     if (isAtTheTop) {
       stay();
     } else {
@@ -28,13 +32,13 @@ public class Climber extends SubsystemBase {
   }
 
   public void goDown() {
-    var isAtTheBottom = climberMotor.getSelectedSensorPosition() >= -9000;
+    var isAtTheBottom = getEncoderCounts() >= -9000;
     if (isAtTheBottom) {
       stay();
     } else {
       climberMotor.set(-0.5);
     }
-    }
+  }
 
   public void stay() {
     climberMotor.set(0);
