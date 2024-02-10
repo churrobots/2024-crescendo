@@ -8,6 +8,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -61,6 +62,16 @@ public class RobotContainer {
   final Command yeetFar = new RunCommand(lightShow::setRed, lightShow);
   final Command yeetClose = new RunCommand(lightShow::setYellow, lightShow);
   final Command yoinkNote = new RunCommand(lightShow::setBlue, lightShow);
+  final Command showDefaultColor = new RunCommand(() -> {
+    if (DriverStation.isAutonomous()) {
+      lightShow.setPurple();
+    } else {
+      lightShow.setGreen();
+    }
+  }, lightShow);
+
+  final Command anchorInPlace = new RunCommand(() -> drivetrain.setXFormation(), drivetrain);
+  final Command resetGyro = new RunCommand(() -> drivetrain.resetGyro(), drivetrain);
 
   final Command slowDrive = new RunCommand(
       () -> drivetrain.drive(
@@ -86,11 +97,7 @@ public class RobotContainer {
 
   // All the old commands from last year.
   final Command safelyRestTheArm = new RunCommand(arm::restTheArm, arm);
-  final Command showBlue = new RunCommand(lightShow::setBlue, lightShow);
   final Command stopIntake = new RunCommand(intake::stopThePlan, intake);
-
-  final Command anchorInPlace = new RunCommand(() -> drivetrain.setXFormation(), drivetrain);
-  final Command resetGyro = new RunCommand(() -> drivetrain.resetGyro(), drivetrain);
 
   final Command yeet = new RunCommand(intake::yeetTheRings, intake);
   final Command yoink = new RunCommand(intake::yoinkTheRings, intake);
@@ -102,8 +109,6 @@ public class RobotContainer {
   final Command moveToLow = new RunCommand(() -> arm.moveToIntake(-operatorController.getLeftY()), arm);
   final Command moveToMid = new RunCommand(() -> arm.moveToSpeaker(-operatorController.getLeftY()), arm);
   final Command moveToGroundPickup = new RunCommand(arm::receiveFromGround, arm);
-
-  final Command showPurple = new RunCommand(lightShow::setPurple, lightShow);
 
   public RobotContainer() {
     configureButtonBindings();
@@ -148,8 +153,8 @@ public class RobotContainer {
   void ensureSubsystemsHaveDefaultCommands() {
     drivetrain.setDefaultCommand(fastDrive);
     arm.setDefaultCommand(safelyRestTheArm);
-    lightShow.setDefaultCommand(showPurple);
     intake.setDefaultCommand(stopIntake);
+    lightShow.setDefaultCommand(showDefaultColor);
   }
 
 }
