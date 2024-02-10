@@ -62,7 +62,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    // TODO: we could put this back in later if we want it
+    // We could put this back in later if we want it, removed since
+    // it is generally easier to just check for state rather than
+    // tracking transitions.
     // m_robotContainer.handleDisable();
   }
 
