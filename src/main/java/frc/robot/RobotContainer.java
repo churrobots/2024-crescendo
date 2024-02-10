@@ -21,6 +21,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LightShow;
+import frc.robot.subsystems.SparkMaxDemo;
 
 public class RobotContainer {
 
@@ -56,6 +57,7 @@ public class RobotContainer {
   final Arm arm = new Arm();
   final Intake intake = new Intake(arm);
   final LightShow lightShow = new LightShow();
+  final SparkMaxDemo sparkMax = new SparkMaxDemo()
 
   // All of the commands the robot can do.
   final Command yeetFar = new RunCommand(lightShow::setRed, lightShow);

@@ -8,6 +8,7 @@ package frc.robot.subsystems;
 // import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -25,8 +26,8 @@ public class SparkMaxDemo extends SubsystemBase {
   private SparkPIDController m_pidController;
   private RelativeEncoder m_encoder;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
-  private static final class Constants {
 
+  private static final class Constants {
 
     // private static final double calibrationVelocitySensorUnitsPerSecond = -3000;
 
@@ -49,7 +50,8 @@ public class SparkMaxDemo extends SubsystemBase {
 
   }
 
-  // private final SubsystemInspector m_inspector = new SubsystemInspector(getSubsystem());
+  // private final SubsystemInspector m_inspector = new
+  // SubsystemInspector(getSubsystem());
   // private Level level = Level.RESTING;
 
   // private final WPI_TalonFX armMotor = new WPI_TalonFX(Constants.armCanID);
@@ -57,12 +59,14 @@ public class SparkMaxDemo extends SubsystemBase {
 
   public SparkMaxDemo() {
 
-       // initialize motor
+    // initialize motor
     m_motor = new CANSparkMax(deviceID, MotorType.kBrushless);
 
     /**
-     * The RestoreFactoryDefaults method can be used to reset the configuration parameters
-     * in the SPARK MAX to their factory default state. If no argument is passed, these
+     * The RestoreFactoryDefaults method can be used to reset the configuration
+     * parameters
+     * in the SPARK MAX to their factory default state. If no argument is passed,
+     * these
      * parameters will not persist between power cycles
      */
     m_motor.restoreFactoryDefaults();
@@ -70,14 +74,16 @@ public class SparkMaxDemo extends SubsystemBase {
     // initialze PID controller and encoder objects
     m_pidController = m_motor.getPIDController();
     m_encoder = m_motor.getEncoder();
+    // TODO: we probably want the separate absolute encoder
+    // m_encoder = m_motor.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
 
     // PID coefficients
-    kP = 5e-5; 
+    kP = 5e-5;
     kI = 1e-6;
-    kD = 0; 
-    kIz = 0; 
-    kFF = 0.000156; 
-    kMaxOutput = 1; 
+    kD = 0;
+    kIz = 0;
+    kFF = 0.000156;
+    kMaxOutput = 1;
     kMinOutput = -1;
     maxRPM = 5700;
 
@@ -130,11 +136,8 @@ public class SparkMaxDemo extends SubsystemBase {
 
     // button to toggle between velocity and smart motion modes
     SmartDashboard.putBoolean("Mode", true);
- 
-  }
 
-  
-  
+  }
 
   @Override
   public void periodic() {
@@ -152,24 +155,53 @@ public class SparkMaxDemo extends SubsystemBase {
     double maxA = SmartDashboard.getNumber("Max Acceleration", 0);
     double allE = SmartDashboard.getNumber("Allowed Closed Loop Error", 0);
 
-    // if PID coefficients on SmartDashboard have changed, write new values to controller
-    if((p != kP)) { m_pidController.setP(p); kP = p; }
-    if((i != kI)) { m_pidController.setI(i); kI = i; }
-    if((d != kD)) { m_pidController.setD(d); kD = d; }
-    if((iz != kIz)) { m_pidController.setIZone(iz); kIz = iz; }
-    if((ff != kFF)) { m_pidController.setFF(ff); kFF = ff; }
-    if((max != kMaxOutput) || (min != kMinOutput)) { 
-      m_pidController.setOutputRange(min, max); 
-      kMinOutput = min; kMaxOutput = max; 
+    // if PID coefficients on SmartDashboard have changed, write new values to
+    // controller
+    if ((p != kP)) {
+      m_pidController.setP(p);
+      kP = p;
     }
-    if((maxV != maxVel)) { m_pidController.setSmartMotionMaxVelocity(maxV,0); maxVel = maxV; }
-    if((minV != minVel)) { m_pidController.setSmartMotionMinOutputVelocity(minV,0); minVel = minV; }
-    if((maxA != maxAcc)) { m_pidController.setSmartMotionMaxAccel(maxA,0); maxAcc = maxA; }
-    if((allE != allowedErr)) { m_pidController.setSmartMotionAllowedClosedLoopError(allE,0); allowedErr = allE; }
+    if ((i != kI)) {
+      m_pidController.setI(i);
+      kI = i;
+    }
+    if ((d != kD)) {
+      m_pidController.setD(d);
+      kD = d;
+    }
+    if ((iz != kIz)) {
+      m_pidController.setIZone(iz);
+      kIz = iz;
+    }
+    if ((ff != kFF)) {
+      m_pidController.setFF(ff);
+      kFF = ff;
+    }
+    if ((max != kMaxOutput) || (min != kMinOutput)) {
+      m_pidController.setOutputRange(min, max);
+      kMinOutput = min;
+      kMaxOutput = max;
+    }
+    if ((maxV != maxVel)) {
+      m_pidController.setSmartMotionMaxVelocity(maxV, 0);
+      maxVel = maxV;
+    }
+    if ((minV != minVel)) {
+      m_pidController.setSmartMotionMinOutputVelocity(minV, 0);
+      minVel = minV;
+    }
+    if ((maxA != maxAcc)) {
+      m_pidController.setSmartMotionMaxAccel(maxA, 0);
+      maxAcc = maxA;
+    }
+    if ((allE != allowedErr)) {
+      m_pidController.setSmartMotionAllowedClosedLoopError(allE, 0);
+      allowedErr = allE;
+    }
 
     double setPoint, processVariable;
     boolean mode = SmartDashboard.getBoolean("Mode", false);
-    if(mode) {
+    if (mode) {
       setPoint = SmartDashboard.getNumber("Set Velocity", 0);
       m_pidController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
       processVariable = m_encoder.getVelocity();
@@ -183,7 +215,7 @@ public class SparkMaxDemo extends SubsystemBase {
       m_pidController.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
       processVariable = m_encoder.getPosition();
     }
-    
+
     SmartDashboard.putNumber("SetPoint", setPoint);
     SmartDashboard.putNumber("Process Variable", processVariable);
     SmartDashboard.putNumber("Output", m_motor.getAppliedOutput());
@@ -191,14 +223,14 @@ public class SparkMaxDemo extends SubsystemBase {
 
   private void updateArmTuning() {
     // FalconUtils.configureMotionMagic(
-    //     armMotor,
-    //     Constants.kArmSpeed.get(),
-    //     Constants.kArmAcceleration.get(),
-    //     Constants.kArmSmoothing.get(),
-    //     Constants.kP.get(),
-    //     Constants.kF.get(),
-    //     Constants.kI.get(),
-    //     Constants.kD.get());
+    // armMotor,
+    // Constants.kArmSpeed.get(),
+    // Constants.kArmAcceleration.get(),
+    // Constants.kArmSmoothing.get(),
+    // Constants.kP.get(),
+    // Constants.kF.get(),
+    // Constants.kI.get(),
+    // Constants.kD.get());
   }
 
 }
