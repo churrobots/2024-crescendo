@@ -18,10 +18,11 @@ public class Intake extends SubsystemBase {
   private final WPI_VictorSPX fanumTaxIntaker = new WPI_VictorSPX(Constants.rollerCanID);
 
   public Intake() {
+    fanumTaxIntaker.setInverted(true);
   }
 
   public boolean isYoinking() {
-    boolean fanumTaxerIsIntaking = fanumTaxIntaker.get() > 0.5;
+    boolean fanumTaxerIsIntaking = fanumTaxIntaker.get() > 0.25;
     if (fanumTaxerIsIntaking) {
       return true;
     } else {
@@ -34,12 +35,12 @@ public class Intake extends SubsystemBase {
   }
 
   public void deuceTheRings() {
-    fanumTaxIntaker.set(-.75);
+    fanumTaxIntaker.set(-.40);
   }
 
   public boolean isDeucing() {
     boolean deucing = false;
-    if (fanumTaxIntaker.get() < 0) {
+    if (fanumTaxIntaker.get() < -0.25) {
       deucing = true;
     }
     return deucing;
