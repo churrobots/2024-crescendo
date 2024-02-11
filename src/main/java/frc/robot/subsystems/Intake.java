@@ -11,11 +11,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Intake extends SubsystemBase {
   private static final class Constants {
 
-    private static final int topRollerMotorID = 10;
+    private static final int rollerCanID = 11;
 
   }
 
-  private final WPI_VictorSPX fanumTaxIntaker = new WPI_VictorSPX(Constants.topRollerMotorID);
+  private final WPI_VictorSPX fanumTaxIntaker = new WPI_VictorSPX(Constants.rollerCanID);
 
   public Intake() {
   }

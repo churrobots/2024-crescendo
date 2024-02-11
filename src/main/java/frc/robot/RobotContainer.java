@@ -21,6 +21,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LightShow;
+import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
 
@@ -56,11 +57,13 @@ public class RobotContainer {
   final Arm arm = new Arm();
   final Intake intake = new Intake();
   final LightShow lightShow = new LightShow();
-
+  final Shooter shooter = new Shooter();
   // All of the commands the robot can do.
   final Command yeetFar = new RunCommand(lightShow::setRed, lightShow);
   final Command yeetClose = new RunCommand(lightShow::setYellow, lightShow);
   final Command yoinkNote = new RunCommand(lightShow::setBlue, lightShow);
+  final Command betzyIsAShooterFromOBlock = new RunCommand(shooter::runFlyWheel, shooter)
+      .until(shooter::isFlyWheelReady).andThen(new RunCommand(intake::yoinkTheRings, intake).withTimeout(3));
   final Command showDefaultColor = new RunCommand(() -> {
     if (DriverStation.isAutonomous()) {
       lightShow.setPurple();
@@ -121,6 +124,7 @@ public class RobotContainer {
     leftBumperDriver.whileTrue(anchorInPlace);
     rightBumperDriver.whileTrue(slowDrive);
     startButtonDriver.whileTrue(resetGyro);
+    aButtonOperator.whileTrue(betzyIsAShooterFromOBlock);
     // TODO: wire up all the operator buttons
   }
 
