@@ -5,7 +5,7 @@
 package frc.robot;
 
 /** Add your docs here. */
-public class CANDevices {
+public class CANMapping {
   public static final int armCan = 21;
   public static final int climberCan = 10;
   public static final int intakecan = 11;

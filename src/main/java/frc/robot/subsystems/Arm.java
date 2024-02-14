@@ -10,7 +10,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.TrapezoidProfileSubsystem;
-import frc.robot.CANDevices;
+import frc.robot.CANMapping;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.RelativeEncoder;
@@ -57,7 +57,7 @@ public class Arm extends TrapezoidProfileSubsystem {
 
   private static final SparkMaxAlternateEncoder.Type kAltEncType = SparkMaxAlternateEncoder.Type.kQuadrature;
 
-  final CANSparkMax m_motor = new CANSparkMax(CANDevices.armCan, MotorType.kBrushless);
+  final CANSparkMax m_motor = new CANSparkMax(CANMapping.armCan, MotorType.kBrushless);
   final SparkPIDController m_pidController;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
   /**

@@ -7,11 +7,11 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.CANDevices;
+import frc.robot.CANMapping;
 
 public class Intake extends SubsystemBase {
 
-  private final WPI_VictorSPX fanumTaxIntaker = new WPI_VictorSPX(CANDevices.intakecan);
+  private final WPI_VictorSPX fanumTaxIntaker = new WPI_VictorSPX(CANMapping.intakecan);
 
   public Intake() {
   }
