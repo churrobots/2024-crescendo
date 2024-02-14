@@ -13,7 +13,7 @@ import frc.robot.helpers.FalconUtils;
 
 public class Climber extends SubsystemBase {
 
-  final WPI_TalonFX climberMotor = new WPI_TalonFX(CANMapping.climberCan);
+  final WPI_TalonFX climberMotor = new WPI_TalonFX(CANMapping.climberMotor);
 
   public Climber() {
     FalconUtils.initializeMotorWithConsistentSettings(climberMotor, NeutralMode.Brake);

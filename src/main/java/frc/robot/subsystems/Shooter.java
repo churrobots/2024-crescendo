@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CANMapping;
 
 public class Shooter extends SubsystemBase {
-  final TalonFX topMotor = new TalonFX(CANMapping.topflywheelcan);
-  final TalonFX bottomMotor = new TalonFX(CANMapping.bottomflywheelcan);
+  final TalonFX topMotor = new TalonFX(CANMapping.topflywheelMotor);
+  final TalonFX bottomMotor = new TalonFX(CANMapping.bottomflywheelMotor);
   final VelocityTorqueCurrentFOC velocityTarget = new VelocityTorqueCurrentFOC(10, 1, 0, 1, true, false,
       false);
 

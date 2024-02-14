@@ -67,17 +67,20 @@ public class Drivetrain extends SubsystemBase {
   private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(Constants.kRotationalSlewRate);
 
   // All the swerve modules.
-  private final RevMAXSwerveModule m_frontLeft = new RevMAXSwerveModule(CANMapping.kFrontLeftDrivingCanId,
-      CANMapping.kFrontLeftTurningCanId, Constants.kFrontLeftChassisAngularOffset);
+  // NOTE: in 2023 season, we had an error that caused the swerve module to
+  // "twitch" periodically, so here is a reference in case it happens again
+  // https://www.chiefdelphi.com/t/vmx-pi-can-spark-max-ids-1-timed-out-while-waiting-for-periodic-status-0/402177/8
+  private final RevMAXSwerveModule m_frontLeft = new RevMAXSwerveModule(CANMapping.frontLeftDrivingMotor,
+      CANMapping.frontLeftTurningMotor, Constants.kFrontLeftChassisAngularOffset);
 
-  private final RevMAXSwerveModule m_frontRight = new RevMAXSwerveModule(CANMapping.kFrontRightDrivingCanId,
-      CANMapping.kFrontRightTurningCanId, Constants.kFrontRightChassisAngularOffset);
+  private final RevMAXSwerveModule m_frontRight = new RevMAXSwerveModule(CANMapping.frontRightDrivingMotor,
+      CANMapping.frontRightTurningMotor, Constants.kFrontRightChassisAngularOffset);
 
-  private final RevMAXSwerveModule m_rearLeft = new RevMAXSwerveModule(CANMapping.kRearLeftDrivingCanId,
-      CANMapping.kRearLeftTurningCanId, Constants.kRearLeftChassisAngularOffset);
+  private final RevMAXSwerveModule m_rearLeft = new RevMAXSwerveModule(CANMapping.rearLeftDrivingMotor,
+      CANMapping.rearLeftTurningMotor, Constants.kRearLeftChassisAngularOffset);
 
-  private final RevMAXSwerveModule m_rearRight = new RevMAXSwerveModule(CANMapping.kRearRightDrivingCanId,
-      CANMapping.kRearRightTurningCanId, Constants.kRearRightChassisAngularOffset);
+  private final RevMAXSwerveModule m_rearRight = new RevMAXSwerveModule(CANMapping.rearRightDrivingMotor,
+      CANMapping.rearRightTurningMotor, Constants.kRearRightChassisAngularOffset);
 
   // Kinematics for the swerve drive.
   private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
@@ -88,7 +91,7 @@ public class Drivetrain extends SubsystemBase {
 
   // Tracking robot pose.
   // TODO: try SwerveDrivePoseEstimator later this season
-  private final WPI_Pigeon2 m_gyro = new WPI_Pigeon2(CANMapping.kGyroCanId);
+  private final WPI_Pigeon2 m_gyro = new WPI_Pigeon2(CANMapping.gyroSensor);
   private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       m_kinematics,
       getGyroAngle(),

@@ -11,7 +11,7 @@ import frc.robot.CANMapping;
 
 public class Intake extends SubsystemBase {
 
-  private final WPI_VictorSPX fanumTaxIntaker = new WPI_VictorSPX(CANMapping.intakecan);
+  private final WPI_VictorSPX fanumTaxIntaker = new WPI_VictorSPX(CANMapping.intakeMotor);
 
   public Intake() {
   }

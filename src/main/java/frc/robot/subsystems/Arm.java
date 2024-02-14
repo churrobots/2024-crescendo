@@ -57,7 +57,7 @@ public class Arm extends TrapezoidProfileSubsystem {
 
   private static final SparkMaxAlternateEncoder.Type kAltEncType = SparkMaxAlternateEncoder.Type.kQuadrature;
 
-  final CANSparkMax m_motor = new CANSparkMax(CANMapping.armCan, MotorType.kBrushless);
+  final CANSparkMax m_motor = new CANSparkMax(CANMapping.armMotor, MotorType.kBrushless);
   final SparkPIDController m_pidController;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
   /**

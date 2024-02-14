@@ -6,23 +6,23 @@ package frc.robot;
 
 /** Add your docs here. */
 public class CANMapping {
-  public static final int armCan = 21;
-  public static final int climberCan = 10;
-  public static final int intakecan = 11;
-  public static final int topflywheelcan = 18;
-  public static final int bottomflywheelcan = 1;
-  public static final int kFrontLeftDrivingCanId = 5;
-  public static final int kRearLeftDrivingCanId = 7;
-  public static final int kFrontRightDrivingCanId = 6;
-  public static final int kRearRightDrivingCanId = 8;
 
-  // NOTE: this error caused the swerve module to "twitch" periodically
-  // https://www.chiefdelphi.com/t/vmx-pi-can-spark-max-ids-1-timed-out-while-waiting-for-periodic-status-0/402177/8
-  public static final int kFrontLeftTurningCanId = 1;
-  public static final int kRearLeftTurningCanId = 3;
-  public static final int kFrontRightTurningCanId = 2;
-  public static final int kRearRightTurningCanId = 4;
+  public static final int armMotor = 21;
+  public static final int climberMotor = 10;
+  public static final int intakeMotor = 11;
 
-  // Gyro config
-  public static final int kGyroCanId = 9;
+  public static final int topflywheelMotor = 18;
+  public static final int bottomflywheelMotor = 1;
+
+  public static final int frontLeftDrivingMotor = 5;
+  public static final int rearLeftDrivingMotor = 7;
+  public static final int frontRightDrivingMotor = 6;
+  public static final int rearRightDrivingMotor = 8;
+  public static final int frontLeftTurningMotor = 1;
+  public static final int rearLeftTurningMotor = 3;
+  public static final int frontRightTurningMotor = 2;
+  public static final int rearRightTurningMotor = 4;
+
+  public static final int gyroSensor = 9;
+
 }
