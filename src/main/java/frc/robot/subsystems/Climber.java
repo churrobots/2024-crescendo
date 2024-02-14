@@ -8,11 +8,12 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.CANDevices;
 import frc.robot.helpers.FalconUtils;
 
 public class Climber extends SubsystemBase {
 
-  final WPI_TalonFX climberMotor = new WPI_TalonFX(10);
+  final WPI_TalonFX climberMotor = new WPI_TalonFX(CANDevices.climberCan);
 
   public Climber() {
     FalconUtils.initializeMotorWithConsistentSettings(climberMotor, NeutralMode.Brake);
@@ -34,7 +35,7 @@ public class Climber extends SubsystemBase {
     } else {
       climberMotor.set(-0.5);
     }
-    }
+  }
 
   public void stay() {
     climberMotor.set(0);

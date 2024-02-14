@@ -24,6 +24,7 @@ import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.CANDevices;
 import frc.robot.helpers.RevMAXSwerveModule;
 import frc.robot.helpers.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -53,20 +54,7 @@ public class Drivetrain extends SubsystemBase {
     public static final double kRotationalSlewRate = 4; // percent per second (1 = 100%)
 
     // SPARK MAX CAN IDs
-    public static final int kFrontLeftDrivingCanId = 5;
-    public static final int kRearLeftDrivingCanId = 7;
-    public static final int kFrontRightDrivingCanId = 6;
-    public static final int kRearRightDrivingCanId = 8;
 
-    // NOTE: this error caused the swerve module to "twitch" periodically
-    // https://www.chiefdelphi.com/t/vmx-pi-can-spark-max-ids-1-timed-out-while-waiting-for-periodic-status-0/402177/8
-    public static final int kFrontLeftTurningCanId = 1;
-    public static final int kRearLeftTurningCanId = 3;
-    public static final int kFrontRightTurningCanId = 2;
-    public static final int kRearRightTurningCanId = 4;
-
-    // Gyro config
-    public static final int kGyroCanId = 9;
   }
 
   // Slew rate filter variables for controlling lateral acceleration
@@ -79,17 +67,17 @@ public class Drivetrain extends SubsystemBase {
   private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(Constants.kRotationalSlewRate);
 
   // All the swerve modules.
-  private final RevMAXSwerveModule m_frontLeft = new RevMAXSwerveModule(Constants.kFrontLeftDrivingCanId,
-      Constants.kFrontLeftTurningCanId, Constants.kFrontLeftChassisAngularOffset);
+  private final RevMAXSwerveModule m_frontLeft = new RevMAXSwerveModule(CANDevices.kFrontLeftDrivingCanId,
+      CANDevices.kFrontLeftTurningCanId, Constants.kFrontLeftChassisAngularOffset);
 
-  private final RevMAXSwerveModule m_frontRight = new RevMAXSwerveModule(Constants.kFrontRightDrivingCanId,
-      Constants.kFrontRightTurningCanId, Constants.kFrontRightChassisAngularOffset);
+  private final RevMAXSwerveModule m_frontRight = new RevMAXSwerveModule(CANDevices.kFrontRightDrivingCanId,
+      CANDevices.kFrontRightTurningCanId, Constants.kFrontRightChassisAngularOffset);
 
-  private final RevMAXSwerveModule m_rearLeft = new RevMAXSwerveModule(Constants.kRearLeftDrivingCanId,
-      Constants.kRearLeftTurningCanId, Constants.kRearLeftChassisAngularOffset);
+  private final RevMAXSwerveModule m_rearLeft = new RevMAXSwerveModule(CANDevices.kRearLeftDrivingCanId,
+      CANDevices.kRearLeftTurningCanId, Constants.kRearLeftChassisAngularOffset);
 
-  private final RevMAXSwerveModule m_rearRight = new RevMAXSwerveModule(Constants.kRearRightDrivingCanId,
-      Constants.kRearRightTurningCanId, Constants.kRearRightChassisAngularOffset);
+  private final RevMAXSwerveModule m_rearRight = new RevMAXSwerveModule(CANDevices.kRearRightDrivingCanId,
+      CANDevices.kRearRightTurningCanId, Constants.kRearRightChassisAngularOffset);
 
   // Kinematics for the swerve drive.
   private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
@@ -100,7 +88,7 @@ public class Drivetrain extends SubsystemBase {
 
   // Tracking robot pose.
   // TODO: try SwerveDrivePoseEstimator later this season
-  private final WPI_Pigeon2 m_gyro = new WPI_Pigeon2(Constants.kGyroCanId);
+  private final WPI_Pigeon2 m_gyro = new WPI_Pigeon2(CANDevices.kGyroCanId);
   private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       m_kinematics,
       getGyroAngle(),

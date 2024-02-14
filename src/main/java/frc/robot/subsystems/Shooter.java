@@ -11,10 +11,11 @@ import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.CANDevices;
 
 public class Shooter extends SubsystemBase {
-  final TalonFX topMotor = new TalonFX(18);
-  final TalonFX bottomMotor = new TalonFX(1);
+  final TalonFX topMotor = new TalonFX(CANDevices.topflywheelcan);
+  final TalonFX bottomMotor = new TalonFX(CANDevices.bottomflywheelcan);
   final VelocityTorqueCurrentFOC velocityTarget = new VelocityTorqueCurrentFOC(10, 1, 0, 1, true, false,
       false);
 
