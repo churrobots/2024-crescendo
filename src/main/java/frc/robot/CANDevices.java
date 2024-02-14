@@ -6,7 +6,7 @@ package frc.robot;
 
 /** Add your docs here. */
 public class CANDevices {
-  public static final int armCan = 19;
+  public static final int armCan = 21;
   public static final int climberCan = 10;
   public static final int intakecan = 11;
   public static final int topflywheelcan = 18;
