@@ -64,6 +64,8 @@ public class RobotContainer {
   final Command yoinkNote = new RunCommand(lightShow::setBlue, lightShow);
   final Command betzyIsAShooterFromOBlock = new RunCommand(shooter::runFlyWheel, shooter)
       .until(shooter::isFlyWheelReady).andThen(new RunCommand(intake::yoinkTheRings, intake).withTimeout(3));
+  final Command stopFlyWheel = new RunCommand(shooter::stopFlyWheel, shooter);
+  final Command stopIntake = new RunCommand(intake::stopThePlan, intake);
   final Command showDefaultColor = new RunCommand(() -> {
     if (DriverStation.isAutonomous()) {
       lightShow.setPurple();
@@ -74,6 +76,10 @@ public class RobotContainer {
 
   final Command anchorInPlace = new RunCommand(() -> drivetrain.setXFormation(), drivetrain);
   final Command resetGyro = new RunCommand(() -> drivetrain.resetGyro(), drivetrain);
+
+  final Command test1 = new RunCommand(arm::move_Close, arm);
+  final Command test2 = new RunCommand(arm::move_Default, arm);
+  // Commands.runOnce(() -> setGoal(kArmOffsetRads), this);
 
   final Command slowDrive = new RunCommand(
       () -> drivetrain.drive(
@@ -125,12 +131,16 @@ public class RobotContainer {
     rightBumperDriver.whileTrue(slowDrive);
     startButtonDriver.whileTrue(resetGyro);
     aButtonOperator.whileTrue(betzyIsAShooterFromOBlock);
+    bButtonOperator.whileTrue(test1);
     // TODO: wire up all the operator buttons
   }
 
   void ensureSubsystemsHaveDefaultCommands() {
     drivetrain.setDefaultCommand(fastDrive);
     lightShow.setDefaultCommand(showDefaultColor);
+    arm.setDefaultCommand(test2);
+    shooter.setDefaultCommand(stopFlyWheel);
+    intake.setDefaultCommand(stopIntake);
     // TODO: set default commands
   }
 

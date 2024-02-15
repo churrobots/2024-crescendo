@@ -24,6 +24,10 @@ public class Shooter extends SubsystemBase {
     topMotor.setControl(velocityTarget);
   }
 
+  public void stopFlyWheel() {
+    topMotor.stopMotor();
+  }
+
   public boolean isFlyWheelReady() {
     var topVelocity = topMotor.getVelocity().getValueAsDouble();
     var bottomVelocity = bottomMotor.getVelocity().getValueAsDouble();
