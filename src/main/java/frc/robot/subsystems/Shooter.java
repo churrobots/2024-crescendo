@@ -7,8 +7,9 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CANMapping;
@@ -16,8 +17,7 @@ import frc.robot.CANMapping;
 public class Shooter extends SubsystemBase {
   final TalonFX topMotor = new TalonFX(CANMapping.topflywheelMotor);
   final TalonFX bottomMotor = new TalonFX(CANMapping.bottomflywheelMotor);
-  final VelocityTorqueCurrentFOC velocityTarget = new VelocityTorqueCurrentFOC(10, 1, 0, 1, true, false,
-      false);
+  final VelocityVoltage velocityTarget = new VelocityVoltage(10, 0.001, true, 0, 0, false, false, false);
 
   public void runFlyWheel() {
 
@@ -42,19 +42,37 @@ public class Shooter extends SubsystemBase {
     // config.CurrentLimits.SupplyCurrentLimit = 10;
     // config.CurrentLimits.SupplyCurrentThreshold = 15;
     // config.CurrentLimits.SupplyTimeThreshold = 0.5;
-    config.Slot1.kP = 5;
-    config.Slot1.kI = 0.1;
-    config.Slot1.kD = 0.001;
-    config.TorqueCurrent.PeakForwardTorqueCurrent = 40;
-    config.TorqueCurrent.PeakReverseTorqueCurrent = -40;
+
+    // These PID values suit a standard Falcon500, according to official example.
+    // https://github.com/CrossTheRoadElec/Phoenix6-Examples/blob/6be53802b071f84fd45aeca23737345cfc421072/java/VelocityClosedLoop/src/main/java/frc/robot/Robot.java#L51-L54
+    config.Slot0.kP = 0.11;
+    config.Slot0.kI = 0.5;
+    config.Slot0.kD = 0.0001;
+    config.Slot0.kV = 0.12;
+    config.Voltage.PeakForwardVoltage = 8;
+    config.Voltage.PeakReverseVoltage = -8;
+    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+
     StatusCode status = StatusCode.StatusCodeNotInitialized;
+    for (int i = 0; i < 5; ++i) {
+      status = bottomMotor.getConfigurator().apply(config);
+      if (status.isOK())
+        break;
+    }
+    if (!status.isOK()) {
+      // TODO: set some sticky error state and show it via LEDs?
+      System.out.println("Could not apply config, error code:" +
+          status.toString());
+    }
     for (int i = 0; i < 5; ++i) {
       status = topMotor.getConfigurator().apply(config);
       if (status.isOK())
         break;
     }
     if (!status.isOK()) {
-      System.out.println("Could not apply config, error code:" + status.toString());
+      // TODO: set some sticky error state and show it via LEDs?
+      System.out.println("Could not apply config, error code:" +
+          status.toString());
     }
     bottomMotor.setControl(new Follower(topMotor.getDeviceID(), false));
   }
