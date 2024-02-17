@@ -57,6 +57,11 @@ public class Arm extends TrapezoidProfileSubsystem {
     // Default slot should be fine according to:
     // https://www.chiefdelphi.com/t/sparkmax-pid-controller/427438/4
     static final int defaultPidSlot = 0;
+
+    static final TunableDouble groundPosition = new TunableDouble("groundPosition", 0); // tune
+    static final TunableDouble ampPosition = new TunableDouble("ampPosition", 0.1); // tune
+    static final TunableDouble speakerPosition = new TunableDouble("speakerPosition", 0.2); // tune
+    static final TunableDouble defaultPosition = new TunableDouble("defaultPosition", 0); // tune
   }
 
   final CANSparkMax m_motor = new CANSparkMax(CANMapping.armMotor, MotorType.kBrushless);
@@ -109,13 +114,56 @@ public class Arm extends TrapezoidProfileSubsystem {
     m_pidController.setReference(setpoint.position, ControlType.kPosition);
   }
 
-  public void move_Close() {
-    SmartDashboard.putNumber("Goal:Rotations", 0.5);
-    setGoal(.5);
+  public void move_speaker() {
+    SmartDashboard.putNumber("Goal:Rotations", Constants.speakerPosition.get());
+    setGoal(Constants.speakerPosition.get());
+  }
+
+  public void move_amp() {
+    SmartDashboard.putNumber("Goal:Rotations", Constants.ampPosition.get());
+    setGoal(Constants.ampPosition.get());
+  }
+
+  public void move_ground() {
+    SmartDashboard.putNumber("Goal:Rotations", Constants.groundPosition.get());
+    setGoal(Constants.groundPosition.get());
   }
 
   public void move_Default() {
-    setGoal(0);
+    setGoal(Constants.defaultPosition.get());
+  }
+
+  // public boolean InRangeOf(int somePosition) {
+  // if ((m_absoluteEncoder.getPosition() >= 9000) &&
+  // (m_absoluteEncoder.getPosition() <= 11000)) {
+  // return true;
+  // } else {
+  // return false;
+  // }
+  // }
+  public boolean inRangeOf(double targetPosition) {
+    double position = m_absoluteEncoder.getPosition();
+    double tolerance = 0.05;
+    if ((position > (targetPosition - tolerance)) && (position < (targetPosition + tolerance))) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean inRangeOfSpeakerPosition() {
+    return inRangeOf(Constants.speakerPosition.get());
+  }
+
+  public boolean inRangeOfAmpPosition() {
+    return inRangeOf(Constants.ampPosition.get());
+  }
+
+  public boolean inRangeOfGroundPosition() {
+    return inRangeOf(Constants.groundPosition.get());
+  }
+
+  public boolean inRangeOfDefaultPosition() {
+    return inRangeOf(Constants.defaultPosition.get());
   }
 
   @Override

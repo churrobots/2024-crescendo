@@ -18,17 +18,52 @@ public class Shooter extends SubsystemBase {
   final TalonFX topMotor = new TalonFX(CANMapping.topflywheelMotor);
   final TalonFX bottomMotor = new TalonFX(CANMapping.bottomflywheelMotor);
   final VelocityVoltage velocityTarget = new VelocityVoltage(10, 0.001, true, 0, 0, false, false, false);
+  final VelocityVoltage ampYeetTarget = new VelocityVoltage(10, 0.001, true, 0, 0, false, false, false);
+  final VelocityVoltage speakerYeetTarget = new VelocityVoltage(10, 0.001, true, 0, 0, false, false, false);
 
   public void runFlyWheel() {
 
     topMotor.setControl(velocityTarget);
   }
 
+  public void runAmpYeeter() {
+
+    topMotor.setControl(ampYeetTarget);
+  }
+
+  public void runSpeakerYeeter() {
+
+    topMotor.setControl(speakerYeetTarget);
+  }
+
   public void stopFlyWheel() {
     topMotor.stopMotor();
   }
 
+  // TODO: Update these to use the constants above for the speeds
   public boolean isFlyWheelReady() {
+    var topVelocity = topMotor.getVelocity().getValueAsDouble();
+    var bottomVelocity = bottomMotor.getVelocity().getValueAsDouble();
+    if (topVelocity > 9.0 && bottomVelocity > 9.0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // TODO: Update these to use the constants above for the speeds
+  public boolean FlywheelAmpReady() {
+    var topVelocity = topMotor.getVelocity().getValueAsDouble();
+    var bottomVelocity = bottomMotor.getVelocity().getValueAsDouble();
+    if (topVelocity > 9.0 && bottomVelocity > 9.0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // TODO: Update these to use the constants above for the speeds
+  public boolean FlywheelSpeakerReady() {
     var topVelocity = topMotor.getVelocity().getValueAsDouble();
     var bottomVelocity = bottomMotor.getVelocity().getValueAsDouble();
     if (topVelocity > 9.0 && bottomVelocity > 9.0) {
@@ -89,3 +124,4 @@ public class Shooter extends SubsystemBase {
 // THE WORLD LOVES ETHAN
 // YES KING
 // BETZY IS A HATER
+// DANIEL IS OFF THE MEDS

@@ -61,9 +61,16 @@ public class RobotContainer {
   // All of the commands the robot can do.
   final Command yeetFar = new RunCommand(lightShow::setRed, lightShow);
   final Command yeetClose = new RunCommand(lightShow::setYellow, lightShow);
-  final Command yoinkNote = new RunCommand(lightShow::setBlue, lightShow);
-  final Command betzyIsAShooterFromOBlock = new RunCommand(shooter::runFlyWheel, shooter)
-      .until(shooter::isFlyWheelReady).andThen(new RunCommand(intake::yoinkTheRings, intake).withTimeout(3));
+  // final Command yoinkNote = new RunCommand(lightShow::setBlue, lightShow);
+  final Command shoot = new RunCommand(shooter::runFlyWheel, shooter).until(shooter::isFlyWheelReady)
+      .andThen(new RunCommand(intake::yoinkTheRings, intake).withTimeout(3));
+
+  final Command shootAmp = new RunCommand(shooter::runAmpYeeter, shooter).until(shooter::FlywheelAmpReady)
+      .andThen(new RunCommand(intake::yoinkTheRings, intake).withTimeout(3));
+  final Command shootSpeaker = new RunCommand(shooter::runSpeakerYeeter, shooter).until(shooter::FlywheelSpeakerReady)
+      .andThen(new RunCommand(intake::yoinkTheRings, intake).withTimeout(3));
+  // final Command yoinkNote = new RunCommand(shooter::runFlyWheel, shooter).until(shooter::isFlyWheelReady)
+  //     .andThen(new RunCommand(intake::yoinkTheRings, intake).withTimeout(3));
   final Command stopFlyWheel = new RunCommand(shooter::stopFlyWheel, shooter);
   final Command stopIntake = new RunCommand(intake::stopThePlan, intake);
   final Command showDefaultColor = new RunCommand(() -> {
@@ -77,8 +84,9 @@ public class RobotContainer {
   final Command anchorInPlace = new RunCommand(() -> drivetrain.setXFormation(), drivetrain);
   final Command resetGyro = new RunCommand(() -> drivetrain.resetGyro(), drivetrain);
 
-  final Command test1 = new RunCommand(arm::move_Close, arm);
-  final Command test2 = new RunCommand(arm::move_Default, arm);
+  final Command move_Close = new RunCommand(arm::move_speaker, arm);
+  final Command move_Far = new RunCommand(arm::move_amp, arm);
+  final Command move_Default = new RunCommand(arm::move_Default, arm);
   // Commands.runOnce(() -> setGoal(kArmOffsetRads), this);
 
   final Command slowDrive = new RunCommand(
@@ -121,7 +129,7 @@ public class RobotContainer {
   public void createAutonomousSelector() {
     NamedCommands.registerCommand("yeetClose", yeetClose.withTimeout(2));
     NamedCommands.registerCommand("yeetFar", yeetFar.withTimeout(4));
-    NamedCommands.registerCommand("yoinkNote", yoinkNote.withTimeout(4));
+    // NamedCommands.registerCommand("yoinkNote", yoinkNote.withTimeout(4));
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData(autoChooser);
   }
@@ -130,15 +138,15 @@ public class RobotContainer {
     leftBumperDriver.whileTrue(anchorInPlace);
     rightBumperDriver.whileTrue(slowDrive);
     startButtonDriver.whileTrue(resetGyro);
-    aButtonOperator.whileTrue(betzyIsAShooterFromOBlock);
-    bButtonOperator.whileTrue(test1);
+    aButtonOperator.whileTrue(shoot);
+    bButtonOperator.whileTrue(move_Close);
     // TODO: wire up all the operator buttons
   }
 
   void ensureSubsystemsHaveDefaultCommands() {
     drivetrain.setDefaultCommand(fastDrive);
     lightShow.setDefaultCommand(showDefaultColor);
-    arm.setDefaultCommand(test2);
+    arm.setDefaultCommand(move_Default);
     shooter.setDefaultCommand(stopFlyWheel);
     intake.setDefaultCommand(stopIntake);
     // TODO: set default commands
