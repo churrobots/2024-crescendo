@@ -13,8 +13,15 @@ import com.ctre.phoenix6.signals.InvertedValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CANMapping;
+import frc.robot.helpers.Tunables.TunableBoolean;
+import frc.robot.helpers.Tunables.TunableDouble;
 
 public class Shooter extends SubsystemBase {
+  class Constants {
+    static final TunableDouble ampVelocity = new TunableDouble("ampVelocity", 5);
+    static final TunableDouble speakerVelocity = new TunableDouble("speakerVelocity", 10);
+  }
+
   final TalonFX topMotor = new TalonFX(CANMapping.topflywheelMotor);
   final TalonFX bottomMotor = new TalonFX(CANMapping.bottomflywheelMotor);
   final VelocityVoltage velocityTarget = new VelocityVoltage(10, 0.001, true, 0, 0, false, false, false);
@@ -40,37 +47,26 @@ public class Shooter extends SubsystemBase {
     topMotor.stopMotor();
   }
 
-  // TODO: Update these to use the constants above for the speeds
-  public boolean isFlyWheelReady() {
+  public boolean isFlyWheelReady(double targetVelocity) {
+    double tolerance = 0.5;
     var topVelocity = topMotor.getVelocity().getValueAsDouble();
     var bottomVelocity = bottomMotor.getVelocity().getValueAsDouble();
-    if (topVelocity > 9.0 && bottomVelocity > 9.0) {
+    if (topVelocity > (targetVelocity - tolerance)
+        && topVelocity < (targetVelocity + tolerance)
+        && bottomVelocity > (targetVelocity - tolerance)
+        && bottomVelocity < (targetVelocity + tolerance)) {
       return true;
     } else {
       return false;
     }
   }
 
-  // TODO: Update these to use the constants above for the speeds
-  public boolean FlywheelAmpReady() {
-    var topVelocity = topMotor.getVelocity().getValueAsDouble();
-    var bottomVelocity = bottomMotor.getVelocity().getValueAsDouble();
-    if (topVelocity > 9.0 && bottomVelocity > 9.0) {
-      return true;
-    } else {
-      return false;
-    }
+  public boolean isFlywheelAmpReady() {
+    return isFlyWheelReady(Constants.ampVelocity.get());
   }
 
-  // TODO: Update these to use the constants above for the speeds
-  public boolean FlywheelSpeakerReady() {
-    var topVelocity = topMotor.getVelocity().getValueAsDouble();
-    var bottomVelocity = bottomMotor.getVelocity().getValueAsDouble();
-    if (topVelocity > 9.0 && bottomVelocity > 9.0) {
-      return true;
-    } else {
-      return false;
-    }
+  public boolean isFlywheelSpeakerReady() {
+    return isFlyWheelReady(Constants.speakerVelocity.get());
   }
 
   public Shooter() {
@@ -125,3 +121,4 @@ public class Shooter extends SubsystemBase {
 // YES KING
 // BETZY IS A HATER
 // DANIEL IS OFF THE MEDS
+// NU UH

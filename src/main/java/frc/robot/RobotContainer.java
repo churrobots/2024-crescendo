@@ -10,6 +10,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -51,7 +52,8 @@ public class RobotContainer {
   final Trigger bButtonOperator = new JoystickButton(operatorController, Button.kB.value);
   final Trigger startButtonOperator = new JoystickButton(operatorController, Button.kStart.value);
   final Trigger backButtonOperator = new JoystickButton(operatorController, Button.kBack.value);
-
+  final Trigger leftTriggerButtonOperator = new JoystickButton(operatorController, Axis.kLeftTrigger.value);
+  final Trigger rightTriggerButtonOperator = new JoystickButton(operatorController, Axis.kRightTrigger.value);
   // All of the subsystems.
   final Drivetrain drivetrain = new Drivetrain();
   final Arm arm = new Arm();
@@ -62,16 +64,20 @@ public class RobotContainer {
   final Command yeetFar = new RunCommand(lightShow::setRed, lightShow);
   final Command yeetClose = new RunCommand(lightShow::setYellow, lightShow);
   // final Command yoinkNote = new RunCommand(lightShow::setBlue, lightShow);
-  final Command shoot = new RunCommand(shooter::runFlyWheel, shooter).until(shooter::isFlyWheelReady)
-      .andThen(new RunCommand(intake::yoinkTheRings, intake).withTimeout(3));
+  // final Command shoot = new RunCommand(shooter::runFlyWheel,
+  // shooter).until(shooter::isFlyWheelReady)
+  // .andThen(new RunCommand(intake::yoinkTheRings, intake).withTimeout(3));
 
-  final Command shootAmp = new RunCommand(shooter::runAmpYeeter, shooter).until(shooter::FlywheelAmpReady)
+  // TODO: make sure they're right
+  final Command shootAmp = new RunCommand(shooter::runAmpYeeter, shooter).until(shooter::isFlywheelAmpReady)
       .andThen(new RunCommand(intake::yoinkTheRings, intake).withTimeout(3));
-  final Command shootSpeaker = new RunCommand(shooter::runSpeakerYeeter, shooter).until(shooter::FlywheelSpeakerReady)
+  final Command shootSpeaker = new RunCommand(shooter::runSpeakerYeeter, shooter).until(shooter::isFlywheelSpeakerReady)
       .andThen(new RunCommand(intake::yoinkTheRings, intake).withTimeout(3));
-  // final Command yoinkNote = new RunCommand(shooter::runFlyWheel, shooter).until(shooter::isFlyWheelReady)
-  //     .andThen(new RunCommand(intake::yoinkTheRings, intake).withTimeout(3));
+  // final Command yoinkNote = new RunCommand(shooter::runFlyWheel,
+  // shooter).until(shooter::isFlyWheelReady)
+  // .andThen(new RunCommand(intake::yoinkTheRings, intake).withTimeout(3));
   final Command stopFlyWheel = new RunCommand(shooter::stopFlyWheel, shooter);
+  final Command startIntake = new RunCommand(intake::yoinkTheRings, intake);
   final Command stopIntake = new RunCommand(intake::stopThePlan, intake);
   final Command showDefaultColor = new RunCommand(() -> {
     if (DriverStation.isAutonomous()) {
@@ -84,9 +90,9 @@ public class RobotContainer {
   final Command anchorInPlace = new RunCommand(() -> drivetrain.setXFormation(), drivetrain);
   final Command resetGyro = new RunCommand(() -> drivetrain.resetGyro(), drivetrain);
 
-  final Command move_Close = new RunCommand(arm::move_speaker, arm);
-  final Command move_Far = new RunCommand(arm::move_amp, arm);
-  final Command move_Default = new RunCommand(arm::move_Default, arm);
+  final Command moveArmForSpeaker = new RunCommand(arm::move_speaker, arm);
+  final Command moveArmForAmp = new RunCommand(arm::move_amp, arm);
+  final Command moveArmForDefault = new RunCommand(arm::move_Default, arm);
   // Commands.runOnce(() -> setGoal(kArmOffsetRads), this);
 
   final Command slowDrive = new RunCommand(
@@ -138,15 +144,20 @@ public class RobotContainer {
     leftBumperDriver.whileTrue(anchorInPlace);
     rightBumperDriver.whileTrue(slowDrive);
     startButtonDriver.whileTrue(resetGyro);
-    aButtonOperator.whileTrue(shoot);
-    bButtonOperator.whileTrue(move_Close);
+    aButtonOperator.whileTrue(startIntake);
+    bButtonOperator.whileTrue(moveArmForSpeaker);
+    xButtonOperator.whileTrue(moveArmForAmp);
+    yButtonOperator.whileTrue(moveArmForDefault);
+    leftTriggerButtonOperator.whileTrue(shootAmp);
+    rightTriggerButtonOperator.whileTrue(shootSpeaker);
+
     // TODO: wire up all the operator buttons
   }
 
   void ensureSubsystemsHaveDefaultCommands() {
     drivetrain.setDefaultCommand(fastDrive);
     lightShow.setDefaultCommand(showDefaultColor);
-    arm.setDefaultCommand(move_Default);
+    arm.setDefaultCommand(moveArmForDefault);
     shooter.setDefaultCommand(stopFlyWheel);
     intake.setDefaultCommand(stopIntake);
     // TODO: set default commands
