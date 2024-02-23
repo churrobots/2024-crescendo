@@ -78,6 +78,7 @@ public class RobotContainer {
   // .andThen(new RunCommand(intake::yoinkTheRings, intake).withTimeout(3));
   final Command stopFlyWheel = new RunCommand(shooter::stopFlyWheel, shooter);
   final Command startIntake = new RunCommand(intake::yoinkTheRings, intake);
+  final Command intakeForThreeSeconds = new RunCommand(intake::yoinkTheRings, intake).withTimeout(3);
   final Command stopIntake = new RunCommand(intake::stopThePlan, intake);
   final Command showDefaultColor = new RunCommand(() -> {
     if (DriverStation.isAutonomous()) {

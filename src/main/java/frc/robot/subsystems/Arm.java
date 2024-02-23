@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -64,7 +65,9 @@ public class Arm extends TrapezoidProfileSubsystem {
     static final TunableDouble defaultPosition = new TunableDouble("defaultPosition", 0); // tune
   }
 
-  final CANSparkMax m_motor = new CANSparkMax(CANMapping.armMotor, MotorType.kBrushless);
+  final CANSparkMax right_motor = new CANSparkMax(CANMapping.rightArmMotor, MotorType.kBrushless);
+  final CANSparkMax left_motor = new CANSparkMax(CANMapping.leftArmMotor, MotorType.kBrushless);
+  
   final SparkPIDController m_pidController;
 
   /**
@@ -79,10 +82,17 @@ public class Arm extends TrapezoidProfileSubsystem {
   public Arm() {
     super(Constants.trapezoidProfile, Constants.kArmOffsetRads);
 
-    m_motor.restoreFactoryDefaults();
-    m_absoluteEncoder = m_motor.getAbsoluteEncoder(Constants.kAltEncType);
-    m_pidController = m_motor.getPIDController();
+    right_motor.restoreFactoryDefaults();
+    right_motor.setSmartCurrentLimit(35);
+    right_motor.setIdleMode(IdleMode.kBrake);
+    m_absoluteEncoder = right_motor.getAbsoluteEncoder(Constants.kAltEncType);
+    m_pidController = right_motor.getPIDController();
     m_pidController.setFeedbackDevice(m_absoluteEncoder);
+
+    left_motor.restoreFactoryDefaults();
+    left_motor.setSmartCurrentLimit(35);
+    left_motor.setIdleMode(IdleMode.kBrake);
+    left_motor.follow(right_motor, true);
 
     /**
      * From here on out, code looks exactly like running PID control with the

@@ -7,7 +7,8 @@ package frc.robot;
 /** Add your docs here. */
 public class CANMapping {
 
-  public static final int armMotor = 21;
+  public static final int rightArmMotor = 31;
+  public static final int leftArmMotor = 30;
   public static final int climberMotor = 10;
   public static final int intakeMotor = 11;
 
