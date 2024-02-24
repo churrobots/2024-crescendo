@@ -43,9 +43,10 @@ public class LightShow extends SubsystemBase {
     fillPercentage(0, 0, defaultBrightness);
   }
 
-    public void setYellow() {
+  public void setYellow() {
     fillPercentage(defaultBrightness, defaultBrightness, 0);
   }
+
   public void setPurple() {
     fillPercentage(defaultBrightness, 0, defaultBrightness);
   }
@@ -86,25 +87,25 @@ public class LightShow extends SubsystemBase {
     return index;
   }
 
-  @Override
-  public void periodic() {
+  // @Override
+  // public void periodic() {
 
-    // double currentTime = timer.get();//1.5034234234
-    // double tenTimesFaster = currentTime * 10;//15.034234234
-    // int index = (int) tenTimesFaster;//15
+  // // double currentTime = timer.get();//1.5034234234
+  // // double tenTimesFaster = currentTime * 10;//15.034234234
+  // // int index = (int) tenTimesFaster;//15
 
-    // int x = 0;
-    // int y = 2;
-    // int index = findIndex(x, y);
+  // // int x = 0;
+  // // int y = 2;
+  // // int index = findIndex(x, y);
 
-    // pixels.setRGB(index % PIXELS, 20, 0, 0);
-    // pixels.setRGB(findIndex(3, 3), 20, 0, 0);
-    var currentBuffer = pixels.toString();
-    var needsUpdate = m_lastBuffer != currentBuffer;
-    if (needsUpdate) {
-      m_lastBuffer = currentBuffer;
-      leds.setData(pixels);
-    }
-  }
+  // // pixels.setRGB(index % PIXELS, 20, 0, 0);
+  // // pixels.setRGB(findIndex(3, 3), 20, 0, 0);
+  // var currentBuffer = pixels.toString();
+  // var needsUpdate = m_lastBuffer != currentBuffer;
+  // if (needsUpdate) {
+  // m_lastBuffer = currentBuffer;
+  // leds.setData(pixels);
+  // }
+  // }
 
 }
