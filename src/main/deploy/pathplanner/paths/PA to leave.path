@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7688766529876812,
-        "y": 4.372925487966138
+        "x": 0.769552846197361,
+        "y": 6.69213504991679
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.360866977376316,
-        "y": 5.205192906624239
+        "x": 4.002793532460618,
+        "y": 7.539847510214408
       },
       "isLocked": false,
-      "linkedName": "P3"
+      "linkedName": "P1"
     },
     {
       "anchor": {
-        "x": 2.7626551839475204,
-        "y": 6.656282659570528
+        "x": 6.415721385696243,
+        "y": 7.3906205994558976
       },
       "prevControl": {
-        "x": 2.3351039000616773,
-        "y": 5.181195586675028
+        "x": 3.9759081831893415,
+        "y": 7.550701397120387
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 67.17225701144544,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Position 3 paths",
+  "folder": "Amp Position 1 Step Path",
   "previewStartingState": {
-    "rotation": -57.12885793611572,
+    "rotation": 60.00374228063147,
     "velocity": 0
   },
   "useDefaultConstraints": true

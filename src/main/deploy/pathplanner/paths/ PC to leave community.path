@@ -3,25 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7935670999741886,
-        "y": 6.691042006215957
+        "x": 1.365145913957916,
+        "y": 5.5690665075268235
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.694054642594239,
-        "y": 6.084999375655579
+        "x": 2.365145913957916,
+        "y": 5.5690665075268235
       },
       "isLocked": false,
-      "linkedName": "P1"
+      "linkedName": "PC"
     },
     {
       "anchor": {
-        "x": 2.7864247091341405,
-        "y": 5.392171116011792
+        "x": 4.801041589496374,
+        "y": 6.497692038642179
       },
       "prevControl": {
-        "x": 1.676248607994901,
-        "y": 6.056499977547119
+        "x": 3.6109756450922053,
+        "y": 6.448033592292951
+      },
+      "nextControl": {
+        "x": 5.991107533900543,
+        "y": 6.547350484991407
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.378252626803286,
+        "y": 6.497692038642179
+      },
+      "prevControl": {
+        "x": 5.378252626803286,
+        "y": 6.497692038642179
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,13 +55,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 59.85422685185743,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Position 1 paths",
+  "folder": "Center Position 1 Step Path",
   "previewStartingState": {
-    "rotation": 61.497882338388095,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": true

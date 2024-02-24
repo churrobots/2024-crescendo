@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.365145913957916,
+        "y": 5.5690665075268235
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.8223318582415524,
+        "y": 5.054114409516435
+      },
+      "isLocked": false,
+      "linkedName": "PC"
+    },
+    {
+      "anchor": {
+        "x": 2.3835610885920846,
+        "y": 4.110955479759629
+      },
+      "prevControl": {
+        "x": 2.3774584158687997,
+        "y": 4.119977265815354
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Center Position 1 Step Path",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}
