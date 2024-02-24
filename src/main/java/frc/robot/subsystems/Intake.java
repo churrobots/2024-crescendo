@@ -14,6 +14,7 @@ public class Intake extends SubsystemBase {
   private final WPI_VictorSPX fanumTaxIntaker = new WPI_VictorSPX(CANMapping.intakeMotor);
 
   public Intake() {
+    fanumTaxIntaker.setInverted(true);
   }
 
   public boolean isYoinking() {
@@ -30,7 +31,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void deuceTheRings() {
-    fanumTaxIntaker.set(-.75);
+    fanumTaxIntaker.set(-.35);
   }
 
   public boolean isDeucing() {

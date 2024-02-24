@@ -17,16 +17,13 @@ import frc.robot.helpers.Tunables.TunableBoolean;
 import frc.robot.helpers.Tunables.TunableDouble;
 
 public class Shooter extends SubsystemBase {
-  class Constants {
-    static final TunableDouble ampVelocity = new TunableDouble("ampVelocity", 5);
-    static final TunableDouble speakerVelocity = new TunableDouble("speakerVelocity", 10);
-  }
 
   final TalonFX topMotor = new TalonFX(CANMapping.topflywheelMotor);
   final TalonFX bottomMotor = new TalonFX(CANMapping.bottomflywheelMotor);
   final VelocityVoltage velocityTarget = new VelocityVoltage(10, 0.001, true, 0, 0, false, false, false);
   final VelocityVoltage ampYeetTarget = new VelocityVoltage(10, 0.001, true, 0, 0, false, false, false);
   final VelocityVoltage speakerYeetTarget = new VelocityVoltage(10, 0.001, true, 0, 0, false, false, false);
+  final VelocityVoltage reverseAmpYeetTarget = new VelocityVoltage(-3, 0.001, true, 0, 0, false, false, false);
 
   public void runFlyWheel() {
 
@@ -36,6 +33,11 @@ public class Shooter extends SubsystemBase {
   public void runAmpYeeter() {
 
     topMotor.setControl(ampYeetTarget);
+  }
+
+  public void reverseAmpYeeter() {
+
+    topMotor.setControl(reverseAmpYeetTarget);
   }
 
   public void runSpeakerYeeter() {
@@ -48,7 +50,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean isFlyWheelReady(double targetVelocity) {
-    double tolerance = 0.5;
+    double tolerance = 3.5;
     var topVelocity = topMotor.getVelocity().getValueAsDouble();
     var bottomVelocity = bottomMotor.getVelocity().getValueAsDouble();
     if (topVelocity > (targetVelocity - tolerance)
@@ -62,11 +64,11 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean isFlywheelAmpReady() {
-    return isFlyWheelReady(Constants.ampVelocity.get());
+    return isFlyWheelReady(ampYeetTarget.Velocity);
   }
 
   public boolean isFlywheelSpeakerReady() {
-    return isFlyWheelReady(Constants.speakerVelocity.get());
+    return isFlyWheelReady(speakerYeetTarget.Velocity);
   }
 
   public Shooter() {
@@ -109,6 +111,8 @@ public class Shooter extends SubsystemBase {
       System.out.println("Could not apply config, error code:" +
           status.toString());
     }
+    // TODO: this doesn't seem to target the same velocity, might have to do it
+    // manually?
     bottomMotor.setControl(new Follower(topMotor.getDeviceID(), false));
   }
 
@@ -122,4 +126,6 @@ public class Shooter extends SubsystemBase {
 // BETZY IS A HATER
 // DANIEL IS OFF THE MEDS
 // NU UH
-//MATEOS AN OPP
+// MATEOS AN OPP
+// BETZY'S A SNITCH
+// DANIEL IS SUS
