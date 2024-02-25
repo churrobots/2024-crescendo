@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Arm;
@@ -63,19 +64,12 @@ public class RobotContainer {
   final Command yeetFar = new RunCommand(lightShow::setRed, lightShow);
   final Command yeetClose = new RunCommand(lightShow::setYellow, lightShow);
   // final Command yoinkNote = new RunCommand(lightShow::setBlue, lightShow);
-  // final Command shoot = new RunCommand(shooter::runFlyWheel,
-  // shooter).until(shooter::isFlyWheelReady)
-  // .andThen(new RunCommand(intake::yoinkTheRings, intake).withTimeout(3));
+  final Command runFlywheels = new RunCommand(shooter::stopFlyWheel, shooter).withTimeout(.1)
+      .andThen(new RunCommand(shooter::runFlyWheel, shooter));
 
   // TODO: make sure they're right
-  final Command shootAmp = new RunCommand(intake::deuceTheRings, intake)
-      .alongWith(new RunCommand(shooter::reverseAmpYeeter, shooter))
-      .withTimeout(.15)
-      .andThen(new InstantCommand(intake::stopThePlan, intake))
-      .andThen(new RunCommand(shooter::runAmpYeeter, shooter))
-      .until(shooter::isFlywheelAmpReady)
-      .andThen(new RunCommand(intake::yoinkTheRings, intake)
-          .withTimeout(3));
+  final Command shootAmp = new RunCommand(intake::yoinkTheRings, intake)
+          .withTimeout(3);
   final Command shootSpeaker = new RunCommand(shooter::runSpeakerYeeter, shooter)
       .until(shooter::isFlywheelSpeakerReady)
       .andThen(new RunCommand(intake::yoinkTheRings, intake)
@@ -84,10 +78,11 @@ public class RobotContainer {
   // shooter).until(shooter::isFlyWheelReady)
   // .andThen(new RunCommand(intake::yoinkTheRings, intake).withTimeout(3));
   final Command stopFlyWheel = new RunCommand(shooter::stopFlyWheel, shooter);
-  final Command startIntake = new RunCommand(intake::yoinkTheRings, intake)
+  final Command runIntake = new RunCommand(intake::yoinkTheRings, intake)
       .alongWith(new RunCommand(shooter::reverseAmpYeeter, shooter));
   final Command intakeForThreeSeconds = new RunCommand(intake::yoinkTheRings, intake).withTimeout(3);
-  final Command stopIntake = new RunCommand(intake::stopThePlan, intake);
+  final Command stopIntake = new RunCommand(intake::deuceTheRings, intake).withTimeout(.1)
+      .andThen(new RunCommand(intake::stopThePlan, intake));
   final Command showDefaultColor = new RunCommand(() -> {
     if (DriverStation.isAutonomous()) {
       lightShow.setPurple();
@@ -153,7 +148,7 @@ public class RobotContainer {
     leftBumperDriver.whileTrue(anchorInPlace);
     rightBumperDriver.whileTrue(slowDrive);
     startButtonDriver.whileTrue(resetGyro);
-    aButtonOperator.whileTrue(startIntake);
+    aButtonOperator.whileTrue(runIntake);
     bButtonOperator.whileTrue(moveArmForSpeaker);
     xButtonOperator.whileTrue(moveArmForAmp);
     yButtonOperator.whileTrue(moveArmForDefault);
@@ -166,6 +161,7 @@ public class RobotContainer {
     lightShow.setDefaultCommand(showDefaultColor);
     arm.setDefaultCommand(moveArmForDefault);
     shooter.setDefaultCommand(stopFlyWheel);
+    //shooter.setDefaultCommand(runFlyWheel);
     intake.setDefaultCommand(stopIntake);
   }
 

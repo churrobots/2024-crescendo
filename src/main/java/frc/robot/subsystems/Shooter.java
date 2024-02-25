@@ -20,37 +20,43 @@ public class Shooter extends SubsystemBase {
 
   final TalonFX topMotor = new TalonFX(CANMapping.topflywheelMotor);
   final TalonFX bottomMotor = new TalonFX(CANMapping.bottomflywheelMotor);
-  final VelocityVoltage velocityTarget = new VelocityVoltage(10, 0.001, true, 0, 0, false, false, false);
-  final VelocityVoltage ampYeetTarget = new VelocityVoltage(10, 0.001, true, 0, 0, false, false, false);
-  final VelocityVoltage speakerYeetTarget = new VelocityVoltage(10, 0.001, true, 0, 0, false, false, false);
+  final VelocityVoltage topvelocityTarget = new VelocityVoltage(33, 0.001, true, 0, 0, false, false, false);
+  final VelocityVoltage bottomvelocityTarget = new VelocityVoltage(26, 0.001, true, 0, 0, false, false, false);
+  final VelocityVoltage ampYeetTarget = new VelocityVoltage(0, 0.001, true, 0, 0, false, false, false);
+  final VelocityVoltage speakerYeetTarget = new VelocityVoltage(1, 0.001, true, 0, 0, false, false, false);
   final VelocityVoltage reverseAmpYeetTarget = new VelocityVoltage(-3, 0.001, true, 0, 0, false, false, false);
 
   public void runFlyWheel() {
 
-    topMotor.setControl(velocityTarget);
+    topMotor.setControl(topvelocityTarget);
+    bottomMotor.setControl(bottomvelocityTarget);
   }
 
   public void runAmpYeeter() {
 
     topMotor.setControl(ampYeetTarget);
+    bottomMotor.setControl(ampYeetTarget);
   }
 
   public void reverseAmpYeeter() {
 
     topMotor.setControl(reverseAmpYeetTarget);
+    bottomMotor.setControl(reverseAmpYeetTarget);
   }
 
   public void runSpeakerYeeter() {
 
     topMotor.setControl(speakerYeetTarget);
+    bottomMotor.setControl(speakerYeetTarget);
   }
 
   public void stopFlyWheel() {
     topMotor.stopMotor();
+    bottomMotor.stopMotor();
   }
 
   public boolean isFlyWheelReady(double targetVelocity) {
-    double tolerance = 3.5;
+    double tolerance = 1.5;
     var topVelocity = topMotor.getVelocity().getValueAsDouble();
     var bottomVelocity = bottomMotor.getVelocity().getValueAsDouble();
     if (topVelocity > (targetVelocity - tolerance)
@@ -113,7 +119,7 @@ public class Shooter extends SubsystemBase {
     }
     // TODO: this doesn't seem to target the same velocity, might have to do it
     // manually?
-    bottomMotor.setControl(new Follower(topMotor.getDeviceID(), false));
+    // bottomMotor.setControl(new Follower(topMotor.getDeviceID(), false));
   }
 
   @Override

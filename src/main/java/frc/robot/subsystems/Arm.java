@@ -25,7 +25,7 @@ public class Arm extends TrapezoidProfileSubsystem {
 
   class Constants {
 
-    static final double kMaxVelocityRadPerSecond = 3;
+    static final double kMaxVelocityRadPerSecond = 8;
     static final double kMaxAccelerationRadPerSecSquared = 10;
     static final TrapezoidProfile.Constraints trapezoidProfile = new TrapezoidProfile.Constraints(
         Constants.kMaxVelocityRadPerSecond, Constants.kMaxAccelerationRadPerSecSquared);
@@ -35,7 +35,7 @@ public class Arm extends TrapezoidProfileSubsystem {
     static final double kArmOffsetRads = 0;
 
     // These are all the constants from the SparkMAX demo code.
-    static final TunableDouble kP = new TunableDouble("armKP", 1.5);
+    static final TunableDouble kP = new TunableDouble("armKP", 5.5);
     static final TunableDouble kI = new TunableDouble("armKI", 0);
     static final TunableDouble kD = new TunableDouble("armKD", 1);
 
@@ -67,11 +67,6 @@ public class Arm extends TrapezoidProfileSubsystem {
   final CANSparkMax left_motor = new CANSparkMax(CANMapping.leftArmMotor, MotorType.kBrushless);
 
   final SparkPIDController m_pidController;
-  final ArmFeedforward m_feedforward = new ArmFeedforward(
-      Constants.kSVolts.get(),
-      Constants.kGVolts.get(),
-      Constants.kVVoltSecondPerRad.get(),
-      Constants.kAVoltSecondSquaredPerRad.get());
 
   /**
    * An alternate encoder object is constructed using the GetAlternateEncoder()
@@ -110,13 +105,17 @@ public class Arm extends TrapezoidProfileSubsystem {
   public void useState(TrapezoidProfile.State setpoint) {
     // Calculate the feedforward from the sepoint
     // TODO: figure out if this is appropriate feedforward for sparkmax?
+    ArmFeedforward m_feedforward = new ArmFeedforward(
+        Constants.kSVolts.get(),
+        Constants.kGVolts.get(),
+        Constants.kVVoltSecondPerRad.get(),
+        Constants.kAVoltSecondSquaredPerRad.get());
     double feedforward = m_feedforward.calculate(setpoint.position,
         setpoint.velocity);
+    SmartDashboard.putNumber("SetPoint:Rotations", setpoint.position);
     m_pidController.setReference(setpoint.position,
         CANSparkMax.ControlType.kPosition, Constants.defaultPidSlot,
         feedforward / 12.0);
-    SmartDashboard.putNumber("SetPoint:Rotations", setpoint.position);
-    m_pidController.setReference(setpoint.position, ControlType.kPosition);
   }
 
   public void move_speaker() {
@@ -135,7 +134,7 @@ public class Arm extends TrapezoidProfileSubsystem {
   }
 
   public void move_Default() {
-    setGoal(Constants.defaultPosition.get());
+    right_motor.stopMotor();
   }
 
   public boolean inRangeOf(double targetPosition) {
@@ -176,17 +175,8 @@ public class Arm extends TrapezoidProfileSubsystem {
     if (Constants.kD.didChange()) {
       m_pidController.setD(Constants.kD.get());
     }
-    if (Constants.kGVolts.didChange()) {
-      m_feedforward.kg = Constants.kGVolts.get();
-    }
-    if (Constants.kSVolts.didChange()) {
-      m_feedforward.ks = Constants.kSVolts.get();
-    }
-    if (Constants.kVVoltSecondPerRad.didChange()) {
-      m_feedforward.kv = Constants.kVVoltSecondPerRad.get();
-    }
-    if (Constants.kAVoltSecondSquaredPerRad.didChange()) {
-      m_feedforward.ka = Constants.kAVoltSecondSquaredPerRad.get();
-    }
+    SmartDashboard.putNumber("armVoltage", right_motor.getBusVoltage());
+    SmartDashboard.putNumber("armCurrent", right_motor.getOutputCurrent());
   }
+
 }
