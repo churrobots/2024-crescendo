@@ -7,7 +7,11 @@
     "Center Position 1 Step Path",
     "Source Position 1 Step Path"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "1 note & leave",
+    "2 note & leave",
+    "3 notes while leaving"
+  ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
