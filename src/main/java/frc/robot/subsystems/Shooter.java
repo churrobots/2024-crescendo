@@ -20,16 +20,32 @@ public class Shooter extends SubsystemBase {
 
   final TalonFX topMotor = new TalonFX(CANMapping.topflywheelMotor);
   final TalonFX bottomMotor = new TalonFX(CANMapping.bottomflywheelMotor);
-  final VelocityVoltage topvelocityTarget = new VelocityVoltage(33, 0.001, true, 0, 0, false, false, false);
-  final VelocityVoltage bottomvelocityTarget = new VelocityVoltage(26, 0.001, true, 0, 0, false, false, false);
+  // 40, 29 is good but slow
+  final VelocityVoltage topvelocityTarget = new VelocityVoltage(47, 0.001, true, 0, 0, false, false, false);
+  final VelocityVoltage bottomvelocityTarget = new VelocityVoltage(30, 0.001, true, 0, 0, false, false, false);
   final VelocityVoltage ampYeetTarget = new VelocityVoltage(0, 0.001, true, 0, 0, false, false, false);
   final VelocityVoltage speakerYeetTarget = new VelocityVoltage(1, 0.001, true, 0, 0, false, false, false);
   final VelocityVoltage reverseAmpYeetTarget = new VelocityVoltage(-3, 0.001, true, 0, 0, false, false, false);
 
-  public void runFlyWheel() {
-
+  public void runFlywheelForSpeaker() {
     topMotor.setControl(topvelocityTarget);
     bottomMotor.setControl(bottomvelocityTarget);
+  }
+
+  public boolean isFlyWheelReadyForSpeaker() {
+    double tolerance = 1.5;
+    var actualTopVelocity = topMotor.getVelocity().getValueAsDouble();
+    var actualBottomVelocity = bottomMotor.getVelocity().getValueAsDouble();
+    var expectedTopVelocity = topvelocityTarget.Velocity;
+    var expectedBottomVelocity = bottomvelocityTarget.Velocity;
+    if (actualTopVelocity > (expectedTopVelocity - tolerance)
+        && actualTopVelocity < (expectedTopVelocity + tolerance)
+        && actualBottomVelocity > (expectedBottomVelocity - tolerance)
+        && actualBottomVelocity < (expectedBottomVelocity + tolerance)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public void runAmpYeeter() {
@@ -55,6 +71,7 @@ public class Shooter extends SubsystemBase {
     bottomMotor.stopMotor();
   }
 
+  // TODO: no longer valid now we treat top and bottom with separate velocities
   public boolean isFlyWheelReady(double targetVelocity) {
     double tolerance = 1.5;
     var topVelocity = topMotor.getVelocity().getValueAsDouble();

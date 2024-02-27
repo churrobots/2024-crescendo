@@ -61,26 +61,17 @@ public class RobotContainer {
   final LightShow lightShow = new LightShow();
   final Shooter shooter = new Shooter();
   // All of the commands the robot can do.
-  final Command yeetFar = new RunCommand(lightShow::setRed, lightShow);
-  final Command yeetClose = new RunCommand(lightShow::setYellow, lightShow);
-  // final Command yoinkNote = new RunCommand(lightShow::setBlue, lightShow);
   final Command runFlywheels = new RunCommand(shooter::stopFlyWheel, shooter).withTimeout(.1)
-      .andThen(new RunCommand(shooter::runFlyWheel, shooter));
+      .andThen(new RunCommand(shooter::runFlywheelForSpeaker, shooter));
 
   // TODO: make sure they're right
-  final Command shootAmp = new RunCommand(intake::yoinkTheRings, intake)
-          .withTimeout(3);
-  final Command shootSpeaker = new RunCommand(shooter::runSpeakerYeeter, shooter)
-      .until(shooter::isFlywheelSpeakerReady)
-      .andThen(new RunCommand(intake::yoinkTheRings, intake)
-          .withTimeout(3));
+  final Command shootDefault = new RunCommand(intake::yoinkTheRings, intake);
   // final Command yoinkNote = new RunCommand(shooter::runFlyWheel,
   // shooter).until(shooter::isFlyWheelReady)
   // .andThen(new RunCommand(intake::yoinkTheRings, intake).withTimeout(3));
   final Command stopFlyWheel = new RunCommand(shooter::stopFlyWheel, shooter);
   final Command runIntake = new RunCommand(intake::yoinkTheRings, intake)
       .alongWith(new RunCommand(shooter::reverseAmpYeeter, shooter));
-  final Command intakeForThreeSeconds = new RunCommand(intake::yoinkTheRings, intake).withTimeout(3);
   final Command stopIntake = new RunCommand(intake::deuceTheRings, intake).withTimeout(.1)
       .andThen(new RunCommand(intake::stopThePlan, intake));
   final Command showDefaultColor = new RunCommand(() -> {
@@ -121,6 +112,12 @@ public class RobotContainer {
           true, true),
       drivetrain);
 
+  // For autonomous mode.
+  final Command shootSpeaker = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
+      .until(shooter::isFlyWheelReadyForSpeaker)
+      .andThen(shootDefault).withTimeout(2);
+  final Command intakeForThreeSeconds = runIntake;
+
   public RobotContainer() {
     configureButtonBindings();
     ensureSubsystemsHaveDefaultCommands();
@@ -137,9 +134,8 @@ public class RobotContainer {
   }
 
   public void createAutonomousSelector() {
-    NamedCommands.registerCommand("yeetClose", yeetClose.withTimeout(2));
-    NamedCommands.registerCommand("yeetFar", yeetFar.withTimeout(4));
-    // NamedCommands.registerCommand("yoinkNote", yoinkNote.withTimeout(4));
+    NamedCommands.registerCommand("shootSpeaker", shootSpeaker);
+    NamedCommands.registerCommand("intakeForThreeSeconds", intakeForThreeSeconds);
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData(autoChooser);
   }
@@ -152,8 +148,8 @@ public class RobotContainer {
     bButtonOperator.whileTrue(moveArmForSpeaker);
     xButtonOperator.whileTrue(moveArmForAmp);
     yButtonOperator.whileTrue(moveArmForDefault);
-    leftBumperOperator.whileTrue(shootAmp);
-    rightBumperOperator.whileTrue(shootSpeaker);
+    leftBumperOperator.whileTrue(runFlywheels);
+    rightBumperOperator.whileTrue(shootDefault);
   }
 
   void ensureSubsystemsHaveDefaultCommands() {
@@ -161,7 +157,7 @@ public class RobotContainer {
     lightShow.setDefaultCommand(showDefaultColor);
     arm.setDefaultCommand(moveArmForDefault);
     shooter.setDefaultCommand(stopFlyWheel);
-    //shooter.setDefaultCommand(runFlyWheel);
+    // shooter.setDefaultCommand(runFlywheels);
     intake.setDefaultCommand(stopIntake);
   }
 
