@@ -115,7 +115,8 @@ public class RobotContainer {
   // For autonomous mode.
   final Command shootSpeaker = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
       .until(shooter::isFlyWheelReadyForSpeaker)
-      .andThen(shootDefault).withTimeout(2);
+      .andThen(new RunCommand(intake::yoinkTheRings, intake))
+      .withTimeout(2);
   final Command intakeForThreeSeconds = runIntake;
 
   public RobotContainer() {
