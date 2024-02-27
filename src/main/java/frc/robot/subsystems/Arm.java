@@ -83,9 +83,13 @@ public class Arm extends TrapezoidProfileSubsystem {
     right_motor.restoreFactoryDefaults();
     right_motor.setSmartCurrentLimit(35);
     right_motor.setIdleMode(IdleMode.kBrake);
+    // right_motor.setInverted(true);
     m_absoluteEncoder = right_motor.getAbsoluteEncoder(Constants.kAltEncType);
+
     m_pidController = right_motor.getPIDController();
     m_pidController.setFeedbackDevice(m_absoluteEncoder);
+    // TODO: do we need to enable PID wrapping?
+    // m_pidController.setPositionPIDWrappingEnabled(true);
 
     left_motor.restoreFactoryDefaults();
     left_motor.setSmartCurrentLimit(35);
@@ -112,10 +116,11 @@ public class Arm extends TrapezoidProfileSubsystem {
         Constants.kAVoltSecondSquaredPerRad.get());
     double feedforward = m_feedforward.calculate(setpoint.position,
         setpoint.velocity);
-    SmartDashboard.putNumber("SetPoint:Rotations", setpoint.position);
     m_pidController.setReference(setpoint.position,
         CANSparkMax.ControlType.kPosition, Constants.defaultPidSlot,
         feedforward / 12.0);
+    SmartDashboard.putNumber("armPid:setPointPosition", setpoint.position);
+    SmartDashboard.putNumber("armPid:feedForward", feedforward);
   }
 
   public void move_speaker() {
@@ -134,7 +139,7 @@ public class Arm extends TrapezoidProfileSubsystem {
   }
 
   public void move_Default() {
-    right_motor.stopMotor();
+    right_motor.stopMotor(); //do we need for left motor too?
   }
 
   public boolean inRangeOf(double targetPosition) {
@@ -165,7 +170,6 @@ public class Arm extends TrapezoidProfileSubsystem {
   @Override
   public void periodic() {
     super.periodic();
-    SmartDashboard.putNumber("EncoderPosition", m_absoluteEncoder.getPosition());
     if (Constants.kP.didChange()) {
       m_pidController.setP(Constants.kP.get());
     }
@@ -175,8 +179,14 @@ public class Arm extends TrapezoidProfileSubsystem {
     if (Constants.kD.didChange()) {
       m_pidController.setD(Constants.kD.get());
     }
-    SmartDashboard.putNumber("armVoltage", right_motor.getBusVoltage());
-    SmartDashboard.putNumber("armCurrent", right_motor.getOutputCurrent());
+    SmartDashboard.putNumber("rightArm:busVoltage", right_motor.getBusVoltage());
+    SmartDashboard.putNumber("rightArm:outputCurrent", right_motor.getOutputCurrent());
+    SmartDashboard.putNumber("rightArm:appliedOutput", right_motor.getAppliedOutput());
+    SmartDashboard.putNumber("leftArm:busVoltage", left_motor.getBusVoltage());
+    SmartDashboard.putNumber("leftArm:outputCurrent", left_motor.getOutputCurrent());
+    SmartDashboard.putNumber("leftArm:appliedOutput", left_motor.getAppliedOutput());
+    SmartDashboard.putNumber("armEncoder:position", m_absoluteEncoder.getPosition());
+    SmartDashboard.putNumber("armEncoder:velocity", m_absoluteEncoder.getVelocity());
   }
 
 }
