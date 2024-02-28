@@ -134,6 +134,15 @@ public class RobotContainer {
     return autoChooser.getSelected();
   }
 
+  /**
+   * Note that old autonomous modes are not automatically cleared out of the
+   * deploy directory on the rio. If you delete an autonomous mode, you might
+   * want to first clear the directory on the rio via SSH:
+   * ```
+   * ssh admin@roboRIO-8048-frc.local "rm -rf /home/lvuser/deploy/pathplanner"
+   * ```
+   * And then re-deploy to have the most current autonomous modes.
+   */
   public void createAutonomousSelector() {
     NamedCommands.registerCommand("shootSpeaker", shootSpeaker);
     NamedCommands.registerCommand("intakeForThreeSeconds", intakeForThreeSeconds);
