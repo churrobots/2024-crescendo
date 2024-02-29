@@ -58,6 +58,7 @@ public class RobotContainer {
   final Trigger backButtonOperator = new JoystickButton(operatorController, Button.kBack.value);
   final Trigger povUpOperator = new POVButton(operatorController, 0);
   final Trigger povDownOperator = new POVButton(operatorController, 180);
+  final Trigger leftjoyTrigger = new JoystickButton(operatorController, Button.kLeftStick.value);
   // All of the subsystems.
   final Drivetrain drivetrain = new Drivetrain();
   final Arm arm = new Arm();
@@ -93,6 +94,8 @@ public class RobotContainer {
   final Command moveArmForSpeaker = new RunCommand(arm::move_speaker, arm);
   final Command moveArmForAmp = new RunCommand(arm::move_amp, arm);
   final Command moveArmForDefault = new RunCommand(arm::move_Default, arm);
+  final Command runAmpYeeter = new RunCommand(shooter::runAmpYeeter, shooter)
+      .alongWith(new RunCommand(intake::yoinkTheRings, intake));
 
   final Command goUp = new RunCommand(climber::goUp, climber);
   final Command goDown = new RunCommand(climber::goDown, climber);
@@ -179,6 +182,7 @@ public class RobotContainer {
     backButtonOperator.whileTrue(goDownWNoSafety);
     povUpOperator.whileTrue(goUp);
     povDownOperator.whileTrue(goDown);
+    leftjoyTrigger.whileTrue(runAmpYeeter);
   }
 
   void ensureSubsystemsHaveDefaultCommands() {
@@ -189,6 +193,7 @@ public class RobotContainer {
     // shooter.setDefaultCommand(runFlywheels);
     intake.setDefaultCommand(stopIntake);
     climber.setDefaultCommand(stay);
+    
   }
 
 }
