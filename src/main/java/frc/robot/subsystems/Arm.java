@@ -57,7 +57,7 @@ public class Arm extends TrapezoidProfileSubsystem {
     static final int defaultPidSlot = 0;
 
     static final TunableDouble groundPosition = new TunableDouble("groundPosition", 0); // tune
-    static final TunableDouble ampPosition = new TunableDouble("ampPosition", 0.1); // tune
+    static final TunableDouble ampPosition = new TunableDouble("ampPosition", 0.250); // tune
     static final TunableDouble speakerPosition = new TunableDouble("speakerPosition", 0.2); // tune
     static final TunableDouble defaultPosition = new TunableDouble("defaultPosition", 0); // tune
   }

@@ -172,9 +172,7 @@ public class RobotContainer {
     rightBumperDriver.whileTrue(slowDrive);
     startButtonDriver.whileTrue(resetGyro);
     aButtonOperator.whileTrue(runIntake);
-    bButtonOperator.whileTrue(moveArmForSpeaker);
-    xButtonOperator.whileTrue(goUp);
-    yButtonOperator.whileTrue(goDown);
+    bButtonOperator.whileTrue(moveArmForAmp);
     leftBumperOperator.whileTrue(runFlywheels);
     rightBumperOperator.whileTrue(shootDefault);
     startButtonOperator.whileTrue(goUpWNoSafety);
