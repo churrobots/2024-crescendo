@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
@@ -55,6 +56,8 @@ public class RobotContainer {
   final Trigger bButtonOperator = new JoystickButton(operatorController, Button.kB.value);
   final Trigger startButtonOperator = new JoystickButton(operatorController, Button.kStart.value);
   final Trigger backButtonOperator = new JoystickButton(operatorController, Button.kBack.value);
+  final Trigger povUpOperator = new POVButton(operatorController, 0);
+  final Trigger povDownOperator = new POVButton(operatorController, 180);
   // All of the subsystems.
   final Drivetrain drivetrain = new Drivetrain();
   final Arm arm = new Arm();
@@ -176,6 +179,8 @@ public class RobotContainer {
     rightBumperOperator.whileTrue(shootDefault);
     startButtonOperator.whileTrue(goUpWNoSafety);
     backButtonOperator.whileTrue(goDownWNoSafety);
+    povUpOperator.whileTrue(goUp);
+    povDownOperator.whileTrue(goDown);
   }
 
   void ensureSubsystemsHaveDefaultCommands() {
