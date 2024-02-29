@@ -121,11 +121,17 @@ public class RobotContainer {
       drivetrain);
 
   // For autonomous mode.
-  final Command shootSpeaker = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
-      .until(shooter::isFlyWheelReadyForSpeaker)
-      .andThen(new RunCommand(intake::yoinkTheRings, intake))
-      .withTimeout(2);
-  final Command intakeForThreeSeconds = runIntake;
+  final Command autoPullNoteAwayFromShooter = new RunCommand(intake::deuceTheRings, intake).withTimeout(.05)
+      .andThen(new InstantCommand(intake::stopThePlan, intake));
+  final Command autoPrepareFlywheel = new RunCommand(shooter::runFlywheelForSpeaker, shooter).withTimeout(2);
+  final Command autoFeedIntoFlywheel = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
+      .alongWith(new RunCommand(intake::yoinkTheRings, intake)).withTimeout(2);
+
+  final Command shootSpeaker = autoPullNoteAwayFromShooter
+      .andThen(autoPrepareFlywheel)
+      .andThen(autoFeedIntoFlywheel);
+  final Command intakeForThreeSeconds = new InstantCommand(intake::yoinkTheRings, intake)
+      .alongWith(new RunCommand(shooter::reverseAmpYeeter, shooter));
 
   public RobotContainer() {
     configureButtonBindings();
