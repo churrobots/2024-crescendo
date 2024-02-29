@@ -51,7 +51,6 @@ public class Arm extends TrapezoidProfileSubsystem {
     static final double kMaxOutput = 1;
     static final double kMinOutput = -1;
     static final int kCPR = 8192;
-    static final SparkAbsoluteEncoder.Type kAltEncType = SparkAbsoluteEncoder.Type.kDutyCycle;
 
     // Default slot should be fine according to:
     // https://www.chiefdelphi.com/t/sparkmax-pid-controller/427438/4
@@ -77,14 +76,16 @@ public class Arm extends TrapezoidProfileSubsystem {
   final SparkAbsoluteEncoder m_absoluteEncoder;
 
   /** Create a new ArmSubsystem. */
+  // We used some sample code from:
+  // https://github.com/Delmar-Robotics-Engineers-At-MADE/2024-Robot/blob/main/src/main/java/frc/robot/subsystems/Arm.java
   public Arm() {
     super(Constants.trapezoidProfile, Constants.kArmOffsetRads);
 
     right_motor.restoreFactoryDefaults();
-    right_motor.setSmartCurrentLimit(35);
+    right_motor.setSmartCurrentLimit(40);
     right_motor.setIdleMode(IdleMode.kBrake);
-    // right_motor.setInverted(true);
-    m_absoluteEncoder = right_motor.getAbsoluteEncoder(Constants.kAltEncType);
+    right_motor.setInverted(true);
+    m_absoluteEncoder = right_motor.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
 
     m_pidController = right_motor.getPIDController();
     m_pidController.setFeedbackDevice(m_absoluteEncoder);
@@ -92,17 +93,21 @@ public class Arm extends TrapezoidProfileSubsystem {
     // m_pidController.setPositionPIDWrappingEnabled(true);
 
     left_motor.restoreFactoryDefaults();
-    left_motor.setSmartCurrentLimit(35);
+    left_motor.setSmartCurrentLimit(40);
     left_motor.setIdleMode(IdleMode.kBrake);
+    left_motor.setInverted(false);
     left_motor.follow(right_motor, true);
 
     m_pidController.setP(Constants.kP.get());
     m_pidController.setI(Constants.kI.get());
     m_pidController.setD(Constants.kD.get());
     m_pidController.setIZone(Constants.kIz);
-    m_pidController.setFF(Constants.kFF);
+    // m_pidController.setFF(Constants.kFF);
     m_pidController.setOutputRange(Constants.kMinOutput, Constants.kMaxOutput);
+
     enable();
+    right_motor.burnFlash();
+    left_motor.burnFlash();
   }
 
   @Override
@@ -114,11 +119,10 @@ public class Arm extends TrapezoidProfileSubsystem {
         Constants.kGVolts.get(),
         Constants.kVVoltSecondPerRad.get(),
         Constants.kAVoltSecondSquaredPerRad.get());
-    double feedforward = m_feedforward.calculate(setpoint.position,
-        setpoint.velocity);
+    double feedforward = m_feedforward.calculate(setpoint.position * 2 * Math.PI, setpoint.velocity);
     m_pidController.setReference(setpoint.position,
         CANSparkMax.ControlType.kPosition, Constants.defaultPidSlot,
-        feedforward / 12.0);
+        feedforward);
     SmartDashboard.putNumber("armPid:setPointPosition", setpoint.position);
     SmartDashboard.putNumber("armPid:feedForward", feedforward);
   }
@@ -139,7 +143,7 @@ public class Arm extends TrapezoidProfileSubsystem {
   }
 
   public void move_Default() {
-    right_motor.stopMotor(); //do we need for left motor too?
+    right_motor.stopMotor(); // do we need for left motor too?
   }
 
   public boolean inRangeOf(double targetPosition) {
