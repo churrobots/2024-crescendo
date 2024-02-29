@@ -2,19 +2,19 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.CANMapping;
 
 public class LightShow extends SubsystemBase {
-
-  private final int klightPWM = 9;
 
   // NOTE: you can only allocate ONE strip of LEDs (in series). This is a
   // limitation
   // of how WPILib implements the addressable LED strips.
   // https://www.chiefdelphi.com/t/can-not-allocate-a-second-addressableled-pwm-port/376859
 
-  AddressableLED leds = new AddressableLED(klightPWM);
+  AddressableLED leds = new AddressableLED(CANMapping.lightsPWM);
   final int ROWS = 8;
   final int COLS = 32;
   final int PIXELS = (ROWS * COLS) + 196;
@@ -87,25 +87,17 @@ public class LightShow extends SubsystemBase {
     return index;
   }
 
-  // @Override
-  // public void periodic() {
-
-  // // double currentTime = timer.get();//1.5034234234
-  // // double tenTimesFaster = currentTime * 10;//15.034234234
-  // // int index = (int) tenTimesFaster;//15
-
-  // // int x = 0;
-  // // int y = 2;
-  // // int index = findIndex(x, y);
-
-  // // pixels.setRGB(index % PIXELS, 20, 0, 0);
-  // // pixels.setRGB(findIndex(3, 3), 20, 0, 0);
-  // var currentBuffer = pixels.toString();
-  // var needsUpdate = m_lastBuffer != currentBuffer;
-  // if (needsUpdate) {
-  // m_lastBuffer = currentBuffer;
-  // leds.setData(pixels);
-  // }
-  // }
+  @Override
+  public void periodic() {
+    // if (DriverStation.isDisabled()) {
+    // setGreen();
+    // }
+    var currentBuffer = pixels.toString();
+    var needsUpdate = m_lastBuffer != currentBuffer;
+    if (needsUpdate) {
+      m_lastBuffer = currentBuffer;
+      leds.setData(pixels);
+    }
+  }
 
 }

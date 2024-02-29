@@ -26,4 +26,5 @@ public class CANMapping {
 
   public static final int gyroSensor = 9;
 
+  public static final int lightsPWM = 0;
 }
