@@ -11,6 +11,7 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CANMapping;
 import frc.robot.helpers.Tunables.TunableBoolean;
@@ -141,6 +142,10 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
+    var actualTopVelocity = topMotor.getVelocity().getValueAsDouble();
+    var actualBottomVelocity = bottomMotor.getVelocity().getValueAsDouble();
+    SmartDashboard.putNumber("topVelocity", actualTopVelocity);
+    SmartDashboard.putNumber("bottomVelocity", actualBottomVelocity);
     // This method will be called once per scheduler run
   }
 }
