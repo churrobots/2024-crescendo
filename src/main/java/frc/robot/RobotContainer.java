@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LightShow;
@@ -60,6 +61,7 @@ public class RobotContainer {
   final Intake intake = new Intake();
   final LightShow lightShow = new LightShow();
   final Shooter shooter = new Shooter();
+  final Climber climber = new Climber();
   // All of the commands the robot can do.
   final Command runFlywheels = new RunCommand(shooter::stopFlyWheel, shooter).withTimeout(.1)
       .andThen(new RunCommand(shooter::runFlywheelForSpeaker, shooter));
@@ -88,6 +90,12 @@ public class RobotContainer {
   final Command moveArmForSpeaker = new RunCommand(arm::move_speaker, arm);
   final Command moveArmForAmp = new RunCommand(arm::move_amp, arm);
   final Command moveArmForDefault = new RunCommand(arm::move_Default, arm);
+
+  final Command goUp = new RunCommand(climber::goUp, climber);
+  final Command goDown = new RunCommand(climber::goDown, climber);
+  final Command stay = new RunCommand(climber::stay, climber);
+  final Command goDownWNoSafety = new RunCommand(climber::goDownWNoSafety, climber);
+  final Command goUpWNoSafety = new RunCommand(climber::goUpWNoSafety, climber);
   // Commands.runOnce(() -> setGoal(kArmOffsetRads), this);
 
   final Command slowDrive = new RunCommand(
@@ -156,10 +164,12 @@ public class RobotContainer {
     startButtonDriver.whileTrue(resetGyro);
     aButtonOperator.whileTrue(runIntake);
     bButtonOperator.whileTrue(moveArmForSpeaker);
-    xButtonOperator.whileTrue(moveArmForAmp);
-    yButtonOperator.whileTrue(moveArmForDefault);
+    xButtonOperator.whileTrue(goUp);
+    yButtonOperator.whileTrue(goDown);
     leftBumperOperator.whileTrue(runFlywheels);
     rightBumperOperator.whileTrue(shootDefault);
+    startButtonOperator.whileTrue(goUpWNoSafety);
+    backButtonOperator.whileTrue(goDownWNoSafety);
   }
 
   void ensureSubsystemsHaveDefaultCommands() {
@@ -169,6 +179,7 @@ public class RobotContainer {
     shooter.setDefaultCommand(stopFlyWheel);
     // shooter.setDefaultCommand(runFlywheels);
     intake.setDefaultCommand(stopIntake);
+    climber.setDefaultCommand(stay);
   }
 
 }

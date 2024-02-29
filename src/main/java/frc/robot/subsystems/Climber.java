@@ -17,10 +17,11 @@ public class Climber extends SubsystemBase {
 
   public Climber() {
     FalconUtils.initializeMotorWithConsistentSettings(climberMotor, NeutralMode.Brake);
+    climberMotor.setSelectedSensorPosition(0);
   }
 
   public void goUp() {
-    var isAtTheTop = climberMotor.getSelectedSensorPosition() >= 9000;
+    var isAtTheTop = climberMotor.getSelectedSensorPosition() <= 210000;
     if (isAtTheTop) {
       stay();
     } else {
@@ -29,7 +30,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void goDown() {
-    var isAtTheBottom = climberMotor.getSelectedSensorPosition() >= -9000;
+    var isAtTheBottom = climberMotor.getSelectedSensorPosition() >= 0;
     if (isAtTheBottom) {
       stay();
     } else {
@@ -39,6 +40,16 @@ public class Climber extends SubsystemBase {
 
   public void stay() {
     climberMotor.set(0);
+  }
+
+  public void goUpWNoSafety() {
+    climberMotor.set(0.5);
+
+  }
+
+  public void goDownWNoSafety() {
+    climberMotor.set(-0.5);
+    climberMotor.setSelectedSensorPosition(0);
   }
 
   @Override
