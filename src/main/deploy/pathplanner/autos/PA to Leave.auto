@@ -2,7 +2,7 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.769552846197361,
+      "x": 0.6965884671605862,
       "y": 6.69213504991679
     },
     "rotation": 59.06449463174368
@@ -24,7 +24,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "PA to C1"
+                  "pathName": "PA to A1"
                 }
               },
               {

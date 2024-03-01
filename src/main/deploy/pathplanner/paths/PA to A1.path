@@ -3,49 +3,49 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.769552846197361,
+        "x": 0.6965884671605862,
         "y": 6.69213504991679
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7317715958493265,
-        "y": 6.616588842263332
+        "x": 1.957653545732439,
+        "y": 7.205532483475268
       },
       "isLocked": false,
       "linkedName": "P1"
     },
     {
       "anchor": {
-        "x": 2.71709437566734,
-        "y": 6.69213504991679
+        "x": 2.4425251365693703,
+        "y": 6.980105209016842
       },
       "prevControl": {
-        "x": 2.7096077685717295,
-        "y": 6.712450074487811
+        "x": 2.425499167083969,
+        "y": 6.99347928364679
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "straight A1"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 61.434825846991416,
+    "rotation": 0.34431650258543467,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Amp Position 1 Step Path",
   "previewStartingState": {
-    "rotation": 61.065221709230784,
+    "rotation": 60.33698397239212,
     "velocity": 0
   },
   "useDefaultConstraints": true
