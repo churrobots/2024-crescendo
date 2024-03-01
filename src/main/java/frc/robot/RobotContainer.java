@@ -190,10 +190,8 @@ public class RobotContainer {
     lightShow.setDefaultCommand(showDefaultColor);
     arm.setDefaultCommand(moveArmForDefault);
     shooter.setDefaultCommand(stopFlyWheel);
-    // shooter.setDefaultCommand(runFlywheels);
     intake.setDefaultCommand(stopIntake);
     climber.setDefaultCommand(stay);
-
   }
 
 }
