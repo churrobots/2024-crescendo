@@ -72,12 +72,6 @@
           "data": {
             "pathName": "C2 to PC"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shootSpeaker"
-          }
         }
       ]
     }

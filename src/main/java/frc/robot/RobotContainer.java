@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -138,6 +139,7 @@ public class RobotContainer {
       .andThen(autoFeedIntoFlywheel);
   final Command intakeForThreeSeconds = new InstantCommand(intake::yoinkTheRings, intake)
       .alongWith(new RunCommand(shooter::reverseAmpYeeter, shooter)).finallyDo(intake::stopThePlan);
+  final Command waitForTeammates = new WaitCommand(5);
 
   public RobotContainer() {
     configureButtonBindings();
@@ -166,6 +168,7 @@ public class RobotContainer {
   public void createAutonomousSelector() {
     NamedCommands.registerCommand("shootSpeaker", shootSpeaker);
     NamedCommands.registerCommand("intakeForThreeSeconds", intakeForThreeSeconds);
+    NamedCommands.registerCommand("waitForTeammates", waitForTeammates);
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData(autoChooser);
   }

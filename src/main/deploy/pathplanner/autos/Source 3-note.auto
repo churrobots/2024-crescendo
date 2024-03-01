@@ -72,12 +72,6 @@
           "data": {
             "pathName": "S2 to PS"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shootSpeaker"
-          }
         }
       ]
     }
