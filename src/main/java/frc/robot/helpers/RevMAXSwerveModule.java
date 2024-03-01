@@ -81,7 +81,7 @@ public class RevMAXSwerveModule {
   private final double kDrivingMinOutput = -1;
   private final double kDrivingMaxOutput = 1;
 
-  private final double kTurningP = 2;
+  private final double kTurningP = 1;
   private final double kTurningI = 0;
   private final double kTurningD = 0;
   private final double kTurningFF = 0;
