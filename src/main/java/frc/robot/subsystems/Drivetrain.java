@@ -39,18 +39,20 @@ public class Drivetrain extends SubsystemBase {
 
     // Angular offsets of the modules relative to the chassis in radians
     // TODO: need to actually calculate these since the robot is not square
-    // public static final double kFrontLeftChassisAngularOffset = -Math.PI / 2;
-    // public static final double kFrontRightChassisAngularOffset = 0;
-    // public static final double kRearLeftChassisAngularOffset = Math.PI;
-    // public static final double kRearRightChassisAngularOffset = Math.PI / 2;
+    public static final double kFrontLeftChassisAngularOffset = -Math.PI / 2;
+    public static final double kFrontRightChassisAngularOffset = 0;
+    public static final double kRearLeftChassisAngularOffset = Math.PI;
+    public static final double kRearRightChassisAngularOffset = Math.PI / 2;
     // public static final double kFrontLeftChassisAngularOffset = -1.36;
     // public static final double kFrontRightChassisAngularOffset = 0;
     // public static final double kRearLeftChassisAngularOffset = Math.PI;
     // public static final double kRearRightChassisAngularOffset = 1.78;
-    public static final double kFrontLeftChassisAngularOffset = -2 * Math.atan((kTrackWidth / 2) / (kWheelBase / 2));
-    public static final double kFrontRightChassisAngularOffset = 0;
-    public static final double kRearLeftChassisAngularOffset = Math.PI;
-    public static final double kRearRightChassisAngularOffset = 2 * Math.atan((kWheelBase / 2) / (kTrackWidth / 2));
+    // public static final double kFrontLeftChassisAngularOffset = -2 *
+    // Math.atan((kTrackWidth / 2) / (kWheelBase / 2));
+    // public static final double kFrontRightChassisAngularOffset = 0;
+    // public static final double kRearLeftChassisAngularOffset = Math.PI;
+    // public static final double kRearRightChassisAngularOffset = 2 *
+    // Math.atan((kWheelBase / 2) / (kTrackWidth / 2));
 
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
