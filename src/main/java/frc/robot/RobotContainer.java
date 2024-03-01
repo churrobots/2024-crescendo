@@ -129,9 +129,9 @@ public class RobotContainer {
   // For autonomous mode.
   final Command autoPullNoteAwayFromShooter = new RunCommand(intake::deuceTheRings, intake).withTimeout(.05)
       .andThen(new InstantCommand(intake::stopThePlan, intake));
-  final Command autoPrepareFlywheel = new RunCommand(shooter::runFlywheelForSpeaker, shooter).withTimeout(1.5);
+  final Command autoPrepareFlywheel = new RunCommand(shooter::runFlywheelForSpeaker, shooter).withTimeout(1.1);
   final Command autoFeedIntoFlywheel = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
-      .alongWith(new RunCommand(intake::yoinkTheRings, intake)).withTimeout(1.2);
+      .alongWith(new RunCommand(intake::yoinkTheRings, intake)).withTimeout(1);
 
   final Command shootSpeaker = autoPullNoteAwayFromShooter
       .andThen(autoPrepareFlywheel)
