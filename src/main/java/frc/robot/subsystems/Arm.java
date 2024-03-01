@@ -25,8 +25,8 @@ public class Arm extends TrapezoidProfileSubsystem {
 
   class Constants {
 
-    static final double kMaxVelocityRadPerSecond = 8;
-    static final double kMaxAccelerationRadPerSecSquared = 10;
+    static final double kMaxVelocityRadPerSecond = 0.02;
+    static final double kMaxAccelerationRadPerSecSquared = 0.01;
     static final TrapezoidProfile.Constraints trapezoidProfile = new TrapezoidProfile.Constraints(
         Constants.kMaxVelocityRadPerSecond, Constants.kMaxAccelerationRadPerSecSquared);
 
@@ -35,21 +35,22 @@ public class Arm extends TrapezoidProfileSubsystem {
     static final double kArmOffsetRads = 0;
 
     // These are all the constants from the SparkMAX demo code.
-    static final TunableDouble kP = new TunableDouble("armKP", 5.5);
+    static final TunableDouble kP = new TunableDouble("armKP", 6);
     static final TunableDouble kI = new TunableDouble("armKI", 0);
-    static final TunableDouble kD = new TunableDouble("armKD", 1);
-
-    // These are all the constants from the sample WPIlib trapezoid subsystem code.
-    static final TunableDouble kSVolts = new TunableDouble("feedFowardSVolts", 1);
-    static final TunableDouble kGVolts = new TunableDouble("feedFowardGVolts", 1);
-    static final TunableDouble kVVoltSecondPerRad = new TunableDouble("feedFowardVVoltSecondPerRad", 0.5);
-    static final TunableDouble kAVoltSecondSquaredPerRad = new TunableDouble("feedFowardAVoltSecondSquaredPerRad", 0.1);
-
-    // These constants are from the sample WPIlib code and shouldn't need to change.
+    static final TunableDouble kD = new TunableDouble("armKD", 0);
     static final double kIz = 0;
     static final double kFF = 0;
-    static final double kMaxOutput = 1;
-    static final double kMinOutput = -1;
+    static final double kMaxOutput = 0.7;
+    static final double kMinOutput = -0.7;
+
+    // These are all the constants from the sample WPIlib trapezoid subsystem code.
+    static final TunableDouble kSVolts = new TunableDouble("feedFowardSVolts", 0);
+    static final TunableDouble kGVolts = new TunableDouble("feedFowardGVolts", 0.335);
+    static final TunableDouble kVVoltSecondPerRad = new TunableDouble("feedFowardVVoltSecondPerRad", 6.24);
+    static final TunableDouble kAVoltSecondSquaredPerRad = new TunableDouble("feedFowardAVoltSecondSquaredPerRad",
+        0.04);
+
+    // These constants are from the sample WPIlib code and shouldn't need to change.
     static final int kCPR = 8192;
 
     // Default slot should be fine according to:
@@ -57,7 +58,7 @@ public class Arm extends TrapezoidProfileSubsystem {
     static final int defaultPidSlot = 0;
 
     static final TunableDouble groundPosition = new TunableDouble("groundPosition", 0); // tune
-    static final TunableDouble ampPosition = new TunableDouble("ampPosition", 0.250); // tune
+    static final TunableDouble ampPosition = new TunableDouble("ampPosition", 0.09); // tune
     static final TunableDouble speakerPosition = new TunableDouble("speakerPosition", 0.2); // tune
     static final TunableDouble defaultPosition = new TunableDouble("defaultPosition", 0); // tune
   }
@@ -66,6 +67,12 @@ public class Arm extends TrapezoidProfileSubsystem {
   final CANSparkMax left_motor = new CANSparkMax(CANMapping.leftArmMotor, MotorType.kBrushless);
 
   final SparkPIDController m_pidController;
+
+  final ArmFeedforward m_feedforward = new ArmFeedforward(
+      Constants.kSVolts.get(),
+      Constants.kGVolts.get(),
+      Constants.kVVoltSecondPerRad.get(),
+      Constants.kAVoltSecondSquaredPerRad.get());
 
   /**
    * An alternate encoder object is constructed using the GetAlternateEncoder()
@@ -84,7 +91,7 @@ public class Arm extends TrapezoidProfileSubsystem {
     right_motor.restoreFactoryDefaults();
     right_motor.setSmartCurrentLimit(40);
     right_motor.setIdleMode(IdleMode.kBrake);
-    right_motor.setInverted(true);
+    right_motor.setInverted(false);
     m_absoluteEncoder = right_motor.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
 
     m_pidController = right_motor.getPIDController();
@@ -95,7 +102,7 @@ public class Arm extends TrapezoidProfileSubsystem {
     left_motor.restoreFactoryDefaults();
     left_motor.setSmartCurrentLimit(40);
     left_motor.setIdleMode(IdleMode.kBrake);
-    left_motor.setInverted(false);
+    left_motor.setInverted(true);
     left_motor.follow(right_motor, true);
 
     m_pidController.setP(Constants.kP.get());
@@ -112,17 +119,20 @@ public class Arm extends TrapezoidProfileSubsystem {
 
   @Override
   public void useState(TrapezoidProfile.State setpoint) {
-    // Calculate the feedforward from the sepoint
-    // TODO: figure out if this is appropriate feedforward for sparkmax?
-    ArmFeedforward m_feedforward = new ArmFeedforward(
-        Constants.kSVolts.get(),
-        Constants.kGVolts.get(),
-        Constants.kVVoltSecondPerRad.get(),
-        Constants.kAVoltSecondSquaredPerRad.get());
-    double feedforward = m_feedforward.calculate(setpoint.position * 2 * Math.PI, setpoint.velocity);
-    m_pidController.setReference(setpoint.position,
-        CANSparkMax.ControlType.kPosition, Constants.defaultPidSlot,
-        feedforward);
+    double feedforward = m_feedforward.calculate(
+        setpoint.position * 2 * Math.PI,
+        setpoint.velocity);
+    boolean lowEnoughToRest = m_absoluteEncoder.getPosition() < 0.02 && setpoint.position < 0.01;
+    if (lowEnoughToRest) {
+      right_motor.stopMotor();
+      left_motor.stopMotor();
+    } else {
+      m_pidController.setReference(
+          setpoint.position,
+          CANSparkMax.ControlType.kPosition,
+          Constants.defaultPidSlot,
+          feedforward);
+    }
     SmartDashboard.putNumber("armPid:setPointPosition", setpoint.position);
     SmartDashboard.putNumber("armPid:feedForward", feedforward);
   }
@@ -135,6 +145,7 @@ public class Arm extends TrapezoidProfileSubsystem {
   public void move_amp() {
     SmartDashboard.putNumber("Goal:Rotations", Constants.ampPosition.get());
     setGoal(Constants.ampPosition.get());
+    // right_motor.set(0.2);
   }
 
   public void move_ground() {
@@ -143,7 +154,9 @@ public class Arm extends TrapezoidProfileSubsystem {
   }
 
   public void move_Default() {
-    right_motor.stopMotor(); // do we need for left motor too?
+    // move_ground();
+    right_motor.stopMotor();
+    left_motor.stopMotor();
   }
 
   public boolean inRangeOf(double targetPosition) {
