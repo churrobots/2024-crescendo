@@ -175,7 +175,7 @@ public class RobotContainer {
     rightBumperDriver.whileTrue(slowDrive);
     startButtonDriver.whileTrue(resetGyro);
     aButtonOperator.whileTrue(runIntake);
-    bButtonOperator.whileTrue(moveArmForAmp);
+    yButtonOperator.whileTrue(moveArmForAmp);
     leftBumperOperator.whileTrue(runFlywheels);
     rightBumperOperator.whileTrue(shootDefault);
     startButtonOperator.whileTrue(goUpWNoSafety);
@@ -193,7 +193,7 @@ public class RobotContainer {
     // shooter.setDefaultCommand(runFlywheels);
     intake.setDefaultCommand(stopIntake);
     climber.setDefaultCommand(stay);
-    
+
   }
 
 }
