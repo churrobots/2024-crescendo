@@ -160,6 +160,21 @@ public class Drivetrain extends SubsystemBase {
             m_rearRight.getPosition()
         });
     m_field.setRobotPose(getPose());
+    var actualStates = new SwerveModuleState[] {
+        m_frontLeft.getState(),
+        m_frontRight.getState(),
+        m_rearLeft.getState(),
+        m_rearRight.getState()
+    };
+    for (int i = 0; i < 4; i++) {
+      SmartDashboard.putNumber("swerve" + i + ":actual:speed", actualStates[i].speedMetersPerSecond);
+      SmartDashboard.putNumber("swerve" + i + ":actual:rot", actualStates[i].angle.getDegrees());
+    }
+    SmartDashboard.putNumber("drivetrain:constants:kDriveBaseRadiusInMeters", Constants.kDriveBaseRadiusInMeters);
+    SmartDashboard.putNumber("drivetrain:constants:kFrontLeftChassisAngularOffset",
+        Constants.kFrontLeftChassisAngularOffset);
+    SmartDashboard.putNumber("drivetrain:constants:kRearRightChassisAngularOffset",
+        Constants.kRearRightChassisAngularOffset);
   }
 
   ChassisSpeeds getRobotRelativeSpeeds() {
@@ -221,7 +236,15 @@ public class Drivetrain extends SubsystemBase {
       speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getPose().getRotation());
     }
     var swerveModuleStates = m_kinematics.toSwerveModuleStates(speeds);
+    for (int i = 0; i < 4; i++) {
+      SmartDashboard.putNumber("swerve" + i + ":target:speed", swerveModuleStates[i].speedMetersPerSecond);
+      SmartDashboard.putNumber("swerve" + i + ":target:rot", swerveModuleStates[i].angle.getDegrees());
+    }
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.kMaxSpeedMetersPerSecond);
+    for (int i = 0; i < 4; i++) {
+      SmartDashboard.putNumber("swerve" + i + ":desaturatedTarget:speed", swerveModuleStates[i].speedMetersPerSecond);
+      SmartDashboard.putNumber("swerve" + i + ":desaturatedTarget:rot", swerveModuleStates[i].angle.getDegrees());
+    }
     setModuleStates(swerveModuleStates);
   }
 
