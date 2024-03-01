@@ -133,23 +133,24 @@ public class Arm extends TrapezoidProfileSubsystem {
           Constants.defaultPidSlot,
           feedforward);
     }
-    SmartDashboard.putNumber("armPid:setPointPosition", setpoint.position);
-    SmartDashboard.putNumber("armPid:feedForward", feedforward);
+    SmartDashboard.putBoolean("Arm:lowEnoughToRest", lowEnoughToRest);
+    SmartDashboard.putNumber("Arm:mostRecentSetpointPosition", setpoint.position);
+    SmartDashboard.putNumber("Arm:mostRecentFeedForward", feedforward);
   }
 
   public void move_speaker() {
-    SmartDashboard.putNumber("Goal:Rotations", Constants.speakerPosition.get());
+    SmartDashboard.putNumber("Arm:goalRotations", Constants.speakerPosition.get());
     setGoal(Constants.speakerPosition.get());
   }
 
   public void move_amp() {
-    SmartDashboard.putNumber("Goal:Rotations", Constants.ampPosition.get());
+    SmartDashboard.putNumber("Arm:goalRotations", Constants.ampPosition.get());
     setGoal(Constants.ampPosition.get());
     // right_motor.set(0.2);
   }
 
   public void move_ground() {
-    SmartDashboard.putNumber("Goal:Rotations", Constants.groundPosition.get());
+    SmartDashboard.putNumber("Arm:goalRotations", Constants.groundPosition.get());
     setGoal(Constants.groundPosition.get());
   }
 
@@ -187,23 +188,7 @@ public class Arm extends TrapezoidProfileSubsystem {
   @Override
   public void periodic() {
     super.periodic();
-    if (Constants.kP.didChange()) {
-      m_pidController.setP(Constants.kP.get());
-    }
-    if (Constants.kI.didChange()) {
-      m_pidController.setI(Constants.kI.get());
-    }
-    if (Constants.kD.didChange()) {
-      m_pidController.setD(Constants.kD.get());
-    }
-    SmartDashboard.putNumber("rightArm:busVoltage", right_motor.getBusVoltage());
-    SmartDashboard.putNumber("rightArm:outputCurrent", right_motor.getOutputCurrent());
-    SmartDashboard.putNumber("rightArm:appliedOutput", right_motor.getAppliedOutput());
-    SmartDashboard.putNumber("leftArm:busVoltage", left_motor.getBusVoltage());
-    SmartDashboard.putNumber("leftArm:outputCurrent", left_motor.getOutputCurrent());
-    SmartDashboard.putNumber("leftArm:appliedOutput", left_motor.getAppliedOutput());
-    SmartDashboard.putNumber("armEncoder:position", m_absoluteEncoder.getPosition());
-    SmartDashboard.putNumber("armEncoder:velocity", m_absoluteEncoder.getVelocity());
+    SmartDashboard.putNumber("Arm:encoder", m_absoluteEncoder.getPosition());
   }
 
 }
