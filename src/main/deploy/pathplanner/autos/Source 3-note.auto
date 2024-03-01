@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7935670999741886,
-      "y": 6.691042006215957
+      "x": 0.6121158132073211,
+      "y": 4.490308917828484
     },
-    "rotation": 59.00176484166591
+    "rotation": -56.969812600245106
   },
   "command": {
     "type": "sequential",
@@ -24,7 +24,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "PA to A1"
+                  "pathName": "PS to C3"
                 }
               },
               {
@@ -39,7 +39,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "A1 to PA"
+            "pathName": "S1 to PS"
           }
         },
         {
@@ -55,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "PA to A2"
+                  "pathName": "PS to S2"
                 }
               },
               {
@@ -70,7 +70,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "A2 to PA"
+            "pathName": "S2 to PS"
           }
         },
         {
@@ -82,6 +82,6 @@
       ]
     }
   },
-  "folder": "3 notes while leaving",
+  "folder": "3 Note Autos",
   "choreoAuto": false
 }

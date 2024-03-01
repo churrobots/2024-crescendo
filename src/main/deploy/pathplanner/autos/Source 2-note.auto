@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.6965884671605862,
-      "y": 6.69213504991679
+      "x": 0.6121158132073211,
+      "y": 4.490308917828484
     },
-    "rotation": 59.06449463174368
+    "rotation": -59.02622556422937
   },
   "command": {
     "type": "sequential",
@@ -24,7 +24,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "PA to A1"
+                  "pathName": "PS to C3"
                 }
               },
               {
@@ -39,7 +39,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "A1 to PA"
+            "pathName": "S1 to PS"
           }
         },
         {
@@ -49,14 +49,21 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "PA to leave"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "PS to leave community"
+                }
+              }
+            ]
           }
         }
       ]
     }
   },
-  "folder": "2 note & leave",
+  "folder": "2 Note Autos",
   "choreoAuto": false
 }

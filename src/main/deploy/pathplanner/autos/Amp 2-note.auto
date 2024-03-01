@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.8041560768884354,
-      "y": 4.381354822061993
+      "x": 0.5976431907652591,
+      "y": 6.627722949203133
     },
-    "rotation": -56.969812600245106
+    "rotation": 59.06449463174368
   },
   "command": {
     "type": "sequential",
@@ -24,7 +24,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "PS to C3"
+                  "pathName": "PA to A1"
                 }
               },
               {
@@ -39,49 +39,24 @@
         {
           "type": "path",
           "data": {
-            "pathName": "S1 to PS"
+            "pathName": "A1 to PA"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "shootSpeaker"
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "PS to S2"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "intakeForThreeSeconds"
-                }
-              }
-            ]
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "S2 to PS"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shootSpeaker"
+            "pathName": "PA to leave"
           }
         }
       ]
     }
   },
-  "folder": "3 notes while leaving",
+  "folder": "2 Note Autos",
   "choreoAuto": false
 }

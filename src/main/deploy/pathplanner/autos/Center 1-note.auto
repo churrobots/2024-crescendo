@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.8041560768884354,
-      "y": 4.381354822061993
+      "x": 1.2149463520389716,
+      "y": 5.5690665075268235
     },
-    "rotation": -58.434716508173025
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -20,12 +20,12 @@
         {
           "type": "path",
           "data": {
-            "pathName": "PS to leave community"
+            "pathName": " PC to leave community"
           }
         }
       ]
     }
   },
-  "folder": "1 note & leave",
+  "folder": "1 Note Autos",
   "choreoAuto": false
 }

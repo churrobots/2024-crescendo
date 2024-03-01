@@ -2,7 +2,7 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.365145913957916,
+      "x": 1.2149463520389716,
       "y": 5.5690665075268235
     },
     "rotation": 0
@@ -55,33 +55,15 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "PC to  C2"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "intakeForThreeSeconds"
+                  "pathName": " PC to leave community"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "C2 to PC"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shootSpeaker"
           }
         }
       ]
     }
   },
-  "folder": "3 notes while leaving",
+  "folder": "2 Note Autos",
   "choreoAuto": false
 }

@@ -39,15 +39,26 @@ public class Drivetrain extends SubsystemBase {
 
     // Angular offsets of the modules relative to the chassis in radians
     // TODO: need to actually calculate these since the robot is not square
-    public static final double kFrontLeftChassisAngularOffset = -Math.PI / 2;
+    // public static final double kFrontLeftChassisAngularOffset = -Math.PI / 2;
+    // public static final double kFrontRightChassisAngularOffset = 0;
+    // public static final double kRearLeftChassisAngularOffset = Math.PI;
+    // public static final double kRearRightChassisAngularOffset = Math.PI / 2;
+    // public static final double kFrontLeftChassisAngularOffset = -1.36;
+    // public static final double kFrontRightChassisAngularOffset = 0;
+    // public static final double kRearLeftChassisAngularOffset = Math.PI;
+    // public static final double kRearRightChassisAngularOffset = 1.78;
+    public static final double kFrontLeftChassisAngularOffset = -2 * Math.atan((kTrackWidth / 2) / (kWheelBase / 2));
     public static final double kFrontRightChassisAngularOffset = 0;
     public static final double kRearLeftChassisAngularOffset = Math.PI;
-    public static final double kRearRightChassisAngularOffset = Math.PI / 2;
+    public static final double kRearRightChassisAngularOffset = 2 * Math.atan((kWheelBase / 2) / (kTrackWidth / 2));
 
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
     public static final double kMaxSpeedMetersPerSecond = 4.8;
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
+    // public static final double kDriveBaseRadiusInMeters = 0.39;
+    public static final double kDriveBaseRadiusInMeters = Math
+        .sqrt(Math.pow(kTrackWidth / 2, 2) + Math.pow(kWheelBase / 2, 2));
 
     public static final double kDirectionSlewRate = 2.4; // radians per second
     public static final double kMagnitudeSlewRate = 3.6; // percent per second (1 = 100%)
@@ -115,8 +126,8 @@ public class Drivetrain extends SubsystemBase {
             new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
             // TODO: note, our old number was (1.0, 0, 0) here
             new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
-            4.5, // Max module speed, in m/s
-            0.39, // Drive base radius in meters. Distance from robot center to furthest module.
+            Constants.kMaxSpeedMetersPerSecond, // Max module speed, in m/s
+            Constants.kDriveBaseRadiusInMeters, // Distance from robot center to furthest module.
             new ReplanningConfig() // Default path replanning config. See the API for the options here
         ),
         () -> {
@@ -191,7 +202,7 @@ public class Drivetrain extends SubsystemBase {
    * This is helpful for resetting field-oriented driving.
    */
   public void resetGyro() {
-    // TODO: does this mess up any other odometry stuff
+    // TODO: we might have to check alliance color
     m_gyro.reset();
   }
 
