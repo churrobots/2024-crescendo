@@ -25,8 +25,8 @@ public class Arm extends TrapezoidProfileSubsystem {
 
   class Constants {
 
-    static final double kMaxVelocityRadPerSecond = 0.02;
-    static final double kMaxAccelerationRadPerSecSquared = 0.01;
+    static final double kMaxVelocityRadPerSecond = 1;
+    static final double kMaxAccelerationRadPerSecSquared = 1;
     static final TrapezoidProfile.Constraints trapezoidProfile = new TrapezoidProfile.Constraints(
         Constants.kMaxVelocityRadPerSecond, Constants.kMaxAccelerationRadPerSecSquared);
 
@@ -115,6 +115,8 @@ public class Arm extends TrapezoidProfileSubsystem {
     enable();
     right_motor.burnFlash();
     left_motor.burnFlash();
+    SmartDashboard.putNumber("Arm:mostRecentSetpointPosition", 0);
+    SmartDashboard.putNumber("Arm:mostRecentFeedForward", 0);
   }
 
   @Override
@@ -122,18 +124,19 @@ public class Arm extends TrapezoidProfileSubsystem {
     double feedforward = m_feedforward.calculate(
         setpoint.position * 2 * Math.PI,
         setpoint.velocity);
-    boolean lowEnoughToRest = m_absoluteEncoder.getPosition() < 0.02 && setpoint.position < 0.01;
-    if (lowEnoughToRest) {
-      right_motor.stopMotor();
-      left_motor.stopMotor();
-    } else {
-      m_pidController.setReference(
-          setpoint.position,
-          CANSparkMax.ControlType.kPosition,
-          Constants.defaultPidSlot,
-          feedforward);
-    }
-    SmartDashboard.putBoolean("Arm:lowEnoughToRest", lowEnoughToRest);
+    // boolean lowEnoughToRest = m_absoluteEncoder.getPosition() < 0.02 &&
+    // setpoint.position < 0.01;
+    // if (lowEnoughToRest) {
+    // right_motor.stopMotor();
+    // left_motor.stopMotor();
+    // } else {
+    m_pidController.setReference(
+        setpoint.position,
+        CANSparkMax.ControlType.kPosition,
+        Constants.defaultPidSlot,
+        feedforward);
+    // }
+    // SmartDashboard.putBoolean("Arm:lowEnoughToRest", lowEnoughToRest);
     SmartDashboard.putNumber("Arm:mostRecentSetpointPosition", setpoint.position);
     SmartDashboard.putNumber("Arm:mostRecentFeedForward", feedforward);
   }
@@ -189,6 +192,8 @@ public class Arm extends TrapezoidProfileSubsystem {
   public void periodic() {
     super.periodic();
     SmartDashboard.putNumber("Arm:encoder", m_absoluteEncoder.getPosition());
+    SmartDashboard.putNumber("Arm:appliedOutputRight", right_motor.getAppliedOutput());
+    SmartDashboard.putNumber("Arm:appliedOutputLeft", left_motor.getAppliedOutput());
   }
 
 }
