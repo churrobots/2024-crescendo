@@ -153,7 +153,8 @@ public class RobotContainer {
    * mode begins.
    */
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+    var command = autoChooser.getSelected();
+    return command.finallyDo(drivetrain::resetGyro);
   }
 
   /**

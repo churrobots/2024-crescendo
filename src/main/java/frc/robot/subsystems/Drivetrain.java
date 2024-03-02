@@ -206,8 +206,15 @@ public class Drivetrain extends SubsystemBase {
    * This is helpful for resetting field-oriented driving.
    */
   public void resetGyro() {
-    // TODO: we might have to check alliance color
-    m_gyro.reset();
+    var alliance = DriverStation.getAlliance();
+    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+      resetPose(new Pose2d(getPose().getX(), getPose().getY(), new Rotation2d(0)));
+    }
+    // TODO: why
+    // else {
+    // resetPose(new Pose2d(getPose().getX(), getPose().getY(), new
+    // Rotation2d(Math.PI)));
+    // }
   }
 
   void driveRobotRelative(ChassisSpeeds speeds) {
