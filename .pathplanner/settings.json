@@ -1,6 +1,6 @@
 {
-  "robotWidth": 0.4699,
-  "robotLength": 0.5969,
+  "robotWidth": 0.74,
+  "robotLength": 0.88,
   "holonomicMode": true,
   "pathFolders": [
     "Amp Position 1 Step Path",
@@ -10,7 +10,8 @@
   "autoFolders": [
     "1 Note Autos",
     "2 Note Autos",
-    "3 Note Autos"
+    "3 Note Autos",
+    "Waiting Autos"
   ],
   "defaultMaxVel": 4.0,
   "defaultMaxAccel": 2.0,
