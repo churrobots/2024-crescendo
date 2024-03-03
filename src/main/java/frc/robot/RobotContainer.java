@@ -67,6 +67,10 @@ public class RobotContainer {
   final LightShow lightShow = new LightShow();
   final Shooter shooter = new Shooter();
   final Climber climber = new Climber();
+
+  // States of the robot.
+  final Trigger armIsHigh = new Trigger(arm::armIsHigh);
+
   // All of the commands the robot can do.
   final Command runFlywheels = new RunCommand(shooter::stopFlyWheel, shooter).withTimeout(.1)
       .andThen(new RunCommand(shooter::runFlywheelForSpeaker, shooter));

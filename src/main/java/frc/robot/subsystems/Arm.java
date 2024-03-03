@@ -58,7 +58,7 @@ public class Arm extends TrapezoidProfileSubsystem {
     static final int defaultPidSlot = 0;
 
     static final TunableDouble groundPosition = new TunableDouble("groundPosition", 0); // tune
-    static final TunableDouble ampPosition = new TunableDouble("ampPosition", 0.09); // tune
+    static final TunableDouble ampPosition = new TunableDouble("ampPosition", 0.15); // tune
     static final TunableDouble speakerPosition = new TunableDouble("speakerPosition", 0.2); // tune
     static final TunableDouble defaultPosition = new TunableDouble("defaultPosition", 0); // tune
   }
@@ -147,20 +147,37 @@ public class Arm extends TrapezoidProfileSubsystem {
   }
 
   public void move_amp() {
+    disable();
     SmartDashboard.putNumber("Arm:goalRotations", Constants.ampPosition.get());
-    setGoal(Constants.ampPosition.get());
-    // right_motor.set(0.2);
-  }
-
-  public void move_ground() {
-    SmartDashboard.putNumber("Arm:goalRotations", Constants.groundPosition.get());
-    setGoal(Constants.groundPosition.get());
+    double position = m_absoluteEncoder.getPosition();
+    if (position < 0.165) {
+      right_motor.set(0.4);
+    } else if (position < 0.25) {
+      right_motor.set(.10);
+    } else {
+      right_motor.stopMotor();
+    }
   }
 
   public void move_Default() {
-    // move_ground();
-    right_motor.stopMotor();
-    left_motor.stopMotor();
+    disable();
+    double position = m_absoluteEncoder.getPosition();
+    if (position > 0.055) {
+      right_motor.set(-0.2);
+    } else if (position > 0.01) {
+      right_motor.set(-0.05);
+    } else {
+      right_motor.stopMotor();
+    }
+  }
+
+  public boolean armIsHigh() {
+    double position = m_absoluteEncoder.getPosition();
+    if (position > 0.12) {
+      return true;
+    } else
+      return false;
+
   }
 
   public boolean inRangeOf(double targetPosition) {
