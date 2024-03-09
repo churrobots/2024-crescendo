@@ -150,10 +150,13 @@ public class Arm extends TrapezoidProfileSubsystem {
     disable();
     SmartDashboard.putNumber("Arm:goalRotations", Constants.ampPosition.get());
     double position = m_absoluteEncoder.getPosition();
+    if (position > 0.8) {
+      position = 0;
+    }
     if (position < 0.165) {
-      right_motor.set(0.4);
+      right_motor.set(0.7);
     } else if (position < 0.25) {
-      right_motor.set(.10);
+      right_motor.set(.30);
     } else {
       right_motor.stopMotor();
     }
@@ -162,6 +165,9 @@ public class Arm extends TrapezoidProfileSubsystem {
   public void move_Default() {
     disable();
     double position = m_absoluteEncoder.getPosition();
+    if (position > 0.8) {
+      position = 0;
+    }
     if (position > 0.055) {
       right_motor.set(-0.2);
     } else if (position > 0.01) {
@@ -173,7 +179,7 @@ public class Arm extends TrapezoidProfileSubsystem {
 
   public boolean armIsHigh() {
     double position = m_absoluteEncoder.getPosition();
-    if (position > 0.12) {
+    if (position > 0.1) {
       return true;
     } else
       return false;
@@ -188,6 +194,7 @@ public class Arm extends TrapezoidProfileSubsystem {
     }
     return false;
   }
+
 
   public boolean inRangeOfSpeakerPosition() {
     return inRangeOf(Constants.speakerPosition.get());
