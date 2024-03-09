@@ -42,6 +42,10 @@ public class Intake extends SubsystemBase {
     return deucing;
   }
 
+  public void ejectNow() {
+    fanumTaxIntaker.set(-.85);
+  }
+
   public void stopThePlan() {
     fanumTaxIntaker.set(0);
   }

@@ -107,6 +107,7 @@ public class RobotContainer {
   final Command stay = new RunCommand(climber::stay, climber);
   final Command goDownWNoSafety = new RunCommand(climber::goDownWNoSafety, climber);
   final Command goUpWNoSafety = new RunCommand(climber::goUpWNoSafety, climber);
+  final Command eject = new RunCommand(intake::ejectNow, intake);
   // Commands.runOnce(() -> setGoal(kArmOffsetRads), this);
 
   final Command slowDrive = new RunCommand(
