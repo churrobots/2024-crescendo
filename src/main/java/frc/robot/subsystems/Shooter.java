@@ -52,7 +52,6 @@ public class Shooter extends SubsystemBase {
   public void runAmpYeeter() {
 
     topMotor.setControl(ampYeetTarget);
-    bottomMotor.setControl(ampYeetTarget);
   }
 
   public void reverseAmpYeeter() {
