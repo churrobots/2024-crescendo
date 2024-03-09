@@ -208,13 +208,10 @@ public class Drivetrain extends SubsystemBase {
   public void resetGyro() {
     var alliance = DriverStation.getAlliance();
     if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-      resetPose(new Pose2d(getPose().getX(), getPose().getY(), new Rotation2d(0)));
+      m_gyro.setYaw(180);
+    } else {
+      m_gyro.setYaw(0);
     }
-    // TODO: why
-    // else {
-    // resetPose(new Pose2d(getPose().getX(), getPose().getY(), new
-    // Rotation2d(Math.PI)));
-    // }
   }
 
   void driveRobotRelative(ChassisSpeeds speeds) {
@@ -247,6 +244,12 @@ public class Drivetrain extends SubsystemBase {
     double xSpeedCommanded;
     double ySpeedCommanded;
 
+    var alliance = DriverStation.getAlliance();
+    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+      xSpeed = -1 * xSpeed;
+      ySpeed = -1 * ySpeed;
+    }
+
     if (rateLimit) {
       // Convert XY to polar for rate limiting
       double inputTranslationDir = Math.atan2(ySpeed, xSpeed);
@@ -271,7 +274,7 @@ public class Drivetrain extends SubsystemBase {
       } else if (angleDif > 0.85 * Math.PI) {
         if (m_currentTranslationMag > 1e-4) { // some small number to avoid floating-point errors with equality
                                               // checking
-          // keep currentTranslationDir unchanged
+                                              // keep currentTranslationDir unchanged
           m_currentTranslationMag = m_magLimiter.calculate(0.0);
         } else {
           m_currentTranslationDir = SwerveUtils.WrapAngle(m_currentTranslationDir + Math.PI);
