@@ -60,6 +60,7 @@ public class RobotContainer {
   final Trigger povUpOperator = new POVButton(operatorController, 0);
   final Trigger povDownOperator = new POVButton(operatorController, 180);
   final Trigger leftjoyTrigger = new JoystickButton(operatorController, Button.kLeftStick.value);
+  final Trigger rightjoyTrigger = new JoystickButton(operatorController, Button.kRightStick.value);
   // All of the subsystems.
   final Drivetrain drivetrain = new Drivetrain();
   final Arm arm = new Arm();
