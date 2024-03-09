@@ -193,6 +193,9 @@ public class RobotContainer {
     povUpOperator.whileTrue(goUp);
     povDownOperator.whileTrue(goDown);
     leftjoyTrigger.whileTrue(runAmpYeeter);
+    rightjoyTrigger.whileTrue(eject);
+    armIsHigh.whileTrue(slowDrive);
+    startAndBackButtonDriver.whileTrue(resetGyro);
   }
 
   void ensureSubsystemsHaveDefaultCommands() {
