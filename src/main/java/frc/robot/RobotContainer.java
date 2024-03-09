@@ -10,7 +10,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -44,9 +42,12 @@ public class RobotContainer {
   // Driver controller.
   final XboxController driverController = new XboxController(Constants.kDriverControllerPort);
   final Trigger startButtonDriver = new JoystickButton(driverController, Button.kStart.value);
+  final Trigger backButtonDriver = new JoystickButton(driverController, Button.kStart.value);
   final Trigger leftBumperDriver = new JoystickButton(driverController, Button.kLeftBumper.value);
   final Trigger rightBumperDriver = new JoystickButton(driverController, Button.kRightBumper.value);
-
+  final Trigger startAndBackButtonDriver = new Trigger(() -> {
+    return startButtonDriver.getAsBoolean() && backButtonDriver.getAsBoolean();
+  });
   // Operator controller.
   final XboxController operatorController = new XboxController(Constants.kOperatorrControllerPort);
   final Trigger leftBumperOperator = new JoystickButton(operatorController, Button.kLeftBumper.value);
@@ -61,6 +62,8 @@ public class RobotContainer {
   final Trigger povDownOperator = new POVButton(operatorController, 180);
   final Trigger leftjoyTrigger = new JoystickButton(operatorController, Button.kLeftStick.value);
   final Trigger rightjoyTrigger = new JoystickButton(operatorController, Button.kRightStick.value);
+
+
   // All of the subsystems.
   final Drivetrain drivetrain = new Drivetrain();
   final Arm arm = new Arm();
@@ -183,7 +186,6 @@ public class RobotContainer {
   void configureButtonBindings() {
     leftBumperDriver.whileTrue(anchorInPlace);
     rightBumperDriver.whileTrue(slowDrive);
-    startButtonDriver.whileTrue(resetGyro);
     aButtonOperator.whileTrue(runIntake);
     yButtonOperator.whileTrue(moveArmForAmp);
     leftBumperOperator.whileTrue(runFlywheels);
