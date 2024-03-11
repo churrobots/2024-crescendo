@@ -27,7 +27,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void yoinkTheRings() {
-    fanumTaxIntaker.set(.75);
+    fanumTaxIntaker.set(1);
   }
 
   public void deuceTheRings() {

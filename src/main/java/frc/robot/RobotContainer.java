@@ -84,10 +84,11 @@ public class RobotContainer {
   // final Command yoinkNote = new RunCommand(shooter::runFlyWheel,
   // shooter).until(shooter::isFlyWheelReady)
   // .andThen(new RunCommand(intake::yoinkTheRings, intake).withTimeout(3));
+  final double pullAwayFromShooterTimeout = 0.12;
   final Command stopFlyWheel = new RunCommand(shooter::stopFlyWheel, shooter);
   final Command runIntake = new RunCommand(intake::yoinkTheRings, intake)
       .alongWith(new RunCommand(shooter::reverseAmpYeeter, shooter));
-  final Command stopIntake = new RunCommand(intake::deuceTheRings, intake).withTimeout(.1)
+  final Command stopIntake = new RunCommand(intake::deuceTheRings, intake).withTimeout(pullAwayFromShooterTimeout)
       .andThen(new RunCommand(intake::stopThePlan, intake));
   final Command showDefaultColor = new RunCommand(() -> {
     if (DriverStation.isAutonomous()) {
@@ -138,7 +139,8 @@ public class RobotContainer {
       drivetrain);
 
   // For autonomous mode.
-  final Command autoPullNoteAwayFromShooter = new RunCommand(intake::deuceTheRings, intake).withTimeout(.05)
+  final Command autoPullNoteAwayFromShooter = new RunCommand(intake::deuceTheRings, intake)
+      .withTimeout(pullAwayFromShooterTimeout)
       .andThen(new InstantCommand(intake::stopThePlan, intake));
   final Command autoPrepareFlywheel = new RunCommand(shooter::runFlywheelForSpeaker, shooter).withTimeout(1.1);
   final Command autoFeedIntoFlywheel = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
