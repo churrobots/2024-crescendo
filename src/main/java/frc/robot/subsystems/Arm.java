@@ -168,7 +168,7 @@ public class Arm extends TrapezoidProfileSubsystem {
     disable();
     double position = m_absoluteEncoder.getPosition();
     if (position < 0.125) {
-      right_motor.set(0.8);
+      right_motor.set(0.2);
     } else {
       right_motor.stopMotor();
     }
