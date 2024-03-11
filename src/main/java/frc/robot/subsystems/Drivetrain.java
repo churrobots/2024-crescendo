@@ -205,13 +205,17 @@ public class Drivetrain extends SubsystemBase {
    * Resets the gyro as if the robot were facing away from you.
    * This is helpful for resetting field-oriented driving.
    */
-  public void resetGyro() {
+  public void recalibrateDrivetrain() {
+    var recalibratedAngle = 0;
     var alliance = DriverStation.getAlliance();
     if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-      m_gyro.setYaw(180);
-    } else {
-      m_gyro.setYaw(0);
+      recalibratedAngle = 180;
     }
+    var currentPose = getPose();
+    var currentTranslation = currentPose.getTranslation();
+    var recalibratedRotation = new Rotation2d(recalibratedAngle);
+    var recalibratedPose = new Pose2d(currentTranslation, recalibratedRotation);
+    resetPose(recalibratedPose);
   }
 
   void driveRobotRelative(ChassisSpeeds speeds) {

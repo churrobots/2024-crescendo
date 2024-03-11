@@ -98,7 +98,7 @@ public class RobotContainer {
   }, lightShow);
 
   final Command anchorInPlace = new RunCommand(() -> drivetrain.setXFormation(), drivetrain);
-  final Command resetGyro = new RunCommand(() -> drivetrain.resetGyro(), drivetrain);
+  final Command resetGyro = new RunCommand(() -> drivetrain.recalibrateDrivetrain(), drivetrain);
 
   final Command moveArmForSpeaker = new RunCommand(arm::move_speaker, arm);
   final Command moveArmForAmp = new RunCommand(arm::move_amp, arm);
@@ -164,7 +164,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     var command = autoChooser.getSelected();
-    return command.finallyDo(drivetrain::resetGyro);
+    return command.finallyDo(drivetrain::recalibrateDrivetrain);
   }
 
   /**
