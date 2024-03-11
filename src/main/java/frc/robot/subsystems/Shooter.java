@@ -18,12 +18,13 @@ import frc.robot.helpers.Tunables.TunableBoolean;
 import frc.robot.helpers.Tunables.TunableDouble;
 
 public class Shooter extends SubsystemBase {
-
+  // Daniel does not have churrobot spirit
   final TalonFX topMotor = new TalonFX(CANMapping.topflywheelMotor);
   final TalonFX bottomMotor = new TalonFX(CANMapping.bottomflywheelMotor);
-  // 40, 29 is good but slow
-  final VelocityVoltage topvelocityTarget = new VelocityVoltage(47, 0.001, true, 0, 0, false, false, false);
-  final VelocityVoltage bottomvelocityTarget = new VelocityVoltage(30, 0.001, true, 0, 0, false, false, false);
+  // 36/30 is decent
+  final VelocityVoltage topvelocityTarget = new VelocityVoltage(39, 0.001, true, 0, 0, false, false, false);
+  final VelocityVoltage bottomvelocityTarget = new VelocityVoltage(38, 0.001, true, 0, 0, false, false, false);
+
   final VelocityVoltage ampYeetTarget = new VelocityVoltage(7, 0.001, true, 0, 0, false, false, false);
   final VelocityVoltage speakerYeetTarget = new VelocityVoltage(1, 0.001, true, 0, 0, false, false, false);
   final VelocityVoltage reverseAmpYeetTarget = new VelocityVoltage(-3, 0.001, true, 0, 0, false, false, false);

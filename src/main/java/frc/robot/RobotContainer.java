@@ -63,7 +63,6 @@ public class RobotContainer {
   final Trigger leftjoyTrigger = new JoystickButton(operatorController, Button.kLeftStick.value);
   final Trigger rightjoyTrigger = new JoystickButton(operatorController, Button.kRightStick.value);
 
-
   // All of the subsystems.
   final Drivetrain drivetrain = new Drivetrain();
   final Arm arm = new Arm();
@@ -77,7 +76,8 @@ public class RobotContainer {
 
   // All of the commands the robot can do.
   final Command runFlywheels = new RunCommand(shooter::stopFlyWheel, shooter).withTimeout(.1)
-      .andThen(new RunCommand(shooter::runFlywheelForSpeaker, shooter));
+      .andThen(new RunCommand(shooter::runFlywheelForSpeaker, shooter))
+      .alongWith(new RunCommand(arm::move_speaker, arm));
 
   // TODO: make sure they're right
   final Command shootDefault = new RunCommand(intake::yoinkTheRings, intake);

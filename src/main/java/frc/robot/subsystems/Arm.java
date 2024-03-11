@@ -144,11 +144,27 @@ public class Arm extends TrapezoidProfileSubsystem {
   }
 
   public void move_speaker() {
-    SmartDashboard.putNumber("Arm:goalRotations", Constants.speakerPosition.get());
-    setGoal(Constants.speakerPosition.get());
+    moveTo(0.04);
+  }
+
+  void moveTo(double percentageRotation) {
+    double position = m_absoluteEncoder.getPosition();
+    if (position > 0.8) {
+      position = 0;
+    }
+    if (position < 0.005) {
+      // Workaround the encoder sometimes going negative
+      disable();
+      right_motor.set(0.2);
+    } else {
+      // Now encoder is for sure positive, so we can do normal position control
+      enable();
+      setGoal(percentageRotation);
+    }
   }
 
   public void move_amp() {
+    // TODO: try using our new moveTo() helper
     disable();
     double position = m_absoluteEncoder.getPosition();
     if (position > 0.8) {
