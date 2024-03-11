@@ -26,7 +26,7 @@ public class Climber extends SubsystemBase {
     if (isAtTheTop) {
       stay();
     } else {
-      climberMotor.set(0.5);
+      climberMotor.set(.9);
     }
   }
 
@@ -35,7 +35,7 @@ public class Climber extends SubsystemBase {
     if (isAtTheBottom) {
       stay();
     } else {
-      climberMotor.set(-0.5);
+      climberMotor.set(-0.9);
     }
   }
 
