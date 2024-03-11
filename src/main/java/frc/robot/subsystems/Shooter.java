@@ -111,7 +111,7 @@ public class Shooter extends SubsystemBase {
     config.Slot0.kV = 0.12;
     config.Voltage.PeakForwardVoltage = 8;
     config.Voltage.PeakReverseVoltage = -8;
-    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
     StatusCode status = StatusCode.StatusCodeNotInitialized;
     for (int i = 0; i < 5; ++i) {
