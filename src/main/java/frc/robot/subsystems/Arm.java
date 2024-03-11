@@ -1,9 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
@@ -12,13 +10,10 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 import edu.wpi.first.wpilibj2.command.TrapezoidProfileSubsystem;
 import frc.robot.CANMapping;
-import frc.robot.helpers.Tunables;
 import frc.robot.helpers.Tunables.TunableDouble;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkAbsoluteEncoder;
-import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 /** A robot arm subsystem that moves with a motion profile. */
@@ -107,6 +102,7 @@ public class Arm extends TrapezoidProfileSubsystem {
     left_motor.setInverted(true);
     left_motor.follow(right_motor, true);
 
+    // TODO: tune the PID for the arm
     m_pidController.setP(Constants.kP.get());
     m_pidController.setI(Constants.kI.get());
     m_pidController.setD(Constants.kD.get());
@@ -117,8 +113,6 @@ public class Arm extends TrapezoidProfileSubsystem {
     enable();
     right_motor.burnFlash();
     left_motor.burnFlash();
-    SmartDashboard.putNumber("Arm:mostRecentSetpointPosition", 0);
-    SmartDashboard.putNumber("Arm:mostRecentFeedForward", 0);
   }
 
   @Override
@@ -126,19 +120,11 @@ public class Arm extends TrapezoidProfileSubsystem {
     double feedforward = m_feedforward.calculate(
         setpoint.position * 2 * Math.PI,
         setpoint.velocity);
-    // boolean lowEnoughToRest = m_absoluteEncoder.getPosition() < 0.02 &&
-    // setpoint.position < 0.01;
-    // if (lowEnoughToRest) {
-    // right_motor.stopMotor();
-    // left_motor.stopMotor();
-    // } else {
     m_pidController.setReference(
         setpoint.position,
         CANSparkMax.ControlType.kPosition,
         Constants.defaultPidSlot,
         feedforward);
-    // }
-    // SmartDashboard.putBoolean("Arm:lowEnoughToRest", lowEnoughToRest);
     SmartDashboard.putNumber("Arm:mostRecentSetpointPosition", setpoint.position);
     SmartDashboard.putNumber("Arm:mostRecentFeedForward", feedforward);
   }
@@ -216,31 +202,6 @@ public class Arm extends TrapezoidProfileSubsystem {
     } else
       return false;
 
-  }
-
-  public boolean inRangeOf(double targetPosition) {
-    double position = m_absoluteEncoder.getPosition();
-    double tolerance = 0.05;
-    if ((position > (targetPosition - tolerance)) && (position < (targetPosition + tolerance))) {
-      return true;
-    }
-    return false;
-  }
-
-  public boolean inRangeOfSpeakerPosition() {
-    return inRangeOf(Constants.speakerPosition.get());
-  }
-
-  public boolean inRangeOfAmpPosition() {
-    return inRangeOf(Constants.ampPosition.get());
-  }
-
-  public boolean inRangeOfGroundPosition() {
-    return inRangeOf(Constants.groundPosition.get());
-  }
-
-  public boolean inRangeOfDefaultPosition() {
-    return inRangeOf(Constants.defaultPosition.get());
   }
 
   @Override
