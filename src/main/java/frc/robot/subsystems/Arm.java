@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 import edu.wpi.first.wpilibj2.command.TrapezoidProfileSubsystem;
@@ -67,6 +68,7 @@ public class Arm extends TrapezoidProfileSubsystem {
   final CANSparkMax left_motor = new CANSparkMax(CANMapping.leftArmMotor, MotorType.kBrushless);
 
   final SparkPIDController m_pidController;
+  final SlewRateLimiter rateLimiter = new SlewRateLimiter(12);
 
   final ArmFeedforward m_feedforward = new ArmFeedforward(
       Constants.kSVolts.get(),
@@ -148,20 +150,22 @@ public class Arm extends TrapezoidProfileSubsystem {
 
   public void move_amp() {
     disable();
-    SmartDashboard.putNumber("Arm:goalRotations", Constants.ampPosition.get());
     double position = m_absoluteEncoder.getPosition();
     if (position > 0.8) {
       position = 0;
     }
-    if (position < 0.165) {
-      right_motor.set(0.7);
-    } else if (position < 0.22) {
-      right_motor.set(.30);
-    } else if (position > 0.24) {
-      right_motor.stopMotor();
-    } else if (position > 0.26) {
-      right_motor.set(-.2);
+    double motorSpeed = 0;
+    if (position < 0.08) {
+      motorSpeed = 0.7;
+    } else if (position < 0.23) {
+      motorSpeed = .2;
+    } else if (position > 0.23) {
+      motorSpeed = 0;
+    } else if (position > 0.25) {
+      motorSpeed = -.2;
     }
+    double smoothedMotorSpeed = rateLimiter.calculate(motorSpeed);
+    right_motor.set(smoothedMotorSpeed);
   }
 
   public void move_Eject() {
@@ -181,8 +185,8 @@ public class Arm extends TrapezoidProfileSubsystem {
       position = 0;
     }
     if (position > 0.055) {
-      right_motor.set(-0.2);
-    } else if (position > 0.01) {
+      right_motor.set(-0.4);
+    } else if (position > 0.02) {
       right_motor.set(-0.05);
     } else {
       right_motor.stopMotor();
@@ -206,7 +210,6 @@ public class Arm extends TrapezoidProfileSubsystem {
     }
     return false;
   }
-
 
   public boolean inRangeOfSpeakerPosition() {
     return inRangeOf(Constants.speakerPosition.get());
