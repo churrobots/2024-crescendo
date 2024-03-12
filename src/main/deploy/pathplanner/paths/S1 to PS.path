@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.5099542420583685,
-        "y": 3.928744258530184
+        "x": 2.2555603814549645,
+        "y": 4.068302186300553
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6324266485338526,
-        "y": 3.8017670040331404
+        "x": 1.4540396884613216,
+        "y": 4.190868294967203
       },
       "isLocked": false,
       "linkedName": "S1"
@@ -20,8 +20,8 @@
         "y": 4.363290372631092
       },
       "prevControl": {
-        "x": 1.5046669584551182,
-        "y": 3.753550600598969
+        "x": 1.3893603580392928,
+        "y": 4.112281421575286
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
   "reversed": false,
   "folder": "Source Position 1 Step Path",
   "previewStartingState": {
-    "rotation": 34.59002902395625,
+    "rotation": 3.0604565000475374,
     "velocity": 0
   },
   "useDefaultConstraints": true

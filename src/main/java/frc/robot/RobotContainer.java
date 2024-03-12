@@ -142,14 +142,16 @@ public class RobotContainer {
   final Command autoPullNoteAwayFromShooter = new RunCommand(intake::deuceTheRings, intake)
       .withTimeout(pullAwayFromShooterTimeout)
       .andThen(new InstantCommand(intake::stopThePlan, intake));
-  final Command autoPrepareFlywheel = new RunCommand(shooter::runFlywheelForSpeaker, shooter).withTimeout(1.1);
+  final Command autoPrepareFlywheel = new RunCommand(shooter::runFlywheelForSpeaker, shooter).withTimeout(.8);
   final Command autoFeedIntoFlywheel = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
-      .alongWith(new RunCommand(intake::yoinkTheRings, intake)).withTimeout(1);
+      .alongWith(new RunCommand(intake::yoinkTheRings, intake)).withTimeout(.5);
 
-  final Command shootSpeaker = autoPullNoteAwayFromShooter
+  final Command autoAim = new RunCommand(arm::move_speaker, arm).withTimeout(.5);
+  final Command shootSpeaker = autoPullNoteAwayFromShooter.alongWith(autoAim)
       .andThen(autoPrepareFlywheel)
       .andThen(autoFeedIntoFlywheel);
-  final Command intakeForThreeSeconds = new InstantCommand(intake::yoinkTheRings, intake)
+  final Command intakeForThreeSeconds = new RunCommand(arm::move_Default, arm)
+      .alongWith(new InstantCommand(intake::yoinkTheRings, intake))
       .alongWith(new RunCommand(shooter::reverseAmpYeeter, shooter)).finallyDo(intake::stopThePlan);
   final Command waitForTeammates = new WaitCommand(5);
 

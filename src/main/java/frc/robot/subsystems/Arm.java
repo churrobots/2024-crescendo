@@ -141,7 +141,7 @@ public class Arm extends TrapezoidProfileSubsystem {
     if (position < 0.005) {
       // Workaround the encoder sometimes going negative
       disable();
-      right_motor.set(0.2);
+      right_motor.set(0.1);
     } else {
       // Now encoder is for sure positive, so we can do normal position control
       enable();
