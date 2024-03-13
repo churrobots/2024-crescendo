@@ -21,8 +21,8 @@ public class Arm extends TrapezoidProfileSubsystem {
 
   class Constants {
 
-    static final double kMaxVelocityRadPerSecond = 1;
-    static final double kMaxAccelerationRadPerSecSquared = 1;
+    static final double kMaxVelocityRadPerSecond = 3;
+    static final double kMaxAccelerationRadPerSecSquared = 3;
     static final TrapezoidProfile.Constraints trapezoidProfile = new TrapezoidProfile.Constraints(
         Constants.kMaxVelocityRadPerSecond, Constants.kMaxAccelerationRadPerSecSquared);
 
@@ -31,12 +31,12 @@ public class Arm extends TrapezoidProfileSubsystem {
     static final double kArmOffsetRads = 0;
 
     // These are all the constants from the SparkMAX demo code.
-    static final TunableDouble kP = new TunableDouble("armKP", 5.3);
+    static final TunableDouble kP = new TunableDouble("armKP", 4.6);
     static final TunableDouble kI = new TunableDouble("armKI", 0);
-    static final TunableDouble kD = new TunableDouble("armKD", 6.0);
+    static final TunableDouble kD = new TunableDouble("armKD", 2);
     static final double kIz = 0;
     static final double kFF = 0;
-    static final double kMaxOutput = 0.7;
+    static final double kMaxOutput = 0.9;
     static final double kMinOutput = -0.7;
 
     // These are all the constants from the sample WPIlib trapezoid subsystem code.
@@ -150,7 +150,7 @@ public class Arm extends TrapezoidProfileSubsystem {
   }
 
   public void move_amp() {
-    moveTo(0.26);
+    moveTo(0.28);
   }
 
   public void move_Eject() {
@@ -169,10 +169,10 @@ public class Arm extends TrapezoidProfileSubsystem {
     if (position > 0.8) {
       position = 0;
     }
-    if (position > 0.065) {
+    if (position > 0.08) {
       right_motor.set(-0.4);
-    } else if (position > 0.025) {
-      right_motor.set(-0.07);
+    } else if (position > 0.03) {
+      right_motor.set(-0.05);
     } else {
       right_motor.stopMotor();
     }
