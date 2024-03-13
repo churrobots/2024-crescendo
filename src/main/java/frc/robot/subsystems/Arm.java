@@ -31,9 +31,9 @@ public class Arm extends TrapezoidProfileSubsystem {
     static final double kArmOffsetRads = 0;
 
     // These are all the constants from the SparkMAX demo code.
-    static final TunableDouble kP = new TunableDouble("armKP", 6);
+    static final TunableDouble kP = new TunableDouble("armKP", 5.3);
     static final TunableDouble kI = new TunableDouble("armKI", 0);
-    static final TunableDouble kD = new TunableDouble("armKD", 0);
+    static final TunableDouble kD = new TunableDouble("armKD", 6.0);
     static final double kIz = 0;
     static final double kFF = 0;
     static final double kMaxOutput = 0.7;
@@ -41,10 +41,10 @@ public class Arm extends TrapezoidProfileSubsystem {
 
     // These are all the constants from the sample WPIlib trapezoid subsystem code.
     static final TunableDouble kSVolts = new TunableDouble("feedFowardSVolts", 0);
-    static final TunableDouble kGVolts = new TunableDouble("feedFowardGVolts", 0.335);
-    static final TunableDouble kVVoltSecondPerRad = new TunableDouble("feedFowardVVoltSecondPerRad", 6.24);
+    static final TunableDouble kGVolts = new TunableDouble("feedFowardGVolts", 0.47);
+    static final TunableDouble kVVoltSecondPerRad = new TunableDouble("feedFowardVVoltSecondPerRad", 2.92);
     static final TunableDouble kAVoltSecondSquaredPerRad = new TunableDouble("feedFowardAVoltSecondSquaredPerRad",
-        0.04);
+        0.02);
 
     // These constants are from the sample WPIlib code and shouldn't need to change.
     static final int kCPR = 8192;
@@ -150,24 +150,7 @@ public class Arm extends TrapezoidProfileSubsystem {
   }
 
   public void move_amp() {
-    // TODO: try using our new moveTo() helper
-    disable();
-    double position = m_absoluteEncoder.getPosition();
-    if (position > 0.8) {
-      position = 0;
-    }
-    double motorSpeed = 0;
-    if (position < 0.08) {
-      motorSpeed = 0.7;
-    } else if (position < 0.23) {
-      motorSpeed = .2;
-    } else if (position > 0.23) {
-      motorSpeed = 0;
-    } else if (position > 0.25) {
-      motorSpeed = -.2;
-    }
-    double smoothedMotorSpeed = rateLimiter.calculate(motorSpeed);
-    right_motor.set(smoothedMotorSpeed);
+    moveTo(0.26);
   }
 
   public void move_Eject() {
@@ -186,10 +169,10 @@ public class Arm extends TrapezoidProfileSubsystem {
     if (position > 0.8) {
       position = 0;
     }
-    if (position > 0.055) {
+    if (position > 0.065) {
       right_motor.set(-0.4);
-    } else if (position > 0.02) {
-      right_motor.set(-0.05);
+    } else if (position > 0.025) {
+      right_motor.set(-0.07);
     } else {
       right_motor.stopMotor();
     }
