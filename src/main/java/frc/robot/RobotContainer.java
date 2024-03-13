@@ -167,8 +167,7 @@ public class RobotContainer {
    * mode begins.
    */
   public Command getAutonomousCommand() {
-    var command = autoChooser.getSelected();
-    return command.finallyDo(drivetrain::recalibrateDrivetrain);
+    return autoChooser.getSelected();
   }
 
   /**
