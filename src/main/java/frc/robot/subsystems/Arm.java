@@ -180,7 +180,7 @@ public class Arm extends TrapezoidProfileSubsystem {
 
   public boolean armIsHigh() {
     double position = m_absoluteEncoder.getPosition();
-    if (position > 0.1) {
+    if (position > 0.15) {
       return true;
     } else
       return false;

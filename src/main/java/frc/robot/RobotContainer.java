@@ -34,6 +34,7 @@ public class RobotContainer {
     public static final int kOperatorrControllerPort = 1;
     public static final double kDriveDeadband = 0.1;
     public static final double kSlowDriveScaling = 0.4;
+    public static final double kSuperSlowDriveScaling = 0.2;
   }
 
   // SmartDashboard interface.
@@ -45,9 +46,11 @@ public class RobotContainer {
   final Trigger backButtonDriver = new JoystickButton(driverController, Button.kStart.value);
   final Trigger leftBumperDriver = new JoystickButton(driverController, Button.kLeftBumper.value);
   final Trigger rightBumperDriver = new JoystickButton(driverController, Button.kRightBumper.value);
+
   final Trigger startAndBackButtonDriver = new Trigger(() -> {
     return startButtonDriver.getAsBoolean() && backButtonDriver.getAsBoolean();
   });
+
   // Operator controller.
   final XboxController operatorController = new XboxController(Constants.kOperatorrControllerPort);
   final Trigger leftBumperOperator = new JoystickButton(operatorController, Button.kLeftBumper.value);
@@ -127,6 +130,17 @@ public class RobotContainer {
           true, true),
       drivetrain);
 
+  final Command superSlowDrive = new RunCommand(
+      () -> drivetrain.drive(
+          -MathUtil.applyDeadband(driverController.getLeftY() * Constants.kSuperSlowDriveScaling,
+              Constants.kDriveDeadband),
+          -MathUtil.applyDeadband(driverController.getLeftX() * Constants.kSuperSlowDriveScaling,
+              Constants.kDriveDeadband),
+          -MathUtil.applyDeadband(driverController.getRightX() * Constants.kSuperSlowDriveScaling,
+              Constants.kDriveDeadband),
+          true, true),
+      drivetrain);
+
   final Command fastDrive = new RunCommand(
       () -> drivetrain.drive(
           -MathUtil.applyDeadband(driverController.getLeftY(),
@@ -200,7 +214,7 @@ public class RobotContainer {
     povDownOperator.whileTrue(goDown);
     leftjoyTrigger.whileTrue(runAmpYeeter);
     rightjoyTrigger.whileTrue(eject);
-    armIsHigh.whileTrue(slowDrive);
+    armIsHigh.whileTrue(superSlowDrive);
     startAndBackButtonDriver.whileTrue(resetGyro);
   }
 
