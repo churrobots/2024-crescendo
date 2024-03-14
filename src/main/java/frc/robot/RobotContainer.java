@@ -65,6 +65,10 @@ public class RobotContainer {
   final Trigger povDownOperator = new POVButton(operatorController, 180);
   final Trigger leftjoyTrigger = new JoystickButton(operatorController, Button.kLeftStick.value);
   final Trigger rightjoyTrigger = new JoystickButton(operatorController, Button.kRightStick.value);
+  final Trigger rightjoyAnalogTrigger = new Trigger(() -> {
+    boolean triggerIsPressedEnough = operatorController.getRightTriggerAxis() > 0.28;
+    return triggerIsPressedEnough;
+  });
 
   // All of the subsystems.
   final Drivetrain drivetrain = new Drivetrain();
@@ -207,20 +211,24 @@ public class RobotContainer {
     // Driver
     leftBumperDriver.whileTrue(anchorInPlace);
     rightBumperDriver.whileTrue(slowDrive);
+    startAndBackButtonDriver.whileTrue(resetGyro);
 
     // Operator
     aButtonOperator.whileTrue(runIntake);
     yButtonOperator.whileTrue(prepAmp);
-    // leftBumperOperator.whileTrue(runFlywheels);
     xButtonOperator.whileTrue(prepShot);
     rightBumperOperator.whileTrue(shootDefault);
+    rightjoyAnalogTrigger.whileTrue(shootDefault);
+
     startButtonOperator.whileTrue(goUpWNoSafety);
     backButtonOperator.whileTrue(goDownWNoSafety);
     povUpOperator.whileTrue(goUp);
     povDownOperator.whileTrue(goDown);
+
     rightjoyTrigger.whileTrue(eject);
+
+    // Sensors
     armIsHigh.whileTrue(superSlowDrive);
-    startAndBackButtonDriver.whileTrue(resetGyro);
   }
 
   void ensureSubsystemsHaveDefaultCommands() {
