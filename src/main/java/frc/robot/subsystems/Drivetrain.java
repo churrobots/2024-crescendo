@@ -207,10 +207,10 @@ public class Drivetrain extends SubsystemBase {
    */
   public void recalibrateDrivetrain() {
     var recalibratedAngle = 0;
-    var alliance = DriverStation.getAlliance();
-    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-      recalibratedAngle = 180;
-    }
+    // var alliance = DriverStation.getAlliance();
+    // if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+    //   recalibratedAngle = 180;
+    // }
     var currentPose = getPose();
     var currentTranslation = currentPose.getTranslation();
     var recalibratedRotation = new Rotation2d(recalibratedAngle);
