@@ -150,17 +150,11 @@ public class Arm extends TrapezoidProfileSubsystem {
   }
 
   public void move_amp() {
-    moveTo(0.28);
+    moveTo(0.28); 
   }
 
   public void move_Eject() {
-    disable();
-    double position = m_absoluteEncoder.getPosition();
-    if (position < 0.125) {
-      right_motor.set(0.2);
-    } else {
-      right_motor.stopMotor();
-    }
+    moveTo(.16); //or .125
   }
 
   public void move_Default() {
