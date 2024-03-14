@@ -78,12 +78,14 @@ public class RobotContainer {
   final Trigger armIsHigh = new Trigger(arm::armIsHigh);
 
   // All of the commands the robot can do.
-  final Command runFlywheels = new RunCommand(shooter::stopFlyWheel, shooter).withTimeout(.1)
-      .andThen(new RunCommand(shooter::runFlywheelForSpeaker, shooter))
+  final Command prepShot = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
       .alongWith(new RunCommand(arm::move_speaker, arm));
 
-  // TODO: make sure they're right
+  final Command prepAmp = new RunCommand(shooter::runAmpYeeter, shooter)
+      .alongWith(new RunCommand(arm::move_amp, arm));
+
   final Command shootDefault = new RunCommand(intake::yoinkTheRings, intake);
+
   // final Command yoinkNote = new RunCommand(shooter::runFlyWheel,
   // shooter).until(shooter::isFlyWheelReady)
   // .andThen(new RunCommand(intake::yoinkTheRings, intake).withTimeout(3));
@@ -107,8 +109,6 @@ public class RobotContainer {
   final Command moveArmForSpeaker = new RunCommand(arm::move_speaker, arm);
   final Command moveArmForAmp = new RunCommand(arm::move_amp, arm);
   final Command moveArmForDefault = new RunCommand(arm::move_Default, arm);
-  final Command runAmpYeeter = new RunCommand(shooter::runAmpYeeter, shooter)
-      .alongWith(new RunCommand(intake::yoinkTheRings, intake));
 
   final Command goUp = new RunCommand(climber::goUp, climber);
   final Command goDown = new RunCommand(climber::goDown, climber);
@@ -202,17 +202,21 @@ public class RobotContainer {
   }
 
   void configureButtonBindings() {
+
+    // Driver
     leftBumperDriver.whileTrue(anchorInPlace);
     rightBumperDriver.whileTrue(slowDrive);
+
+    // Operator
     aButtonOperator.whileTrue(runIntake);
-    yButtonOperator.whileTrue(moveArmForAmp);
-    leftBumperOperator.whileTrue(runFlywheels);
+    yButtonOperator.whileTrue(prepAmp);
+    // leftBumperOperator.whileTrue(runFlywheels);
+    xButtonOperator.whileTrue(prepShot);
     rightBumperOperator.whileTrue(shootDefault);
     startButtonOperator.whileTrue(goUpWNoSafety);
     backButtonOperator.whileTrue(goDownWNoSafety);
     povUpOperator.whileTrue(goUp);
     povDownOperator.whileTrue(goDown);
-    leftjoyTrigger.whileTrue(runAmpYeeter);
     rightjoyTrigger.whileTrue(eject);
     armIsHigh.whileTrue(superSlowDrive);
     startAndBackButtonDriver.whileTrue(resetGyro);
