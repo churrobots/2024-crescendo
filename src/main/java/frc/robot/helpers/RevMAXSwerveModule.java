@@ -54,8 +54,10 @@ public class RevMAXSwerveModule {
   private final double kDrivingMotorFreeSpeedRps = kNeoMotorFreeSpeedRpm / 60;
 
   // TODO: this should be configurable based on the wheel choice
-  private final double kWheelDiameterMeters = 0.075;
+  private final double kWheelDiameterMeters = 0.076;
   private final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
+  // private final double MaxkWheelCircumferenceMeters = .0769;
+  // private final double MinimumkWheelCircumferenceMeters = 0.0703;
 
   // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
   // teeth on the bevel pinion
