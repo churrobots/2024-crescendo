@@ -5,12 +5,14 @@
   "pathFolders": [
     "Amp Position 1 Step Path",
     "Center Position 1 Step Path",
+    "Chaos",
     "Source Position 1 Step Path"
   ],
   "autoFolders": [
     "1 Note Autos",
     "2 Note Autos",
     "3 Note Autos",
+    "Chaos Autos",
     "Waiting Autos"
   ],
   "defaultMaxVel": 4.5,

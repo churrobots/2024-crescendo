@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.185732032765452,
-        "y": 1.3360533137605057
+        "x": 7.841879400581835,
+        "y": 0.8035908294193822
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.516053051263392,
-        "y": 2.0521017930941543
+        "x": 7.850756554595676,
+        "y": 1.2588555753690287
       },
       "isLocked": false,
-      "linkedName": "S2"
+      "linkedName": "chaos 1"
     },
     {
       "anchor": {
-        "x": 0.7167666292978712,
-        "y": 4.363290372631092
+        "x": 7.837744290339307,
+        "y": 7.399206968598845
       },
       "prevControl": {
-        "x": 2.9807074289822406,
-        "y": 0.8954231686322993
+        "x": 8.240776697356269,
+        "y": 6.602601078403073
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "P3"
+      "linkedName": "Chaos 2"
     }
   ],
   "rotationTargets": [],
@@ -39,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -59.350819222697204,
+    "rotation": 27.300444181406103,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Source Position 1 Step Path",
+  "folder": "Chaos",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": 31.46414792360462,
     "velocity": 0
   },
   "useDefaultConstraints": true
