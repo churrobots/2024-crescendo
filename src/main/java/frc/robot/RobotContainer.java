@@ -108,7 +108,7 @@ public class RobotContainer {
   }, lightShow);
 
   final Command anchorInPlace = new RunCommand(() -> drivetrain.setXFormation(), drivetrain);
-  final Command resetGyro = new RunCommand(() -> drivetrain.recalibrateDrivetrain(), drivetrain);
+  final Command recalibrateDrivetrain = new RunCommand(() -> drivetrain.recalibrateDrivetrain(), drivetrain);
 
   final Command moveArmForSpeaker = new RunCommand(arm::move_speaker, arm);
   final Command moveArmForAmp = new RunCommand(arm::move_amp, arm);
@@ -119,7 +119,7 @@ public class RobotContainer {
   final Command stay = new RunCommand(climber::stay, climber);
   final Command goDownWNoSafety = new RunCommand(climber::goDownWNoSafety, climber);
   final Command goUpWNoSafety = new RunCommand(climber::goUpWNoSafety, climber);
-  final Command eject = new RunCommand(arm::move_Eject, arm).withTimeout(2)
+  final Command eject = new RunCommand(arm::move_Eject, arm).withTimeout(1)
       .andThen(new RunCommand(intake::ejectNow, intake))
       .alongWith(new RunCommand(shooter::reverseAmpYeeter, shooter));
   // Commands.runOnce(() -> setGoal(kArmOffsetRads), this);
@@ -211,7 +211,7 @@ public class RobotContainer {
     // Driver
     leftBumperDriver.whileTrue(anchorInPlace);
     rightBumperDriver.whileTrue(slowDrive);
-    startAndBackButtonDriver.whileTrue(resetGyro);
+    startAndBackButtonDriver.whileTrue(recalibrateDrivetrain);
 
     // Operator
     aButtonOperator.whileTrue(runIntake);
