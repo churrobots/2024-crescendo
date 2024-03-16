@@ -18,15 +18,41 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "1"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "volcanoChaos"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "Sweep"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Sweep"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "volcanoChaos"
+                }
+              }
+            ]
           }
         }
       ]

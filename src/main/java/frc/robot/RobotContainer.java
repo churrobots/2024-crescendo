@@ -173,6 +173,11 @@ public class RobotContainer {
       .alongWith(new InstantCommand(intake::yoinkTheRings, intake))
       .alongWith(new RunCommand(shooter::reverseAmpYeeter, shooter)).finallyDo(intake::stopThePlan);
   final Command waitForTeammates = new WaitCommand(5);
+  final Command chaos = new RunCommand(arm::move_Default, arm)
+      .alongWith(new RunCommand(intake::ejectNow, intake));
+  final Command volcanoChaos = new RunCommand(arm::move_Default, arm)
+      .alongWith(new RunCommand(intake::isYoinking, intake))
+      .alongWith(new RunCommand(shooter::runFlywheelForSpeaker, shooter));
 
   public RobotContainer() {
     configureButtonBindings();
@@ -202,6 +207,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("shootSpeaker", shootSpeaker);
     NamedCommands.registerCommand("intakeForThreeSeconds", intakeForThreeSeconds);
     NamedCommands.registerCommand("waitForTeammates", waitForTeammates);
+    NamedCommands.registerCommand("chaos", chaos);
+    NamedCommands.registerCommand("volcanoChaos", volcanoChaos);
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData(autoChooser);
   }
