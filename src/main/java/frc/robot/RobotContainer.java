@@ -99,13 +99,7 @@ public class RobotContainer {
       .alongWith(new RunCommand(shooter::reverseAmpYeeter, shooter));
   final Command stopIntake = new RunCommand(intake::deuceTheRings, intake).withTimeout(pullAwayFromShooterTimeout)
       .andThen(new RunCommand(intake::stopThePlan, intake));
-  final Command showDefaultColor = new RunCommand(() -> {
-    if (DriverStation.isAutonomous()) {
-      lightShow.setPurple();
-    } else {
-      lightShow.setGreen();
-    }
-  }, lightShow);
+  final Command showDefaultColor = new RunCommand(lightShow::disable, lightShow);
 
   final Command anchorInPlace = new RunCommand(() -> drivetrain.setXFormation(), drivetrain);
   final Command recalibrateDrivetrain = new RunCommand(() -> drivetrain.recalibrateDrivetrain(), drivetrain);
