@@ -34,6 +34,14 @@ public class LightShow extends SubsystemBase {
     fillPercentage(0, 0, 0);
   }
 
+  public void greengohappy() {
+    fillPercentage(0, 50, 0);
+  }
+
+  public void redgoboom() {
+      fillPercentage(50, 0, 0);
+    }
+
   public void fillPercentage(int redPercent, int greenPercent, int bluePercent) {
     for (int i = 0; i < Constants.totalPixels; i++) {
       pixels.setRGB(i, redPercent, greenPercent, bluePercent);

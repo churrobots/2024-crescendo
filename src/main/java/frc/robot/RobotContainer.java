@@ -8,7 +8,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -99,7 +98,10 @@ public class RobotContainer {
       .alongWith(new RunCommand(shooter::reverseAmpYeeter, shooter));
   final Command stopIntake = new RunCommand(intake::deuceTheRings, intake).withTimeout(pullAwayFromShooterTimeout)
       .andThen(new RunCommand(intake::stopThePlan, intake));
+
   final Command showDefaultColor = new RunCommand(lightShow::disable, lightShow);
+  final Command showGreen = new RunCommand(lightShow::greengohappy, lightShow);
+  final Command showRed = new RunCommand(lightShow::redgoboom, lightShow);
 
   final Command anchorInPlace = new RunCommand(() -> drivetrain.setXFormation(), drivetrain);
   final Command recalibrateDrivetrain = new RunCommand(() -> drivetrain.recalibrateDrivetrain(), drivetrain);
@@ -116,7 +118,6 @@ public class RobotContainer {
   final Command eject = new RunCommand(arm::move_Eject, arm).withTimeout(1)
       .andThen(new RunCommand(intake::ejectNow, intake))
       .alongWith(new RunCommand(shooter::reverseAmpYeeter, shooter));
-  // Commands.runOnce(() -> setGoal(kArmOffsetRads), this);
 
   final Command slowDrive = new RunCommand(
       () -> drivetrain.drive(
