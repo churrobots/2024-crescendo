@@ -54,7 +54,6 @@ public class Drivetrain extends SubsystemBase {
     // the robot, rather the allowed maximum speeds
     public static final double kMaxSpeedMetersPerSecond = 4.8;
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
-    // public static final double kDriveBaseRadiusInMeters = 0.39;
     public static final double kDriveBaseRadiusInMeters = Math
         .sqrt(Math.pow(kTrackWidth / 2, 2) + Math.pow(kWheelBase / 2, 2));
 
