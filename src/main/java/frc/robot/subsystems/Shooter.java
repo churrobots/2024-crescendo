@@ -6,7 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -14,57 +14,45 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CANMapping;
-import frc.robot.helpers.Tunables.TunableBoolean;
-import frc.robot.helpers.Tunables.TunableDouble;
 
 public class Shooter extends SubsystemBase {
+
+  public static final class Constants {
+    public static final double targetVelocityTolerance = 1.5;
+
+    public static final double topSpeakerVelocity = 39;
+    public static final double bottomSpeakerVelocity = 38;
+
+    public static final double ampVelocity = 7;
+    public static final double ejectVelocity = -3;
+  }
+
   // Daniel does not have churrobot spirit
   final TalonFX topMotor = new TalonFX(CANMapping.topflywheelMotor);
   final TalonFX bottomMotor = new TalonFX(CANMapping.bottomflywheelMotor);
-  // 36/30 is decent
-  final VelocityVoltage topvelocityTarget = new VelocityVoltage(39, 0.001, true, 0, 0, false, false, false);
-  final VelocityVoltage bottomvelocityTarget = new VelocityVoltage(38, 0.001, true, 0, 0, false, false, false);
 
-  final VelocityVoltage ampYeetTarget = new VelocityVoltage(7, 0.001, true, 0, 0, false, false, false);
-  final VelocityVoltage speakerYeetTarget = new VelocityVoltage(1, 0.001, true, 0, 0, false, false, false);
-  final VelocityVoltage reverseAmpYeetTarget = new VelocityVoltage(-3, 0.001, true, 0, 0, false, false, false);
+  final VelocityVoltage topSpeakerTarget = new VelocityVoltage(Constants.topSpeakerVelocity, 0.001, true, 0, 0, false,
+      false, false);
+  final VelocityVoltage bottomSpeakerTarget = new VelocityVoltage(Constants.bottomSpeakerVelocity, 0.001, true, 0, 0,
+      false, false, false);
+
+  final VelocityVoltage ampYeetTarget = new VelocityVoltage(Constants.ampVelocity, 0.001, true, 0, 0, false, false,
+      false);
+  final VelocityVoltage reverseAmpYeetTarget = new VelocityVoltage(Constants.ejectVelocity, 0.001, true, 0, 0, false,
+      false, false);
 
   public void runFlywheelForSpeaker() {
-    topMotor.setControl(topvelocityTarget);
-    bottomMotor.setControl(bottomvelocityTarget);
-  }
-
-  public boolean isFlyWheelReadyForSpeaker() {
-    double tolerance = 1.5;
-    var actualTopVelocity = topMotor.getVelocity().getValueAsDouble();
-    var actualBottomVelocity = bottomMotor.getVelocity().getValueAsDouble();
-    var expectedTopVelocity = topvelocityTarget.Velocity;
-    var expectedBottomVelocity = bottomvelocityTarget.Velocity;
-    if (actualTopVelocity > (expectedTopVelocity - tolerance)
-        && actualTopVelocity < (expectedTopVelocity + tolerance)
-        && actualBottomVelocity > (expectedBottomVelocity - tolerance)
-        && actualBottomVelocity < (expectedBottomVelocity + tolerance)) {
-      return true;
-    } else {
-      return false;
-    }
+    topMotor.setControl(topSpeakerTarget);
+    bottomMotor.setControl(bottomSpeakerTarget);
   }
 
   public void runAmpYeeter() {
-
     topMotor.setControl(ampYeetTarget);
   }
 
   public void reverseAmpYeeter() {
-
     topMotor.setControl(reverseAmpYeetTarget);
     bottomMotor.setControl(reverseAmpYeetTarget);
-  }
-
-  public void runSpeakerYeeter() {
-
-    topMotor.setControl(speakerYeetTarget);
-    bottomMotor.setControl(speakerYeetTarget);
   }
 
   public void stopFlyWheel() {
@@ -72,27 +60,32 @@ public class Shooter extends SubsystemBase {
     bottomMotor.stopMotor();
   }
 
-  // TODO: no longer valid now we treat top and bottom with separate velocities
-  public boolean isFlyWheelReady(double targetVelocity) {
-    double tolerance = 1.5;
-    var topVelocity = topMotor.getVelocity().getValueAsDouble();
-    var bottomVelocity = bottomMotor.getVelocity().getValueAsDouble();
-    if (topVelocity > (targetVelocity - tolerance)
-        && topVelocity < (targetVelocity + tolerance)
-        && bottomVelocity > (targetVelocity - tolerance)
-        && bottomVelocity < (targetVelocity + tolerance)) {
+  public boolean flywheelsAreAtTarget() {
+    return isMotorAtTarget(topMotor) && isMotorAtTarget(bottomMotor);
+  }
+
+  boolean isMotorAtTarget(TalonFX motor) {
+    ControlRequest appliedControl = motor.getAppliedControl();
+    boolean isNeutral = appliedControl.getName() == "NeutralOut";
+    if (isNeutral) {
       return true;
+    }
+    if (appliedControl.getName() == "NeutralOut") {
+      return true;
+    } else if (appliedControl.getName() == "VelocityVoltage") {
+      VelocityVoltage target = (VelocityVoltage) appliedControl;
+      var actualVelocity = motor.getVelocity().getValueAsDouble();
+      var expectedVelocity = target.Velocity;
+      var minVelocity = expectedVelocity - Constants.targetVelocityTolerance;
+      var maxVelocity = expectedVelocity + Constants.targetVelocityTolerance;
+      if (actualVelocity > minVelocity && actualVelocity < maxVelocity) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
       return false;
     }
-  }
-
-  public boolean isFlywheelAmpReady() {
-    return isFlyWheelReady(ampYeetTarget.Velocity);
-  }
-
-  public boolean isFlywheelSpeakerReady() {
-    return isFlyWheelReady(speakerYeetTarget.Velocity);
   }
 
   public Shooter() {
