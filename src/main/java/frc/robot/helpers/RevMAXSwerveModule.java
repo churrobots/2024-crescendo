@@ -23,6 +23,33 @@ import com.revrobotics.RelativeEncoder;
  * https://github.com/REVrobotics/SPARK-MAX-Examples/tree/master/Java
  */
 public class RevMAXSwerveModule {
+
+  private static final class Constants {
+
+    // Tuning values
+    public static final double kWheelDiameterMeters = 0.0831;
+
+    public static final double kDrivingP = 0.04;
+    public static final double kDrivingI = 0;
+    public static final double kDrivingD = 0;
+
+    public static final double kTurningP = 2;
+    public static final double kTurningI = 0;
+    public static final double kTurningD = 0;
+
+    // The MAXSwerve module can be configured with one of three pinion gears: 12T,
+    // 13T, or 14T. This changes the drive speed of the module (a pinion gear with
+    // more teeth will result in a robot that drives faster).
+    // Note that the module itself has 45 teeth on the wheel's bevel gear, 22 teeth
+    // on the first-stage spur gear, 15 teeth on the bevel pinion.
+    public static final int kDrivingMotorPinionTeeth = 14;
+    public static final int kWheelBevelTeeth = 45;
+    public static final int kFirstStageSpurTeeth = 22;
+    public static final int kBevelPinionTeeth = 15;
+
+    public static final double kMotorFreeSpeedRpm = 5676; // Neo motors are 5676 max RPM
+  }
+
   private final CANSparkMax m_drivingSparkMax;
   private final CANSparkMax m_turningSparkMax;
 
@@ -35,39 +62,26 @@ public class RevMAXSwerveModule {
   private double m_chassisAngularOffset = 0;
   private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
 
-  private final double kNeoMotorFreeSpeedRpm = 5676;
-
-  // The MAXSwerve module can be configured with one of three pinion gears: 12T,
-  // 13T, or 14T.
-  // This changes the drive speed of the module (a pinion gear with more teeth
-  // will result in a
-  // robot that drives faster).
-  // TODO: must be configurable in the constructor based on which gear you chose
-  private final int kDrivingMotorPinionTeeth = 14;
-
   // Invert the turning encoder, since the output shaft rotates in the opposite
   // direction of
   // the steering motor in the MAXSwerve Module.
   private final boolean kTurningEncoderInverted = true;
 
   // Calculations required for driving motor conversion factors and feed forward
-  private final double kDrivingMotorFreeSpeedRps = kNeoMotorFreeSpeedRpm / 60;
+  private final double kDrivingMotorFreeSpeedRps = Constants.kMotorFreeSpeedRpm / 60;
 
-  // TODO: this should be configurable based on the wheel choice
-  private final double kWheelDiameterMeters = 0.0831;
-  private final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
-  // private final double MaxkWheelCircumferenceMeters = .0769;
-  // private final double MinimumkWheelCircumferenceMeters = 0.0703;
+  private final double kWheelCircumferenceMeters = Constants.kWheelDiameterMeters * Math.PI;
 
   // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
   // teeth on the bevel pinion
-  private final double kDrivingMotorReduction = (45.0 * 22) / (kDrivingMotorPinionTeeth * 15);
+  private final double kDrivingMotorReduction = ((double) Constants.kWheelBevelTeeth * Constants.kFirstStageSpurTeeth)
+      / ((double) Constants.kDrivingMotorPinionTeeth * Constants.kBevelPinionTeeth);
   private final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
       / kDrivingMotorReduction;
 
-  private final double kDrivingEncoderPositionFactor = (kWheelDiameterMeters * Math.PI)
+  private final double kDrivingEncoderPositionFactor = (Constants.kWheelDiameterMeters * Math.PI)
       / kDrivingMotorReduction; // meters
-  private final double kDrivingEncoderVelocityFactor = ((kWheelDiameterMeters * Math.PI)
+  private final double kDrivingEncoderVelocityFactor = ((Constants.kWheelDiameterMeters * Math.PI)
       / kDrivingMotorReduction) / 60.0; // meters per second
 
   private final double kTurningEncoderPositionFactor = (2 * Math.PI); // radians
@@ -76,16 +90,10 @@ public class RevMAXSwerveModule {
   private final double kTurningEncoderPositionPIDMinInput = 0; // radians
   private final double kTurningEncoderPositionPIDMaxInput = kTurningEncoderPositionFactor; // radians
 
-  private final double kDrivingP = 0.04;
-  private final double kDrivingI = 0;
-  private final double kDrivingD = 0;
   private final double kDrivingFF = 1 / kDriveWheelFreeSpeedRps;
   private final double kDrivingMinOutput = -1;
   private final double kDrivingMaxOutput = 1;
 
-  private final double kTurningP = 2;
-  private final double kTurningI = 0;
-  private final double kTurningD = 0;
   private final double kTurningFF = 0;
   private final double kTurningMinOutput = -1;
   private final double kTurningMaxOutput = 1;
@@ -147,9 +155,9 @@ public class RevMAXSwerveModule {
     // Set the PID gains for the driving motor. Note these are example gains, and
     // you
     // may need to tune them for your own robot!
-    m_drivingPIDController.setP(kDrivingP);
-    m_drivingPIDController.setI(kDrivingI);
-    m_drivingPIDController.setD(kDrivingD);
+    m_drivingPIDController.setP(Constants.kDrivingP);
+    m_drivingPIDController.setI(Constants.kDrivingI);
+    m_drivingPIDController.setD(Constants.kDrivingD);
     m_drivingPIDController.setFF(kDrivingFF);
     m_drivingPIDController.setOutputRange(kDrivingMinOutput,
         kDrivingMaxOutput);
@@ -157,9 +165,9 @@ public class RevMAXSwerveModule {
     // Set the PID gains for the turning motor. Note these are example gains, and
     // you
     // may need to tune them for your own robot!
-    m_turningPIDController.setP(kTurningP);
-    m_turningPIDController.setI(kTurningI);
-    m_turningPIDController.setD(kTurningD);
+    m_turningPIDController.setP(Constants.kTurningP);
+    m_turningPIDController.setI(Constants.kTurningI);
+    m_turningPIDController.setD(Constants.kTurningD);
     m_turningPIDController.setFF(kTurningFF);
     m_turningPIDController.setOutputRange(kTurningMinOutput,
         kTurningMaxOutput);
