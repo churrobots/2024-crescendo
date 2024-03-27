@@ -37,6 +37,15 @@ public class Drivetrain extends SubsystemBase {
     public static final double kTrackWidth = Units.inchesToMeters(18.5);
     public static final double kWheelBase = Units.inchesToMeters(23.5);
 
+    // Autonomous constants
+    public static final double autoTranslationP = 5.0; // TODO: other team had 3,0,0
+    public static final double autoTranslationI = 0.0;
+    public static final double autoTranslationD = 0.0;
+
+    public static final double autoRotationP = 1.0; // TODO: other team had 7,0,0.01
+    public static final double autoRotationI = 0.0;
+    public static final double autoRotationD = 0.0;
+
     // Angular offsets of the modules relative to the chassis in radians
     // TODO: need to actually calculate these since the robot is not square
     public static final double kFrontLeftChassisAngularOffset = -Math.PI / 2;
@@ -60,9 +69,6 @@ public class Drivetrain extends SubsystemBase {
     public static final double kDirectionSlewRate = 2.4; // radians per second
     public static final double kMagnitudeSlewRate = 3.6; // percent per second (1 = 100%)
     public static final double kRotationalSlewRate = 4; // percent per second (1 = 100%)
-
-    // SPARK MAX CAN IDs
-
   }
 
   // Slew rate filter variables for controlling lateral acceleration
@@ -119,12 +125,8 @@ public class Drivetrain extends SubsystemBase {
         this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
         this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-            // TODO: note, our old number was (5.0, 1.0, 0) here
-            // TODO: other team had 3,0,0
-            new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-            // TODO: note, our old number was (1.0, 0, 0) here
-            // TODO: other team had 7,0,0.01
-            new PIDConstants(1.0, 0.0, 0), // Rotation PID constants
+            new PIDConstants(Constants.autoTranslationP, Constants.autoTranslationI, Constants.autoTranslationD),
+            new PIDConstants(Constants.autoRotationP, Constants.autoRotationI, Constants.autoRotationD),
             Constants.kMaxSpeedMetersPerSecond, // Max module speed, in m/s
             Constants.kDriveBaseRadiusInMeters, // Distance from robot center to furthest module.
             new ReplanningConfig(true, true) // Default path replanning config. See the API for the options here
