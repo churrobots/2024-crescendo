@@ -43,10 +43,6 @@ public class Drivetrain extends SubsystemBase {
     public static final double kFrontRightChassisAngularOffset = 0;
     public static final double kRearLeftChassisAngularOffset = Math.PI;
     public static final double kRearRightChassisAngularOffset = Math.PI / 2;
-    // public static final double kFrontLeftChassisAngularOffset = -1.36;
-    // public static final double kFrontRightChassisAngularOffset = 0;
-    // public static final double kRearLeftChassisAngularOffset = Math.PI;
-    // public static final double kRearRightChassisAngularOffset = 1.78;
     // public static final double kFrontLeftChassisAngularOffset = -2 *
     // Math.atan((kTrackWidth / 2) / (kWheelBase / 2));
     // public static final double kFrontRightChassisAngularOffset = 0;
