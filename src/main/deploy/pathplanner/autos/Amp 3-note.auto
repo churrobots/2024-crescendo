@@ -72,6 +72,12 @@
           "data": {
             "pathName": "A2 to PA"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootSpeaker"
+          }
         }
       ]
     }

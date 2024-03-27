@@ -129,7 +129,7 @@ public class Drivetrain extends SubsystemBase {
             new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
             // TODO: note, our old number was (1.0, 0, 0) here
             // TODO: other team had 7,0,0.01
-            new PIDConstants(5.0, 0.0, 0), // Rotation PID constants
+            new PIDConstants(1.0, 0.0, 0), // Rotation PID constants
             Constants.kMaxSpeedMetersPerSecond, // Max module speed, in m/s
             Constants.kDriveBaseRadiusInMeters, // Distance from robot center to furthest module.
             new ReplanningConfig(true, true) // Default path replanning config. See the API for the options here
