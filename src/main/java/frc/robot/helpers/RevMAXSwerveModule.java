@@ -42,9 +42,9 @@ public class RevMAXSwerveModule {
     // more teeth will result in a robot that drives faster).
     // Note that the module itself has 45 teeth on the wheel's bevel gear, 22 teeth
     // on the first-stage spur gear, 15 teeth on the bevel pinion.
-    public static final int kDrivingMotorPinionTeeth = 14;
+    public static final int kDrivingMotorPinionTeeth = 16;
     public static final int kWheelBevelTeeth = 45;
-    public static final int kFirstStageSpurTeeth = 22;
+    public static final int kFirstStageSpurTeeth = 20;
     public static final int kBevelPinionTeeth = 15;
 
     public static final double kMotorFreeSpeedRpm = 5676; // Neo motors are 5676 max RPM
