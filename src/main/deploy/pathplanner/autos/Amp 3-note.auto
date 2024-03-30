@@ -37,15 +37,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "A1 to PA"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "A1 to PA"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoPrepFlyWheels"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "shootSpeaker"
+            "name": "autoFeedIntoFlyWheels"
           }
         },
         {
@@ -68,15 +81,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "A2 to PA"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "A2 to PA"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoPrepFlyWheels"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "shootSpeaker"
+            "name": "autoFeedIntoFlyWheels"
           }
         }
       ]
