@@ -79,6 +79,8 @@ public class RobotContainer {
 
   // States of the robot.
   final Trigger armIsHigh = new Trigger(arm::armIsHigh);
+  final Trigger flywheelsAreReady = new Trigger(shooter::flywheelsAreAtTarget);
+  //final Trigger noteDetected = ???;
 
   // All of the commands the robot can do.
   final Command prepShot = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
@@ -233,6 +235,7 @@ public class RobotContainer {
 
     // Sensors
     armIsHigh.whileTrue(superSlowDrive);
+    flywheelsAreReady.whileTrue(showRed);
   }
 
   void ensureSubsystemsHaveDefaultCommands() {
