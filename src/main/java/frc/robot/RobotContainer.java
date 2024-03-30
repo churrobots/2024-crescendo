@@ -156,7 +156,7 @@ public class RobotContainer {
   final Command autoPullNoteAwayFromShooter = new RunCommand(intake::deuceTheRings, intake)
       .withTimeout(pullAwayFromShooterTimeout)
       .andThen(new InstantCommand(intake::stopThePlan, intake));
-  final Command autoPrepareFlywheel = new RunCommand(shooter::runFlywheelForSpeaker, shooter).withTimeout(.8);
+  final Command autoPrepareFlywheel = new RunCommand(shooter::runFlywheelForSpeaker, shooter);
   final Command autoFeedIntoFlywheel = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
       .alongWith(new RunCommand(intake::yoinkTheRings, intake)).withTimeout(.5);
 
@@ -203,6 +203,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("intakeForThreeSeconds", intakeForThreeSeconds);
     NamedCommands.registerCommand("waitForTeammates", waitForTeammates);
     NamedCommands.registerCommand("chaos", chaos);
+    NamedCommands.registerCommand("autoFeedIntoFlyWheels", autoFeedIntoFlywheel);
+    NamedCommands.registerCommand("autoPrepFlywheel", autoPrepareFlywheel);
     NamedCommands.registerCommand("volcanoChaos", volcanoChaos);
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData(autoChooser);
