@@ -20,8 +20,8 @@ public class Shooter extends SubsystemBase {
   public static final class Constants {
     public static final double targetVelocityTolerance = 1.5;
 
-    public static final double topSpeakerVelocity = 39;
-    public static final double bottomSpeakerVelocity = 38;
+    public static final double topSpeakerVelocity = 50;
+    public static final double bottomSpeakerVelocity = 49;
 
     public static final double ampVelocity = 7;
     public static final double ejectVelocity = -3;
@@ -150,3 +150,5 @@ public class Shooter extends SubsystemBase {
 // MATEOS AN OPP
 // BETZY'S A SNITCH
 // DANIEL IS SUS
+// TATI IS THE BEST
+// DANIEL IS BANNED FROM COMING

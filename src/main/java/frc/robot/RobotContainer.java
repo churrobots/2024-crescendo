@@ -32,8 +32,8 @@ public class RobotContainer {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorrControllerPort = 1;
     public static final double kDriveDeadband = 0.1;
-    public static final double kSlowDriveScaling = 0.4;
-    public static final double kSuperSlowDriveScaling = 0.2;
+    public static final double kSlowDriveScaling = 0.3;
+    public static final double kSuperSlowDriveScaling = .15;
   }
 
   // SmartDashboard interface.
@@ -111,6 +111,8 @@ public class RobotContainer {
   final Command moveArmForSpeaker = new RunCommand(arm::move_speaker, arm);
   final Command moveArmForAmp = new RunCommand(arm::move_amp, arm);
   final Command moveArmForDefault = new RunCommand(arm::move_Default, arm);
+  final Command moveMid = new RunCommand(arm::move_mid, arm)
+      .alongWith(new RunCommand(shooter::runFlywheelForSpeaker, shooter));
 
   final Command goUp = new RunCommand(climber::goUp, climber);
   final Command goDown = new RunCommand(climber::goDown, climber);
@@ -223,6 +225,7 @@ public class RobotContainer {
     aButtonOperator.whileTrue(runIntake);
     yButtonOperator.whileTrue(prepAmp);
     xButtonOperator.whileTrue(prepShot);
+    bButtonOperator.whileTrue(moveMid);
     rightBumperOperator.whileTrue(shootDefault);
     rightjoyAnalogTrigger.whileTrue(shootDefault);
 

@@ -157,6 +157,10 @@ public class Arm extends TrapezoidProfileSubsystem {
     moveTo(.16); //or .125
   }
 
+  public void move_mid() {
+    moveTo(0.10);
+  }
+
   public void move_Default() {
     disable();
     double position = m_absoluteEncoder.getPosition();
