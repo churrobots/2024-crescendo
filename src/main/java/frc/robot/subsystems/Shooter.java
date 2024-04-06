@@ -68,7 +68,7 @@ public class Shooter extends SubsystemBase {
     ControlRequest appliedControl = motor.getAppliedControl();
     boolean isNeutral = appliedControl.getName() == "NeutralOut";
     if (isNeutral) {
-      return true;
+      return false;
     }
     if (appliedControl.getName() == "NeutralOut") {
       return true;
