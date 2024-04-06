@@ -80,7 +80,7 @@ public class RobotContainer {
   // States of the robot.
   final Trigger armIsHigh = new Trigger(arm::armIsHigh);
   final Trigger flywheelsAreReady = new Trigger(shooter::flywheelsAreAtTarget);
-  //final Trigger noteDetected = ???;
+  // final Trigger noteDetected = ???;
 
   // All of the commands the robot can do.
   final Command prepShot = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
@@ -160,14 +160,15 @@ public class RobotContainer {
   final Command autoPullNoteAwayFromShooter = new RunCommand(intake::deuceTheRings, intake)
       .withTimeout(pullAwayFromShooterTimeout)
       .andThen(new InstantCommand(intake::stopThePlan, intake));
-  final Command autoPrepareFlywheel = new RunCommand(shooter::runFlywheelForSpeaker, shooter);
-  final Command autoFeedIntoFlywheel = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
+  final Command autoPrepareFlywheelForOldShot = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
+      .withTimeout(0.8);
+  final Command autoFeedIntoFlywheelForOldShot = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
       .alongWith(new RunCommand(intake::yoinkTheRings, intake)).withTimeout(.5);
 
   final Command autoAim = new RunCommand(arm::move_speaker, arm).withTimeout(.5);
   final Command shootSpeaker = autoPullNoteAwayFromShooter.alongWith(autoAim)
-      .andThen(autoPrepareFlywheel)
-      .andThen(autoFeedIntoFlywheel);
+      .andThen(autoPrepareFlywheelForOldShot)
+      .andThen(autoFeedIntoFlywheelForOldShot);
   final Command intakeForThreeSeconds = new RunCommand(arm::move_Default, arm)
       .alongWith(new InstantCommand(intake::yoinkTheRings, intake))
       .alongWith(new RunCommand(shooter::reverseAmpYeeter, shooter)).finallyDo(intake::stopThePlan);
@@ -177,6 +178,14 @@ public class RobotContainer {
   final Command volcanoChaos = new RunCommand(arm::move_Default, arm)
       .alongWith(new RunCommand(intake::isYoinking, intake))
       .alongWith(new RunCommand(shooter::runFlywheelForSpeaker, shooter));
+
+  final Command autoFeedIntoFlyWheels = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
+      .alongWith(new RunCommand(intake::yoinkTheRings, intake)).withTimeout(.5);
+  final Command autoPrepFlyWheels = (new RunCommand(intake::deuceTheRings, intake)
+      .withTimeout(pullAwayFromShooterTimeout)
+      .andThen(new InstantCommand(intake::stopThePlan, intake)))
+      .andThen(new RunCommand(shooter::runFlywheelForSpeaker, shooter)
+          .alongWith(new RunCommand(arm::move_speaker, arm)));
 
   public RobotContainer() {
     configureButtonBindings();
@@ -207,8 +216,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("intakeForThreeSeconds", intakeForThreeSeconds);
     NamedCommands.registerCommand("waitForTeammates", waitForTeammates);
     NamedCommands.registerCommand("chaos", chaos);
-    NamedCommands.registerCommand("autoFeedIntoFlyWheels", autoFeedIntoFlywheel);
-    NamedCommands.registerCommand("autoPrepFlywheel", autoPrepareFlywheel);
+    NamedCommands.registerCommand("autoFeedIntoFlyWheels", autoFeedIntoFlyWheels);
+    NamedCommands.registerCommand("autoPrepFlyWheels", autoPrepFlyWheels);
     NamedCommands.registerCommand("volcanoChaos", volcanoChaos);
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData(autoChooser);
