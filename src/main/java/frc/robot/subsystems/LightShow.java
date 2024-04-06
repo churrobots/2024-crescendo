@@ -31,7 +31,7 @@ public class LightShow extends SubsystemBase {
   }
 
   public void disable() {
-    fillPercentage(0, 0, 0);
+    fillPercentage(25, 0, 25);
   }
 
   public void greengohappy() {
@@ -39,8 +39,8 @@ public class LightShow extends SubsystemBase {
   }
 
   public void redgoboom() {
-      fillPercentage(50, 0, 0);
-    }
+    fillPercentage(50, 0, 0);
+  }
 
   public void fillPercentage(int redPercent, int greenPercent, int bluePercent) {
     for (int i = 0; i < Constants.totalPixels; i++) {
