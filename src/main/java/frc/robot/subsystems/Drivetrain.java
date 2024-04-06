@@ -38,11 +38,11 @@ public class Drivetrain extends SubsystemBase {
     public static final double kWheelBase = Units.inchesToMeters(23.5);
 
     // Autonomous constants
-    public static final double autoTranslationP = 5.0; // TODO: other team had 3,0,0
+    public static final double autoTranslationP = 10.0; // TODO: other team had 3,0,0
     public static final double autoTranslationI = 0.0;
     public static final double autoTranslationD = 0.0;
 
-    public static final double autoRotationP = 1.0; // TODO: other team had 7,0,0.01
+    public static final double autoRotationP = 2.0; // TODO: other team had 7,0,0.01
     public static final double autoRotationI = 0.0;
     public static final double autoRotationD = 0.0;
 
