@@ -31,11 +31,12 @@ public class LightShow extends SubsystemBase {
   }
 
   public void disable() {
-    fillPercentage(25, 0, 25);
+    fillPercentage(0, 0, 0);
   }
 
   public void greengohappy() {
     fillPercentage(0, 50, 0);
+    
   }
 
   public void redgoboom() {

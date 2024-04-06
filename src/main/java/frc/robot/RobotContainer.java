@@ -191,6 +191,7 @@ public class RobotContainer {
     configureButtonBindings();
     ensureSubsystemsHaveDefaultCommands();
     createAutonomousSelector();
+    lightShow.disable();
   }
 
   /**
@@ -247,7 +248,7 @@ public class RobotContainer {
 
     // Sensors
     armIsHigh.whileTrue(superSlowDrive);
-    flywheelsAreReady.whileTrue(showRed);
+    flywheelsAreReady.whileTrue(showGreen);
   }
 
   void ensureSubsystemsHaveDefaultCommands() {
