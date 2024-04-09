@@ -187,6 +187,18 @@ public class RobotContainer {
       .andThen(new RunCommand(shooter::runFlywheelForSpeaker, shooter)
           .alongWith(new RunCommand(arm::move_speaker, arm)));
 
+  final Command autoPullNoteAwayFromShooterMid = new RunCommand(intake::deuceTheRings, intake)
+      .withTimeout(pullAwayFromShooterTimeout)
+      .andThen(new InstantCommand(intake::stopThePlan, intake));
+  final Command autoPrepareFlywheelForMidShot = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
+      .withTimeout(0.8);
+  final Command autoFeedIntoFlywheelForMidShot = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
+      .alongWith(new RunCommand(intake::yoinkTheRings, intake)).withTimeout(.5);
+  final Command autoAimMid = new RunCommand(arm::move_mid, arm).withTimeout(.5);
+  final Command autoMidSpeaker = autoPullNoteAwayFromShooterMid.alongWith(autoAimMid)
+      .andThen(autoPrepareFlywheelForMidShot)
+      .andThen(autoFeedIntoFlywheelForMidShot);
+
   public RobotContainer() {
     configureButtonBindings();
     ensureSubsystemsHaveDefaultCommands();
@@ -220,6 +232,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("autoFeedIntoFlyWheels", autoFeedIntoFlyWheels);
     NamedCommands.registerCommand("autoPrepFlyWheels", autoPrepFlyWheels);
     NamedCommands.registerCommand("volcanoChaos", volcanoChaos);
+    NamedCommands.registerCommand("midSpeaker", autoMidSpeaker);
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData(autoChooser);
   }
