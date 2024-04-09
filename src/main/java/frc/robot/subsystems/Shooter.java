@@ -25,6 +25,8 @@ public class Shooter extends SubsystemBase {
 
     public static final double ampVelocity = 7;
     public static final double ejectVelocity = -3;
+
+    public static final double butterDusterVelocity = 15;
   }
 
   // Daniel does not have churrobot spirit
@@ -32,6 +34,8 @@ public class Shooter extends SubsystemBase {
   final TalonFX bottomMotor = new TalonFX(CANMapping.bottomflywheelMotor);
 
   final VelocityVoltage topSpeakerTarget = new VelocityVoltage(Constants.topSpeakerVelocity, 0.001, true, 0, 0, false,
+      false, false);
+  final VelocityVoltage buttDustTarget = new VelocityVoltage(Constants.butterDusterVelocity, 0.001, true, 0, 0, false,
       false, false);
   final VelocityVoltage bottomSpeakerTarget = new VelocityVoltage(Constants.bottomSpeakerVelocity, 0.001, true, 0, 0,
       false, false, false);
@@ -44,6 +48,11 @@ public class Shooter extends SubsystemBase {
   public void runFlywheelForSpeaker() {
     topMotor.setControl(topSpeakerTarget);
     bottomMotor.setControl(bottomSpeakerTarget);
+  }
+
+  public void runButtDustYeet() {
+    topMotor.setControl(buttDustTarget);
+    bottomMotor.setControl(buttDustTarget);
   }
 
   public void runAmpYeeter() {
