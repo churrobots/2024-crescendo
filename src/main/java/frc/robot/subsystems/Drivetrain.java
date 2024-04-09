@@ -1,7 +1,7 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
+//
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
@@ -47,17 +47,10 @@ public class Drivetrain extends SubsystemBase {
     public static final double autoRotationD = 0.0;
 
     // Angular offsets of the modules relative to the chassis in radians
-    // TODO: need to actually calculate these since the robot is not square
     public static final double kFrontLeftChassisAngularOffset = -Math.PI / 2;
     public static final double kFrontRightChassisAngularOffset = 0;
     public static final double kRearLeftChassisAngularOffset = Math.PI;
     public static final double kRearRightChassisAngularOffset = Math.PI / 2;
-    // public static final double kFrontLeftChassisAngularOffset = -2 *
-    // Math.atan((kTrackWidth / 2) / (kWheelBase / 2));
-    // public static final double kFrontRightChassisAngularOffset = 0;
-    // public static final double kRearLeftChassisAngularOffset = Math.PI;
-    // public static final double kRearRightChassisAngularOffset = 2 *
-    // Math.atan((kWheelBase / 2) / (kTrackWidth / 2));
 
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
