@@ -230,8 +230,12 @@ public class RevMAXSwerveModule {
     // Command driving and turning SPARKS MAX towards their respective setpoints.
     m_drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
     m_turningPIDController.setReference(optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
-
     m_desiredState = desiredState;
+    // NOTE: use this if needed to do tuning again
+    // SmartDashboard.putNumber("Encoder Velocity" +
+    // m_drivingSparkMax.getDeviceId(), m_drivingEncoder.getVelocity());
+    // SmartDashboard.putNumber("Speed" + m_drivingSparkMax.getDeviceId(),
+    // optimizedDesiredState.speedMetersPerSecond);
   }
 
   /** Zeroes all the SwerveModule encoders. */
