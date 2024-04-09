@@ -130,9 +130,8 @@ public class Arm extends TrapezoidProfileSubsystem {
   }
 
   public void move_speaker() {
-    moveTo(0.04);
+    moveTo(0.048);
   }
-
   void moveTo(double percentageRotation) {
     double position = m_absoluteEncoder.getPosition();
     if (position > 0.8) {
@@ -158,7 +157,7 @@ public class Arm extends TrapezoidProfileSubsystem {
   }
 
   public void move_mid() {
-    moveTo(0.10);
+    moveTo(0.11);
   }
 
   public void move_Default() {

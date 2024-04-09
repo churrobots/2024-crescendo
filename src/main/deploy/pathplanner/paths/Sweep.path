@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.841879400581835,
-        "y": 0.8035908294193822
+        "x": 8.666149215857887,
+        "y": 1.6457456537553046
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.850756554595676,
-        "y": 1.2588555753690287
+        "x": 8.675026369871729,
+        "y": 2.1010103997049514
       },
       "isLocked": false,
       "linkedName": "chaos 1"
     },
     {
       "anchor": {
-        "x": 7.837744290339307,
-        "y": 7.399206968598845
+        "x": 8.931008848345822,
+        "y": 7.486784359507817
       },
       "prevControl": {
-        "x": 8.240776697356269,
-        "y": 6.602601078403073
+        "x": 9.164600136770959,
+        "y": 6.65959837134547
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,21 +32,21 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.2,
-    "maxAcceleration": 2.5,
+    "maxVelocity": 5.1,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 27.300444181406103,
+    "rotation": 88.8488418215675,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Chaos",
   "previewStartingState": {
-    "rotation": 31.46414792360462,
+    "rotation": 75.31337793130437,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
