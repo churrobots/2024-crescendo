@@ -122,7 +122,7 @@ public class Drivetrain extends SubsystemBase {
             new PIDConstants(Constants.autoRotationP, Constants.autoRotationI, Constants.autoRotationD),
             Constants.kMaxSpeedMetersPerSecond, // Max module speed, in m/s
             Constants.kDriveBaseRadiusInMeters, // Distance from robot center to furthest module.
-            new ReplanningConfig(true, true) // Default path replanning config. See the API for the options here
+            new ReplanningConfig(false, false) // Default path replanning config. See the API for the options here
         ),
         () -> {
           // Boolean supplier that controls when the path will be mirrored for the red
