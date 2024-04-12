@@ -20,8 +20,8 @@ public class Shooter extends SubsystemBase {
   public static final class Constants {
     public static final double targetVelocityTolerance = 1.5;
 
-    public static final double topSpeakerVelocity = 50;
-    public static final double bottomSpeakerVelocity = 50;
+    public static final double topSpeakerVelocity = 52; // 48
+    public static final double bottomSpeakerVelocity = 52; // 50
 
     public static final double ampVelocity = 7;
     public static final double ejectVelocity = -3;
