@@ -52,9 +52,4 @@ public class Climber extends SubsystemBase {
     climberMotor.set(-0.5);
     climberMotor.setSelectedSensorPosition(0);
   }
-
-  @Override
-  public void periodic() {
-    SmartDashboard.putNumber("climber:position", climberMotor.getSelectedSensorPosition());
-  }
 }

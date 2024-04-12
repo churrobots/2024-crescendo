@@ -187,12 +187,17 @@ public class Arm extends TrapezoidProfileSubsystem {
 
   }
 
-  @Override
-  public void periodic() {
-    super.periodic();
+  void _debug() {
     SmartDashboard.putNumber("Arm:encoder", m_absoluteEncoder.getPosition());
     SmartDashboard.putNumber("Arm:appliedOutputRight", right_motor.getAppliedOutput());
     SmartDashboard.putNumber("Arm:appliedOutputLeft", left_motor.getAppliedOutput());
+  }
+
+  @Override
+  public void periodic() {
+    super.periodic();
+    // TODO: uncomment to see debug info for tuning the arm
+    // _debug();
   }
 
 }

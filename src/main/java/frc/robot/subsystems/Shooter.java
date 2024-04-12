@@ -142,13 +142,17 @@ public class Shooter extends SubsystemBase {
     // bottomMotor.setControl(new Follower(topMotor.getDeviceID(), false));
   }
 
-  @Override
-  public void periodic() {
+  void _debug() {
     var actualTopVelocity = topMotor.getVelocity().getValueAsDouble();
     var actualBottomVelocity = bottomMotor.getVelocity().getValueAsDouble();
     SmartDashboard.putNumber("topVelocity", actualTopVelocity);
     SmartDashboard.putNumber("bottomVelocity", actualBottomVelocity);
-    // This method will be called once per scheduler run
+  }
+
+  @Override
+  public void periodic() {
+    // TODO: uncomment this to tune the shooter
+    // _debug();
   }
 }
 // THE WORLD LOVES ETHAN

@@ -50,8 +50,4 @@ public class Intake extends SubsystemBase {
     fanumTaxIntaker.set(0);
   }
 
-  @Override
-  public void periodic() {
-    // if you need anything ongoing
-  }
 }
