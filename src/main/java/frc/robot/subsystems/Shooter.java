@@ -26,7 +26,7 @@ public class Shooter extends SubsystemBase {
     public static final double ampVelocity = 7;
     public static final double ejectVelocity = -3;
 
-    public static final double butterDusterVelocity = 15;
+    public static final double butterDusterVelocity = 25;
   }
 
   // Daniel does not have churrobot spirit
