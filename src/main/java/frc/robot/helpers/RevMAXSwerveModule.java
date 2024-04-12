@@ -7,6 +7,7 @@ package frc.robot.helpers;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -230,12 +231,23 @@ public class RevMAXSwerveModule {
     // Command driving and turning SPARKS MAX towards their respective setpoints.
     m_drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
     m_turningPIDController.setReference(optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
+    // TODO: should this be using the optimizedDesiredState? is this a bug?
     m_desiredState = desiredState;
-    // NOTE: use this if needed to do tuning again
-    // SmartDashboard.putNumber("Encoder Velocity" +
-    // m_drivingSparkMax.getDeviceId(), m_drivingEncoder.getVelocity());
-    // SmartDashboard.putNumber("Speed" + m_drivingSparkMax.getDeviceId(),
-    // optimizedDesiredState.speedMetersPerSecond);
+    // TODO: uncomment this to add debug logging for tuning
+    // _debug(optimizedDesiredState)
+  }
+
+  void _debug(SwerveModuleState optimizedDesiredState) {
+    SmartDashboard.putNumber("Actual Velocity" +
+        m_drivingSparkMax.getDeviceId(), m_drivingEncoder.getVelocity());
+    SmartDashboard.putNumber("Desired Velocity" +
+        m_drivingSparkMax.getDeviceId(),
+        optimizedDesiredState.speedMetersPerSecond);
+    SmartDashboard.putNumber("Actual Angle" +
+        m_turningSparkMax.getDeviceId(), m_turningEncoder.getPosition());
+    SmartDashboard.putNumber("Desired Angle" + m_turningSparkMax.getDeviceId(),
+        optimizedDesiredState.angle.plus(Rotation2d.fromRadians(m_chassisAngularOffset)).getRadians());
+
   }
 
   /** Zeroes all the SwerveModule encoders. */
