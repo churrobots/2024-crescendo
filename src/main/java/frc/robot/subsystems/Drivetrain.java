@@ -59,9 +59,9 @@ public class Drivetrain extends SubsystemBase {
     public static final double kDriveBaseRadiusInMeters = Math
         .sqrt(Math.pow(kTrackWidth / 2, 2) + Math.pow(kWheelBase / 2, 2));
 
-    public static final double kDirectionSlewRate = 2.4; // radians per second
-    public static final double kMagnitudeSlewRate = 3.6; // percent per second (1 = 100%)
-    public static final double kRotationalSlewRate = 4; // percent per second (1 = 100%)
+    public static final double kDirectionSlewRate = 3.6; // radians per second
+    public static final double kMagnitudeSlewRate = 4.5; // percent per second (1 = 100%)
+    public static final double kRotationalSlewRate = 6; // percent per second (1 = 100%)
   }
 
   // Slew rate filter variables for controlling lateral acceleration
