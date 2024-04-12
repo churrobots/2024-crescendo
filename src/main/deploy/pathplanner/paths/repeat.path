@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7167666292978712,
-        "y": 4.363290372631092
+        "x": 8.931008848345822,
+        "y": 7.486784359507817
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6004777061637459,
-        "y": 0.08715988187417174
+        "x": 9.334366372265354,
+        "y": 6.772856025195746
       },
       "isLocked": false,
-      "linkedName": "P3"
+      "linkedName": "Chaos 2"
     },
     {
       "anchor": {
-        "x": 8.666149215857887,
-        "y": 1.6457456537553046
+        "x": 8.721018438504268,
+        "y": 0.6406367337191206
       },
       "prevControl": {
-        "x": 8.068066550649005,
-        "y": -0.2157329998253745
+        "x": 8.642517093390492,
+        "y": 1.003371504669231
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "chaos 1"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -39,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 3.0,
-    "rotation": 71.86849553764911,
+    "rotation": 70.08930539835097,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Chaos",
   "previewStartingState": {
-    "rotation": -54.62454730082748,
+    "rotation": 91.42333674314195,
     "velocity": 0
   },
   "useDefaultConstraints": false

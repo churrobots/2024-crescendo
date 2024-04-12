@@ -54,6 +54,19 @@
               }
             ]
           }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "repeat"
+                }
+              }
+            ]
+          }
         }
       ]
     }
