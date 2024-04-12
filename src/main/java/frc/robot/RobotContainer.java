@@ -32,7 +32,7 @@ public class RobotContainer {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorrControllerPort = 1;
     public static final double kDriveDeadband = 0.1;
-    public static final double kSlowDriveScaling = 0.3;
+    public static final double kSlowDriveScaling = 0.25;
     public static final double kSuperSlowDriveScaling = .15;
   }
 
