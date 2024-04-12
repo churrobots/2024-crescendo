@@ -163,7 +163,7 @@ public class RobotContainer {
   final Command autoPrepareFlywheelForOldShot = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
       .withTimeout(0.8);
   final Command autoFeedIntoFlywheelForOldShot = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
-      .alongWith(new RunCommand(intake::yoinkTheRings, intake)).withTimeout(.5);
+      .alongWith(new RunCommand(intake::yoinkTheRings, intake)).withTimeout(.25);
   final Command autoAim = new RunCommand(arm::move_speaker, arm).withTimeout(.5);
   final Command shootSpeaker = autoPullNoteAwayFromShooter.alongWith(autoAim)
       .andThen(autoPrepareFlywheelForOldShot)
@@ -182,24 +182,33 @@ public class RobotContainer {
       .alongWith(new RunCommand(shooter::runButtDustYeet, shooter));
 
   final Command autoFeedIntoFlyWheels = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
-      .alongWith(new RunCommand(intake::yoinkTheRings, intake)).withTimeout(.5);
+      .alongWith(new RunCommand(intake::yoinkTheRings, intake)).withTimeout(.25);
   final Command autoPrepFlyWheels = (new RunCommand(intake::deuceTheRings, intake)
       .withTimeout(pullAwayFromShooterTimeout)
       .andThen(new InstantCommand(intake::stopThePlan, intake)))
       .andThen(new RunCommand(shooter::runFlywheelForSpeaker, shooter)
           .alongWith(new RunCommand(arm::move_speaker, arm)));
 
-  final Command autoPullNoteAwayFromShooterMid = new RunCommand(intake::deuceTheRings, intake)
+  final Command autoPartPullNoteAwayFromShooterMid = new RunCommand(intake::deuceTheRings, intake)
       .withTimeout(pullAwayFromShooterTimeout)
       .andThen(new InstantCommand(intake::stopThePlan, intake));
-  final Command autoPrepareFlywheelForMidShot = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
+  final Command autoPartPrepareFlywheelForMidShot = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
       .withTimeout(0.8);
-  final Command autoFeedIntoFlywheelForMidShot = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
-      .alongWith(new RunCommand(intake::yoinkTheRings, intake)).withTimeout(.5);
-  final Command autoAimMid = new RunCommand(arm::move_mid, arm).withTimeout(.5);
-  final Command autoMidSpeaker = autoPullNoteAwayFromShooterMid.alongWith(autoAimMid)
-      .andThen(autoPrepareFlywheelForMidShot)
-      .andThen(autoFeedIntoFlywheelForMidShot);
+  final Command autoPartFeedIntoFlywheelForMidShot = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
+      .alongWith(new RunCommand(intake::yoinkTheRings, intake)).withTimeout(.25);
+  final Command autoPartAimMid = new RunCommand(arm::move_mid, arm).withTimeout(.5);
+  final Command autoMidSpeaker = autoPartPullNoteAwayFromShooterMid.alongWith(autoPartAimMid)
+      .andThen(autoPartPrepareFlywheelForMidShot)
+      .andThen(autoPartFeedIntoFlywheelForMidShot);
+
+  final Command autoFeedIntoFlyWheelsMid = new RunCommand(shooter::runFlywheelForSpeaker, shooter)
+      .alongWith(new RunCommand(intake::yoinkTheRings, intake)).withTimeout(.25);
+  final Command autoPrepFlyWheelsMid = (new RunCommand(intake::deuceTheRings,
+      intake)
+      .withTimeout(pullAwayFromShooterTimeout)
+      .andThen(new InstantCommand(intake::stopThePlan, intake)))
+      .andThen(new RunCommand(shooter::runFlywheelForSpeaker, shooter)
+          .alongWith(new RunCommand(arm::move_mid, arm)));
 
   public RobotContainer() {
     configureButtonBindings();
@@ -235,6 +244,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("autoPrepFlyWheels", autoPrepFlyWheels);
     NamedCommands.registerCommand("volcanoChaos", volcanoChaos);
     NamedCommands.registerCommand("midSpeaker", autoMidSpeaker);
+    NamedCommands.registerCommand("autoPrepareFlywheelForMidShot", autoPrepFlyWheelsMid);
+    NamedCommands.registerCommand("autoFeedIntoFlywheelForMidShot", autoFeedIntoFlyWheelsMid);
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData(autoChooser);
   }
