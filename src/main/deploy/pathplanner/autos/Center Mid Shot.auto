@@ -1,0 +1,132 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.2670489526815283,
+      "y": 5.54119389297083
+    },
+    "rotation": 90.04147659584824
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Horizontal PC to midSpeaker"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoPrepareFlywheelForMidShot"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoFeedIntoFlywheelForMidShot"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "mid to F3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "intakeForThreeSeconds"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "F3 to P2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoPrepFlyWheels"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoFeedIntoFlyWheels"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "PC to Mid Close Note"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "intakeForThreeSeconds"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Mid to PC"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoPrepFlyWheels"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoFeedIntoFlyWheels"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "2 Note Autos",
+  "choreoAuto": false
+}

@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3652897354984526,
-        "y": 5.54
+        "x": 2.757195685994633,
+        "y": 4.927552881973971
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.083991954225228,
-        "y": 6.111809392389039
+        "x": 4.44460659600667,
+        "y": 5.239812094841581
       },
       "isLocked": false,
-      "linkedName": "PC"
+      "linkedName": "mid"
     },
     {
       "anchor": {
-        "x": 2.5236089374811854,
-        "y": 6.660291569027873
+        "x": 8.510886139095648,
+        "y": 3.8377022944942634
       },
       "prevControl": {
-        "x": 1.969386599797505,
-        "y": 6.1508784560899565
+        "x": 6.502904155876248,
+        "y": 3.3458294307213614
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "F3"
     }
   ],
   "rotationTargets": [],
@@ -39,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 44.564954633990105,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Center Position 1 Step Path",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": -23.787846230678845,
     "velocity": 0
   },
   "useDefaultConstraints": true

@@ -37,7 +37,7 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -49,16 +49,10 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "autoPrepFlyWheels"
+                  "name": "midSpeaker"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoFeedIntoFlyWheels"
           }
         },
         {

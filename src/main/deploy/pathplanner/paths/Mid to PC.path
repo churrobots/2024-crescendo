@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3652897354984526,
-        "y": 5.54
+        "x": 2.842267099479851,
+        "y": 5.751202602676945
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.083991954225228,
-        "y": 6.111809392389039
+        "x": 2.6087481346837693,
+        "y": 5.810663534914027
       },
       "isLocked": false,
-      "linkedName": "PC"
+      "linkedName": "Mid Close Note"
     },
     {
       "anchor": {
-        "x": 2.5236089374811854,
-        "y": 6.660291569027873
+        "x": 1.2431905647439017,
+        "y": 5.525223436758016
       },
       "prevControl": {
-        "x": 1.969386599797505,
-        "y": 6.1508784560899565
+        "x": 1.3616268812423904,
+        "y": 5.482563342239458
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,7 +39,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 44.564954633990105,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
