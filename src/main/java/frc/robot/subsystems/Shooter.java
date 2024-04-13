@@ -75,16 +75,17 @@ public class Shooter extends SubsystemBase {
 
   boolean isMotorAtTarget(TalonFX motor) {
     ControlRequest appliedControl = motor.getAppliedControl();
-    boolean isNeutral = appliedControl.getName() == "NeutralOut";
-    if (isNeutral) {
-      return false;
-    }
     if (appliedControl.getName() == "NeutralOut") {
-      return true;
+      return false;
     } else if (appliedControl.getName() == "VelocityVoltage") {
       VelocityVoltage target = (VelocityVoltage) appliedControl;
       var actualVelocity = motor.getVelocity().getValueAsDouble();
       var expectedVelocity = target.Velocity;
+      var isReversing = expectedVelocity < 0;
+      if (isReversing) {
+        // don't consider reversing (like keeping the note in the intake) as "at target"
+        return false;
+      }
       var minVelocity = expectedVelocity - Constants.targetVelocityTolerance;
       var maxVelocity = expectedVelocity + Constants.targetVelocityTolerance;
       if (actualVelocity > minVelocity && actualVelocity < maxVelocity) {
