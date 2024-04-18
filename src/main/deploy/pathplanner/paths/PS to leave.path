@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.842267099479851,
-        "y": 5.751202602676945
+        "x": 0.36933726778321885,
+        "y": 4.382828830892618
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.6087481346837693,
-        "y": 5.810663534914027
+        "x": 1.0325760876378172,
+        "y": 3.977877973092837
       },
       "isLocked": false,
-      "linkedName": "Mid Close Note"
+      "linkedName": "PS2"
     },
     {
       "anchor": {
-        "x": 1.2431905647439017,
-        "y": 5.525223436758016
+        "x": 6.723397054916437,
+        "y": 1.2627255277703915
       },
       "prevControl": {
-        "x": 1.3616268812423904,
-        "y": 5.482563342239458
+        "x": 1.6744469788290874,
+        "y": 1.5353280696824838
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,9 +43,9 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Center Position 1 Step Path",
+  "folder": "Source Position 1 Step Path",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": -59.542898952573296,
     "velocity": 0
   },
   "useDefaultConstraints": true

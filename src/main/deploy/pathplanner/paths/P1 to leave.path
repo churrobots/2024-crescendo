@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.842267099479851,
-        "y": 5.751202602676945
+        "x": 2.3193390168678474,
+        "y": 7.013988398671639
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.6087481346837693,
-        "y": 5.810663534914027
+        "x": 3.3193390168678474,
+        "y": 7.013988398671639
       },
       "isLocked": false,
-      "linkedName": "Mid Close Note"
+      "linkedName": "AC"
     },
     {
       "anchor": {
-        "x": 1.2431905647439017,
-        "y": 5.525223436758016
+        "x": 7.177843792681866,
+        "y": 7.013988398671639
       },
       "prevControl": {
-        "x": 1.3616268812423904,
-        "y": 5.482563342239458
+        "x": 6.177843792681866,
+        "y": 7.013988398671639
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,9 +43,9 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Center Position 1 Step Path",
+  "folder": "Amp Position 1 Step Path",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": 24.62977342191853,
     "velocity": 0
   },
   "useDefaultConstraints": true

@@ -60,6 +60,12 @@
           "data": {
             "name": "autoFeedIntoFlyWheels"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "PS to leave"
+          }
         }
       ]
     }
