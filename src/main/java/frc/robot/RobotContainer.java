@@ -98,8 +98,10 @@ public class RobotContainer {
   final Command stopFlyWheel = new RunCommand(shooter::stopFlyWheel, shooter);
   final Command runIntake = new RunCommand(intake::yoinkTheRings, intake)
       .alongWith(new RunCommand(shooter::reverseAmpYeeter, shooter));
+  final Command prepIntake = new RunCommand(shooter::reverseAmpYeeter, shooter).withTimeout(.1);
   final Command stopIntake = new RunCommand(intake::deuceTheRings, intake).withTimeout(pullAwayFromShooterTimeout)
       .andThen(new RunCommand(intake::stopThePlan, intake));
+  final Command betterIntakeWeMadeInWorlds = (prepIntake).andThen(runIntake);
 
   final Command showDefaultColor = new RunCommand(lightShow::disable, lightShow);
   final Command showGreen = new RunCommand(lightShow::greengohappy, lightShow);
@@ -258,7 +260,7 @@ public class RobotContainer {
     startAndBackButtonDriver.whileTrue(recalibrateDrivetrain);
 
     // Operator
-    aButtonOperator.whileTrue(runIntake);
+    aButtonOperator.whileTrue(betterIntakeWeMadeInWorlds);
     yButtonOperator.whileTrue(prepAmp);
     xButtonOperator.whileTrue(prepShot);
     bButtonOperator.whileTrue(moveMid);
