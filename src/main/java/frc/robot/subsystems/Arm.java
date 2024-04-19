@@ -158,7 +158,7 @@ public class Arm extends TrapezoidProfileSubsystem {
   }
 
   public void move_mid() {
-    moveTo(0.1075); //.1025
+    moveTo(0.1025); //.1075 was the new one, .1025 was the OG one which we're trying now at the practice field
   }
 
   public void move_Default() {
