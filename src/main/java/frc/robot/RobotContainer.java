@@ -4,12 +4,17 @@
 
 package frc.robot;
 
+import java.util.function.DoubleSupplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.helpers.LogitechX3D;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -31,6 +37,7 @@ public class RobotContainer {
   static final class Constants {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorrControllerPort = 1;
+    public static final int kFlightstickControllerPort = 2;
     public static final double kDriveDeadband = 0.1;
     public static final double kSlowDriveScaling = 0.25;
     public static final double kSuperSlowDriveScaling = .15;
@@ -39,16 +46,29 @@ public class RobotContainer {
   // SmartDashboard interface.
   SendableChooser<Command> autoChooser;
 
-  // Driver controller.
-  final XboxController driverController = new XboxController(Constants.kDriverControllerPort);
-  final Trigger startButtonDriver = new JoystickButton(driverController, Button.kStart.value);
-  final Trigger backButtonDriver = new JoystickButton(driverController, Button.kStart.value);
-  final Trigger leftBumperDriver = new JoystickButton(driverController, Button.kLeftBumper.value);
-  final Trigger rightBumperDriver = new JoystickButton(driverController, Button.kRightBumper.value);
+  // // Driver controller.
+  final XboxController driverXboxController = new XboxController(Constants.kDriverControllerPort);
+  final Trigger startButtonDriver = new JoystickButton(driverXboxController, Button.kStart.value);
+  final Trigger backButtonDriver = new JoystickButton(driverXboxController, Button.kStart.value);
+  final Trigger leftBumperDriver = new JoystickButton(driverXboxController, Button.kLeftBumper.value);
+  final Trigger rightBumperDriver = new JoystickButton(driverXboxController, Button.kRightBumper.value);
 
   final Trigger startAndBackButtonDriver = new Trigger(() -> {
     return startButtonDriver.getAsBoolean() && backButtonDriver.getAsBoolean();
   });
+
+  final LogitechX3D x3dController = new LogitechX3D(Constants.kFlightstickControllerPort);
+  final Trigger BackButtonDriver = new JoystickButton(x3dController, 7);
+  final Trigger StartButtonDriver = new JoystickButton(x3dController, 8);
+  final Trigger LeftButtonDriver = new JoystickButton(x3dController, 9);
+  final Trigger RightButtonDriver = new JoystickButton(x3dController, 9);
+
+  final DoubleSupplier forwardAxis = x3dController::getY;
+  final DoubleSupplier sidewaysAxis = x3dController::getX;
+  final DoubleSupplier rotationAxis = x3dController::getTwist;
+  // final DoubleSupplier forwardAxis = driverXboxController::getLeftY;
+  // final DoubleSupplier sidewaysAxis = driverXboxController::getLeftX;
+  // final DoubleSupplier rotationAxis = driverXboxController::getRightX;
 
   // Operator controller.
   final XboxController operatorController = new XboxController(Constants.kOperatorrControllerPort);
@@ -127,33 +147,33 @@ public class RobotContainer {
 
   final Command slowDrive = new RunCommand(
       () -> drivetrain.drive(
-          -MathUtil.applyDeadband(driverController.getLeftY() * Constants.kSlowDriveScaling,
+          -MathUtil.applyDeadband(forwardAxis.getAsDouble() * Constants.kSlowDriveScaling,
               Constants.kDriveDeadband),
-          -MathUtil.applyDeadband(driverController.getLeftX() * Constants.kSlowDriveScaling,
+          -MathUtil.applyDeadband(sidewaysAxis.getAsDouble() * Constants.kSlowDriveScaling,
               Constants.kDriveDeadband),
-          -MathUtil.applyDeadband(driverController.getRightX() * Constants.kSlowDriveScaling,
+          -MathUtil.applyDeadband(rotationAxis.getAsDouble() * Constants.kSlowDriveScaling,
               Constants.kDriveDeadband),
           true, true),
       drivetrain);
 
   final Command superSlowDrive = new RunCommand(
       () -> drivetrain.drive(
-          -MathUtil.applyDeadband(driverController.getLeftY() * Constants.kSuperSlowDriveScaling,
+          -MathUtil.applyDeadband(forwardAxis.getAsDouble() * Constants.kSuperSlowDriveScaling,
               Constants.kDriveDeadband),
-          -MathUtil.applyDeadband(driverController.getLeftX() * Constants.kSuperSlowDriveScaling,
+          -MathUtil.applyDeadband(sidewaysAxis.getAsDouble() * Constants.kSuperSlowDriveScaling,
               Constants.kDriveDeadband),
-          -MathUtil.applyDeadband(driverController.getRightX() * Constants.kSuperSlowDriveScaling,
+          -MathUtil.applyDeadband(rotationAxis.getAsDouble() * Constants.kSuperSlowDriveScaling,
               Constants.kDriveDeadband),
           true, true),
       drivetrain);
 
   final Command fastDrive = new RunCommand(
       () -> drivetrain.drive(
-          -MathUtil.applyDeadband(driverController.getLeftY(),
+          -MathUtil.applyDeadband(forwardAxis.getAsDouble(),
               Constants.kDriveDeadband),
-          -MathUtil.applyDeadband(driverController.getLeftX(),
+          -MathUtil.applyDeadband(sidewaysAxis.getAsDouble(),
               Constants.kDriveDeadband),
-          -MathUtil.applyDeadband(driverController.getRightX(),
+          -MathUtil.applyDeadband(rotationAxis.getAsDouble(),
               Constants.kDriveDeadband),
           true, true),
       drivetrain);
@@ -289,3 +309,4 @@ public class RobotContainer {
   }
 
 }
+// Fix setDefaultCommand fpr drivetrain after presenting to kids
