@@ -62,6 +62,8 @@ public class RobotContainer {
   final Trigger StartButtonDriver = new JoystickButton(x3dController, 8);
   final Trigger LeftButtonDriver = new JoystickButton(x3dController, 9);
   final Trigger RightButtonDriver = new JoystickButton(x3dController, 9);
+  final Trigger rightjoyTrigger = new JoystickButton(x3dController, 1);
+  final Trigger rightBumperOperator = new JoystickButton(x3dController, 2);
 
   final DoubleSupplier forwardAxis = x3dController::getY;
   final DoubleSupplier sidewaysAxis = x3dController::getX;
@@ -73,7 +75,7 @@ public class RobotContainer {
   // Operator controller.
   final XboxController operatorController = new XboxController(Constants.kOperatorrControllerPort);
   final Trigger leftBumperOperator = new JoystickButton(operatorController, Button.kLeftBumper.value);
-  final Trigger rightBumperOperator = new JoystickButton(operatorController, Button.kRightBumper.value);
+  // final Trigger rightBumperOperator = new JoystickButton(operatorController, Button.kRightBumper.value);
   final Trigger aButtonOperator = new JoystickButton(operatorController, Button.kA.value);
   final Trigger xButtonOperator = new JoystickButton(operatorController, Button.kX.value);
   final Trigger yButtonOperator = new JoystickButton(operatorController, Button.kY.value);
@@ -83,11 +85,19 @@ public class RobotContainer {
   final Trigger povUpOperator = new POVButton(operatorController, 0);
   final Trigger povDownOperator = new POVButton(operatorController, 180);
   final Trigger leftjoyTrigger = new JoystickButton(operatorController, Button.kLeftStick.value);
-  final Trigger rightjoyTrigger = new JoystickButton(operatorController, Button.kRightStick.value);
+  // final Trigger rightjoyTrigger = new JoystickButton(operatorController, Button.kRightStick.value);
   final Trigger rightjoyAnalogTrigger = new Trigger(() -> {
     boolean triggerIsPressedEnough = operatorController.getRightTriggerAxis() > 0.28;
     return triggerIsPressedEnough;
   });
+
+// JJ's comments on what he wants each button to do
+//1 shoot
+//2 slow mode
+
+
+
+
 
   // All of the subsystems.
   final Drivetrain drivetrain = new Drivetrain();
