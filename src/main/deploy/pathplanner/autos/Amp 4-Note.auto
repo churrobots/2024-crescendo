@@ -5,7 +5,7 @@
       "x": 0.7,
       "y": 6.73
     },
-    "rotation": 59.00176484166591
+    "rotation": 59.0
   },
   "command": {
     "type": "sequential",
@@ -49,10 +49,16 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "midSpeaker"
+                  "name": "autoPrepFlyWheels"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootSpeaker"
           }
         },
         {
@@ -62,7 +68,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "PA to A2"
+                  "pathName": "PA to C2"
                 }
               },
               {
@@ -81,7 +87,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "A2 to PA"
+                  "pathName": "New New New New Path"
                 }
               },
               {
@@ -96,12 +102,56 @@
         {
           "type": "named",
           "data": {
-            "name": "autoFeedIntoFlyWheels"
+            "name": "shootSpeaker"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "PC to S3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "intakeForThreeSeconds"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "S3 to PS"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoPrepFlyWheels"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootSpeaker"
           }
         }
       ]
     }
   },
-  "folder": "3 Note Autos",
+  "folder": "4 NoteAutos",
   "choreoAuto": false
 }
