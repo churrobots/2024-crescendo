@@ -10,6 +10,7 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -99,7 +100,8 @@ public class Drivetrain extends SubsystemBase {
   // Tracking robot pose.
   // TODO: try SwerveDrivePoseEstimator later this season
   private final WPI_Pigeon2 m_gyro = new WPI_Pigeon2(CANMapping.gyroSensor);
-  private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
+  private AprilTagFieldLayout m_fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+  private final SwerveDrivePoseEstimator m_poseEstimator = new SwerveDrivePoseEstimator(
       m_kinematics,
       getGyroAngle(),
       new SwerveModulePosition[] {
@@ -107,7 +109,8 @@ public class Drivetrain extends SubsystemBase {
           m_frontRight.getPosition(),
           m_rearLeft.getPosition(),
           m_rearRight.getPosition()
-      });
+      },
+      new Pose2d());
   private final Field2d m_field = new Field2d();
 
   public Drivetrain() {
@@ -141,7 +144,7 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    m_odometry.update(
+    m_poseEstimator.update(
         getGyroAngle(),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
@@ -171,7 +174,7 @@ public class Drivetrain extends SubsystemBase {
    * @return The pose.
    */
   Pose2d getPose() {
-    return m_odometry.getPoseMeters();
+    return m_poseEstimator.getEstimatedPosition();
   }
 
   /**
@@ -180,7 +183,7 @@ public class Drivetrain extends SubsystemBase {
    * @param pose The pose to which to set the odometry.
    */
   void resetPose(Pose2d pose) {
-    m_odometry.resetPosition(
+    m_poseEstimator.resetPosition(
         getGyroAngle(),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
