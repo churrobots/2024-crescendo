@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import org.photonvision.PhotonCamera;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -38,6 +40,9 @@ public class RobotContainer {
 
   // SmartDashboard interface.
   SendableChooser<Command> autoChooser;
+
+  // Sensors
+  final PhotonCamera frontCamera = new PhotonCamera("ChurroVision");
 
   // Driver controller.
   final XboxController driverController = new XboxController(Constants.kDriverControllerPort);
