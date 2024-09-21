@@ -43,13 +43,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "C3 to PS"
+                  "pathName": "mid"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "autoPrepFlyWheels"
+                  "name": "autoPrepareFlywheelForMidShot"
                 }
               }
             ]
@@ -58,7 +58,13 @@
         {
           "type": "named",
           "data": {
-            "name": "shootSpeaker"
+            "name": "autoFeedIntoFlywheelForMidShot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C3 to PS"
           }
         },
         {
@@ -87,7 +93,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "New New New New Path"
+                  "pathName": "Pc to C2"
                 }
               },
               {
@@ -112,7 +118,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "New New New New New Path"
+                  "pathName": "Pc to C1"
                 }
               },
               {
@@ -131,7 +137,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "New New New Path"
+                  "pathName": "C1 to Ps"
                 }
               },
               {
