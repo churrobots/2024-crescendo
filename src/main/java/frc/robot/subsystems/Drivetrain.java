@@ -100,7 +100,7 @@ public class Drivetrain extends SubsystemBase {
   // Tracking robot pose.
   // TODO: try SwerveDrivePoseEstimator later this season
   private final WPI_Pigeon2 m_gyro = new WPI_Pigeon2(CANMapping.gyroSensor);
-  private AprilTagFieldLayout m_fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+  // private AprilTagFieldLayout m_fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
   private final SwerveDrivePoseEstimator m_poseEstimator = new SwerveDrivePoseEstimator(
       m_kinematics,
       getGyroAngle(),
