@@ -3,29 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7167666292978712,
-        "y": 4.363290372631092
+        "x": 1.330316976244485,
+        "y": 5.563210187184264
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.380854473767686,
-        "y": 4.0352167368107885
+        "x": 1.3900998791219228,
+        "y": 5.553495274091242
       },
       "isLocked": false,
-      "linkedName": "P3"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.699285790707928,
-        "y": 4.1754844129660125
+        "x": 2.08652414121724,
+        "y": 5.563210187184264
       },
       "prevControl": {
-        "x": 1.854153767219055,
-        "y": 4.277650595958678
+        "x": 2.0076918433255027,
+        "y": 5.533523101515242
+      },
+      "nextControl": {
+        "x": 2.1653564391089763,
+        "y": 5.592897272853286
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.3652897354984526,
+        "y": 5.54
+      },
+      "prevControl": {
+        "x": 1.378211405002647,
+        "y": 5.551540982717447
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "S1"
+      "linkedName": "PC"
     }
   ],
   "rotationTargets": [],
@@ -39,13 +55,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 2.738917981060628,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Source Position 1 Step Path",
   "previewStartingState": {
-    "rotation": -59.91595633653647,
+    "rotation": -90.0040555586887,
     "velocity": 0
   },
   "useDefaultConstraints": true
