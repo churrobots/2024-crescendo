@@ -190,8 +190,8 @@ public class Arm extends TrapezoidProfileSubsystem {
       right_motor.set(-0.4);
     } else if (position > 0.08) {
       right_motor.set(-0.3);
-    } else if (position > 0.03) {
-      right_motor.set(-0.05);
+    } else if (position > 0.02) {
+      right_motor.set(-0.1);
     } else {
       right_motor.stopMotor();
     }
