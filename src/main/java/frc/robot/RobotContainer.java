@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-import org.photonvision.PhotonCamera;
+// import org.photonvision.PhotonCamera;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -42,7 +42,7 @@ public class RobotContainer {
   SendableChooser<Command> autoChooser;
 
   // Sensors
-  final PhotonCamera frontCamera = new PhotonCamera("ChurroVision");
+  // final PhotonCamera frontCamera = new PhotonCamera("ChurroVision");
 
   // Driver controller.
   final XboxController driverController = new XboxController(Constants.kDriverControllerPort);
@@ -76,7 +76,7 @@ public class RobotContainer {
 
   // All of the subsystems.
   final Drivetrain drivetrain = new Drivetrain();
-  final Arm arm = new Arm(frontCamera);
+  final Arm arm = new Arm();
   final Intake intake = new Intake();
   final LightShow lightShow = new LightShow();
   final Shooter shooter = new Shooter();

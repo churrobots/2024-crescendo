@@ -81,14 +81,12 @@ public class Arm extends TrapezoidProfileSubsystem {
    * revolution set to 8192
    */
   final SparkAbsoluteEncoder m_absoluteEncoder;
-  final PhotonCamera m_churroCamera;
 
   /** Create a new ArmSubsystem. */
   // We used some sample code from:
   // https://github.com/Delmar-Robotics-Engineers-At-MADE/2024-Robot/blob/main/src/main/java/frc/robot/subsystems/Arm.java
-  public Arm(PhotonCamera frontCamera) {
+  public Arm() {
     super(Constants.trapezoidProfile, Constants.kArmOffsetRads);
-    m_churroCamera = frontCamera;
     right_motor.restoreFactoryDefaults();
     right_motor.setSmartCurrentLimit(40);
     right_motor.setIdleMode(IdleMode.kBrake);
@@ -137,20 +135,21 @@ public class Arm extends TrapezoidProfileSubsystem {
     moveTo(0.048);
   }
 
-  public void photoAim() {
-    PhotonPipelineResult result = m_churroCamera.getLatestResult();
-    PhotonTrackedTarget target = result.getBestTarget();
-    int targetId = target.getFiducialId();
-    var fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-    var tagPose = fieldLayout.getTagPose(targetId);
+  // public void photoAim() {
+  // PhotonPipelineResult result = m_churroCamera.getLatestResult();
+  // PhotonTrackedTarget target = result.getBestTarget();
+  // int targetId = target.getFiducialId();
+  // var fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+  // var tagPose = fieldLayout.getTagPose(targetId);
 
-    if (tagPose.isPresent()) {
-      Pose3d actualPose = tagPose.get();
-      double distance = PhotonUtils.calculateDistanceToTargetMeters(0.32, actualPose.getZ(), Math.PI / 4, Math.PI / 2);
-      SmartDashboard.putNumber("Distance", distance);
-    }
+  // if (tagPose.isPresent()) {
+  // Pose3d actualPose = tagPose.get();
+  // double distance = PhotonUtils.calculateDistanceToTargetMeters(0.32,
+  // actualPose.getZ(), Math.PI / 4, Math.PI / 2);
+  // SmartDashboard.putNumber("Distance", distance);
+  // }
 
-  }
+  // }
 
   void moveTo(double percentageRotation) {
     double position = m_absoluteEncoder.getPosition();
