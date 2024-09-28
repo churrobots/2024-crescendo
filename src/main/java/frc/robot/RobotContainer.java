@@ -76,7 +76,7 @@ public class RobotContainer {
 
   // All of the subsystems.
   final Drivetrain drivetrain = new Drivetrain();
-  final Arm arm = new Arm();
+  final Arm arm = new Arm(frontCamera);
   final Intake intake = new Intake();
   final LightShow lightShow = new LightShow();
   final Shooter shooter = new Shooter();
@@ -260,7 +260,7 @@ public class RobotContainer {
   void configureButtonBindings() {
 
     // Driver
-    leftBumperDriver.whileTrue(anchorInPlace);
+    leftBumperDriver.whileTrue(shootDefault);
     rightBumperDriver.whileTrue(slowDrive);
     startAndBackButtonDriver.whileTrue(recalibrateDrivetrain);
 
