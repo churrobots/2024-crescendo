@@ -100,7 +100,7 @@ public class RobotContainer {
   // shooter).until(shooter::isFlyWheelReady)
   // .andThen(new RunCommand(intake::yoinkTheRings, intake).withTimeout(3));
   final double pullAwayFromShooterTimeout = 0.10;
-  final Command stopFlyWheel = new RunCommand(shooter::stopFlyWheel, shooter);
+  final Command stopFlyWheel = new RunCommand(shooter::reverseAmpYeeter, shooter);
   final Command runIntake = new RunCommand(intake::yoinkTheRings, intake)
       .alongWith(new RunCommand(shooter::reverseAmpYeeter, shooter));
   final Command prepIntake = new RunCommand(shooter::reverseAmpYeeter, shooter).withTimeout(.1);
