@@ -180,7 +180,7 @@ public class RobotContainer {
       .alongWith(new InstantCommand(intake::yoinkTheRings, intake))
       .alongWith(new RunCommand(shooter::reverseAmpYeeter, shooter)).finallyDo(intake::stopThePlan);
 
-  final Command waitForTeammates = new WaitCommand(5);
+  final Command waitForTeammates = new WaitCommand(9);
 
   final Command chaos = new RunCommand(arm::move_Default, arm)
       .alongWith(new RunCommand(intake::ejectNow, intake));

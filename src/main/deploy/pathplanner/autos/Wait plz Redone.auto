@@ -1,0 +1,44 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7427762909634618,
+      "y": 6.71593009183559
+    },
+    "rotation": 58.41615941985956
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "shootSpeaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "waitForTeammates"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "wiat plz  redone"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "folder": "1 Note Autos",
+  "choreoAuto": false
+}
