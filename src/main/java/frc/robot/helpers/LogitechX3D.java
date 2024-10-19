@@ -18,24 +18,27 @@ public class LogitechX3D extends GenericHID {
     HAL.report(tResourceType.kResourceType_Joystick, port + 1);
   }
 
+  // front-back
   public double getY() {
     return getRawAxis(1);
-    // return getRawAxis(20);
   }
 
+  // left-right
   public double getX() {
     return getRawAxis(0);
-    // return getRawAxis(21);
   }
 
+  // twist
   public double getTwist() {
     return getRawAxis(2);
-    // return getRawAxis(24);
   }
 
+  // trim potentiometer
   public double getThrottle() {
-    return getRawAxis(25);
+    return getRawAxis(3);
   }
+
   // Button Pressing values
+  
 
 }

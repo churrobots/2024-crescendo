@@ -47,35 +47,38 @@ public class RobotContainer {
   SendableChooser<Command> autoChooser;
 
   // // Driver controller.
-  final XboxController driverXboxController = new XboxController(Constants.kDriverControllerPort);
-  final Trigger startButtonDriver = new JoystickButton(driverXboxController, Button.kStart.value);
-  final Trigger backButtonDriver = new JoystickButton(driverXboxController, Button.kStart.value);
-  final Trigger leftBumperDriver = new JoystickButton(driverXboxController, Button.kLeftBumper.value);
-  final Trigger rightBumperDriver = new JoystickButton(driverXboxController, Button.kRightBumper.value);
+  // final XboxController driverXboxController = new
+  // XboxController(Constants.kDriverControllerPort);
+  // final Trigger startButtonDriver = new JoystickButton(driverXboxController,
+  // Button.kStart.value);
+  // final Trigger backButtonDriver = new JoystickButton(driverXboxController,
+  // Button.kStart.value);
+  // final Trigger leftBumperDriver = new JoystickButton(driverXboxController,
+  // Button.kLeftBumper.value);
+  // final Trigger rightBumperDriver = new JoystickButton(driverXboxController,
+  // Button.kRightBumper.value);
 
-  final Trigger startAndBackButtonDriver = new Trigger(() -> {
-    return startButtonDriver.getAsBoolean() && backButtonDriver.getAsBoolean();
-  });
+  // final Trigger startAndBackButtonDriver = new Trigger(() -> {
+  // return startButtonDriver.getAsBoolean() && backButtonDriver.getAsBoolean();
+  // });
 
+  // Logitech flight controller button and joystick axes assignments.
   final LogitechX3D x3dController = new LogitechX3D(Constants.kFlightstickControllerPort);
-  final Trigger BackButtonDriver = new JoystickButton(x3dController, 7);
-  final Trigger StartButtonDriver = new JoystickButton(x3dController, 8);
-  final Trigger LeftButtonDriver = new JoystickButton(x3dController, 9);
-  final Trigger RightButtonDriver = new JoystickButton(x3dController, 9);
-  final Trigger rightjoyTrigger = new JoystickButton(x3dController, 1);
-  final Trigger rightBumperOperator = new JoystickButton(x3dController, 2);
-
+  final Trigger button1Trigger = new JoystickButton(x3dController, 1);
+  final Trigger button2Trigger = new JoystickButton(x3dController, 2);
+  final Trigger button7Trigger = new JoystickButton(x3dController, 7);
+  final Trigger button11Trigger = new JoystickButton(x3dController, 11);
+  final Trigger button12Trigger = new JoystickButton(x3dController, 12);
   final DoubleSupplier forwardAxis = x3dController::getY;
   final DoubleSupplier sidewaysAxis = x3dController::getX;
   final DoubleSupplier rotationAxis = x3dController::getTwist;
-  // final DoubleSupplier forwardAxis = driverXboxController::getLeftY;
-  // final DoubleSupplier sidewaysAxis = driverXboxController::getLeftX;
-  // final DoubleSupplier rotationAxis = driverXboxController::getRightX;
+  final DoubleSupplier sliderAxis = x3dController::getThrottle;
 
   // Operator controller.
   final XboxController operatorController = new XboxController(Constants.kOperatorrControllerPort);
   final Trigger leftBumperOperator = new JoystickButton(operatorController, Button.kLeftBumper.value);
-  // final Trigger rightBumperOperator = new JoystickButton(operatorController, Button.kRightBumper.value);
+  // final Trigger rightBumperOperator = new JoystickButton(operatorController,
+  // Button.kRightBumper.value);
   final Trigger aButtonOperator = new JoystickButton(operatorController, Button.kA.value);
   final Trigger xButtonOperator = new JoystickButton(operatorController, Button.kX.value);
   final Trigger yButtonOperator = new JoystickButton(operatorController, Button.kY.value);
@@ -85,19 +88,16 @@ public class RobotContainer {
   final Trigger povUpOperator = new POVButton(operatorController, 0);
   final Trigger povDownOperator = new POVButton(operatorController, 180);
   final Trigger leftjoyTrigger = new JoystickButton(operatorController, Button.kLeftStick.value);
-  // final Trigger rightjoyTrigger = new JoystickButton(operatorController, Button.kRightStick.value);
+  // final Trigger rightjoyTrigger = new JoystickButton(operatorController,
+  // Button.kRightStick.value);
   final Trigger rightjoyAnalogTrigger = new Trigger(() -> {
     boolean triggerIsPressedEnough = operatorController.getRightTriggerAxis() > 0.28;
     return triggerIsPressedEnough;
   });
 
-// JJ's comments on what he wants each button to do
-//1 shoot
-//2 slow mode
-
-
-
-
+  // JJ's comments on what he wants each button to do
+  // 1 shoot
+  // 2 slow mode
 
   // All of the subsystems.
   final Drivetrain drivetrain = new Drivetrain();
