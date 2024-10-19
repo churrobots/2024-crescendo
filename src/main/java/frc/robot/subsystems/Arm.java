@@ -1,11 +1,19 @@
 package frc.robot.subsystems;
 
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonUtils;
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.IdleMode;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 import edu.wpi.first.wpilibj2.command.TrapezoidProfileSubsystem;
@@ -52,11 +60,6 @@ public class Arm extends TrapezoidProfileSubsystem {
     // Default slot should be fine according to:
     // https://www.chiefdelphi.com/t/sparkmax-pid-controller/427438/4
     static final int defaultPidSlot = 0;
-
-    static final TunableDouble groundPosition = new TunableDouble("groundPosition", 0); // tune
-    static final TunableDouble ampPosition = new TunableDouble("ampPosition", 0.15); // tune
-    static final TunableDouble speakerPosition = new TunableDouble("speakerPosition", 0.2); // tune
-    static final TunableDouble defaultPosition = new TunableDouble("defaultPosition", 0); // tune
   }
 
   final CANSparkMax right_motor = new CANSparkMax(CANMapping.rightArmMotor, MotorType.kBrushless);
@@ -84,7 +87,6 @@ public class Arm extends TrapezoidProfileSubsystem {
   // https://github.com/Delmar-Robotics-Engineers-At-MADE/2024-Robot/blob/main/src/main/java/frc/robot/subsystems/Arm.java
   public Arm() {
     super(Constants.trapezoidProfile, Constants.kArmOffsetRads);
-
     right_motor.restoreFactoryDefaults();
     right_motor.setSmartCurrentLimit(40);
     right_motor.setIdleMode(IdleMode.kBrake);
@@ -133,6 +135,22 @@ public class Arm extends TrapezoidProfileSubsystem {
     moveTo(0.048);
   }
 
+  // public void photoAim() {
+  // PhotonPipelineResult result = m_churroCamera.getLatestResult();
+  // PhotonTrackedTarget target = result.getBestTarget();
+  // int targetId = target.getFiducialId();
+  // var fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+  // var tagPose = fieldLayout.getTagPose(targetId);
+
+  // if (tagPose.isPresent()) {
+  // Pose3d actualPose = tagPose.get();
+  // double distance = PhotonUtils.calculateDistanceToTargetMeters(0.32,
+  // actualPose.getZ(), Math.PI / 4, Math.PI / 2);
+  // SmartDashboard.putNumber("Distance", distance);
+  // }
+
+  // }
+
   void moveTo(double percentageRotation) {
     double position = m_absoluteEncoder.getPosition();
     if (position > 0.8) {
@@ -158,7 +176,8 @@ public class Arm extends TrapezoidProfileSubsystem {
   }
 
   public void move_mid() {
-    moveTo(0.1025); //.1075 was the new one, .1025 was the OG one which we're trying now at the practice field
+    moveTo(0.1025); // .1075 was the new one, .1025 was the OG one which we're trying now at the
+                    // practice field
   }
 
   public void move_Default() {
@@ -171,8 +190,8 @@ public class Arm extends TrapezoidProfileSubsystem {
       right_motor.set(-0.4);
     } else if (position > 0.08) {
       right_motor.set(-0.3);
-    } else if (position > 0.03) {
-      right_motor.set(-0.05);
+    } else if (position > 0.02) {
+      right_motor.set(-0.1);
     } else {
       right_motor.stopMotor();
     }

@@ -21,10 +21,9 @@ public class Shooter extends SubsystemBase {
     public static final double targetVelocityTolerance = 1.5;
 
     public static final double topSpeakerVelocity = 44; // 48
-    public static final double bottomSpeakerVelocity = 60;
-   ; // 50
+    public static final double bottomSpeakerVelocity = 60;; // 50
 
-    public static final double ampVelocity = 7;
+    public static final double ampVelocity = 15;
     public static final double ejectVelocity = -3;
 
     public static final double butterDusterVelocity = 25;
@@ -167,4 +166,4 @@ public class Shooter extends SubsystemBase {
 // DANIEL IS SUS
 // TATI IS THE BEST CAPPPPPP SHE'S THE WORST ON HOOD
 // DANIEL IS BANNED FROM COMING
-//MAY 24TH THE NEW KINGS DANIEL 2.0 (THE SEQUEL) AND ALDO THE GOAT ARRIVED
+// MAY 24TH THE NEW KINGS DANIEL 2.0 (THE SEQUEL) AND ALDO THE GOAT ARRIVED

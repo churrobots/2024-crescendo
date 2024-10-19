@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.util.function.DoubleSupplier;
+// import org.photonvision.PhotonCamera;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -46,23 +47,11 @@ public class RobotContainer {
   // SmartDashboard interface.
   SendableChooser<Command> autoChooser;
 
-  // // Driver controller.
-  // final XboxController driverXboxController = new
-  // XboxController(Constants.kDriverControllerPort);
-  // final Trigger startButtonDriver = new JoystickButton(driverXboxController,
-  // Button.kStart.value);
-  // final Trigger backButtonDriver = new JoystickButton(driverXboxController,
-  // Button.kStart.value);
-  // final Trigger leftBumperDriver = new JoystickButton(driverXboxController,
-  // Button.kLeftBumper.value);
-  // final Trigger rightBumperDriver = new JoystickButton(driverXboxController,
-  // Button.kRightBumper.value);
-
-  // final Trigger startAndBackButtonDriver = new Trigger(() -> {
-  // return startButtonDriver.getAsBoolean() && backButtonDriver.getAsBoolean();
-  // });
+  // Sensors
+  // final PhotonCamera frontCamera = new PhotonCamera("ChurroVision");
 
   // Logitech flight controller button and joystick axes assignments.
+  // Driver uses this controller.
   final LogitechX3D x3dController = new LogitechX3D(Constants.kFlightstickControllerPort);
   final Trigger button1Trigger = new JoystickButton(x3dController, 1);
   final Trigger button2Trigger = new JoystickButton(x3dController, 2);
@@ -74,6 +63,22 @@ public class RobotContainer {
   final DoubleSupplier sidewaysAxis = x3dController::getX;
   final DoubleSupplier rotationAxis = x3dController::getTwist;
   final DoubleSupplier sliderAxis = x3dController::getThrottle;
+
+  // // Driver controller.
+  // final XboxController driverController = new
+  // XboxController(Constants.kDriverControllerPort);
+  // final Trigger startButtonDriver = new JoystickButton(driverController,
+  // Button.kStart.value);
+  // final Trigger backButtonDriver = new JoystickButton(driverController,
+  // Button.kStart.value);
+  // final Trigger leftBumperDriver = new JoystickButton(driverController,
+  // Button.kLeftBumper.value);
+  // final Trigger rightBumperDriver = new JoystickButton(driverController,
+  // Button.kRightBumper.value);
+
+  // final Trigger startAndBackButtonDriver = new Trigger(() -> {
+  // return startButtonDriver.getAsBoolean() && backButtonDriver.getAsBoolean();
+  // });
 
   // Operator controller.
   final XboxController operatorController = new XboxController(Constants.kOperatorrControllerPort);
@@ -90,7 +95,7 @@ public class RobotContainer {
   final Trigger povDownOperator = new POVButton(operatorController, 180);
   final Trigger leftjoyTrigger = new JoystickButton(operatorController, Button.kLeftStick.value);
   final Trigger rightjoyTrigger = new JoystickButton(operatorController,
-  Button.kRightStick.value);
+      Button.kRightStick.value);
   final Trigger rightjoyAnalogTrigger = new Trigger(() -> {
     boolean triggerIsPressedEnough = operatorController.getRightTriggerAxis() > 0.28;
     return triggerIsPressedEnough;
@@ -296,7 +301,6 @@ public class RobotContainer {
     aButtonOperator.whileTrue(betterIntakeWeMadeInWorlds);
     yButtonOperator.whileTrue(prepAmp);
     bButtonOperator.whileTrue(moveMid);
-
 
     startButtonOperator.whileTrue(goUpWNoSafety);
     backButtonOperator.whileTrue(goDownWNoSafety);
