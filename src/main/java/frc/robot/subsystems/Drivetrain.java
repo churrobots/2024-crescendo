@@ -4,17 +4,30 @@
 //
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -23,6 +36,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.CANMapping;
@@ -100,7 +114,7 @@ public class Drivetrain extends SubsystemBase {
   // Tracking robot pose.
   // TODO: try SwerveDrivePoseEstimator later this season
   private final WPI_Pigeon2 m_gyro = new WPI_Pigeon2(CANMapping.gyroSensor);
-  // private AprilTagFieldLayout m_fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+  private AprilTagFieldLayout m_fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
   private final SwerveDrivePoseEstimator m_poseEstimator = new SwerveDrivePoseEstimator(
       m_kinematics,
       getGyroAngle(),
@@ -111,6 +125,19 @@ public class Drivetrain extends SubsystemBase {
           m_rearRight.getPosition()
       },
       new Pose2d());
+
+  private final PhotonCamera cam = new PhotonCamera("testCamera");
+  private final Transform3d robotToCam = new Transform3d(
+      new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0, 0, 0)); // Cam mounted facing forward, half a meter forward of
+                                                                  // center, half a meter up from center.
+
+  // Construct PhotonPoseEstimator
+  PhotonPoseEstimator photonPoseEstimator = new PhotonPoseEstimator(
+      m_fieldLayout,
+      PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+      cam,
+      robotToCam);
+
   private final Field2d m_field = new Field2d();
 
   public Drivetrain() {
@@ -153,6 +180,26 @@ public class Drivetrain extends SubsystemBase {
             m_rearRight.getPosition()
         });
     m_field.setRobotPose(getPose());
+
+    Optional<EstimatedRobotPose> optionalEstimatedGlobalPose = getEstimatedGlobalPose(getPose());
+    if (!optionalEstimatedGlobalPose.isEmpty()) {
+
+      EstimatedRobotPose estimatedGlobalPose = optionalEstimatedGlobalPose.get();
+
+      // Apply vision measurements. For simulation purposes only, we don't input a
+      // latency delay -- on
+      // a real robot, this must be calculated based either on known latency or
+      // timestamps.
+      m_poseEstimator.addVisionMeasurement(estimatedGlobalPose.estimatedPose.toPose2d(),
+          estimatedGlobalPose.timestampSeconds);
+
+    }
+
+  }
+
+  public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
+    photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
+    return photonPoseEstimator.update();
   }
 
   ChassisSpeeds getRobotRelativeSpeeds() {
