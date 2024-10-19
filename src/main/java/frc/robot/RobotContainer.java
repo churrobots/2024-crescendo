@@ -67,6 +67,7 @@ public class RobotContainer {
   final Trigger button1Trigger = new JoystickButton(x3dController, 1);
   final Trigger button2Trigger = new JoystickButton(x3dController, 2);
   final Trigger button7Trigger = new JoystickButton(x3dController, 7);
+  final Trigger button10Trigger = new JoystickButton(x3dController, 10);
   final Trigger button11Trigger = new JoystickButton(x3dController, 11);
   final Trigger button12Trigger = new JoystickButton(x3dController, 12);
   final DoubleSupplier forwardAxis = x3dController::getY;
@@ -88,8 +89,8 @@ public class RobotContainer {
   final Trigger povUpOperator = new POVButton(operatorController, 0);
   final Trigger povDownOperator = new POVButton(operatorController, 180);
   final Trigger leftjoyTrigger = new JoystickButton(operatorController, Button.kLeftStick.value);
-  // final Trigger rightjoyTrigger = new JoystickButton(operatorController,
-  // Button.kRightStick.value);
+  final Trigger rightjoyTrigger = new JoystickButton(operatorController,
+  Button.kRightStick.value);
   final Trigger rightjoyAnalogTrigger = new Trigger(() -> {
     boolean triggerIsPressedEnough = operatorController.getRightTriggerAxis() > 0.28;
     return triggerIsPressedEnough;
@@ -285,17 +286,17 @@ public class RobotContainer {
   void configureButtonBindings() {
 
     // Driver
-    leftBumperDriver.whileTrue(anchorInPlace);
-    rightBumperDriver.whileTrue(slowDrive);
-    startAndBackButtonDriver.whileTrue(recalibrateDrivetrain);
+    button1Trigger.whileTrue(shootDefault);
+    button2Trigger.whileTrue(slowDrive);
+    button7Trigger.whileTrue(recalibrateDrivetrain);
+    button10Trigger.whileTrue(anchorInPlace);
+    button12Trigger.whileTrue(prepShot);
 
     // Operator
     aButtonOperator.whileTrue(betterIntakeWeMadeInWorlds);
     yButtonOperator.whileTrue(prepAmp);
-    xButtonOperator.whileTrue(prepShot);
     bButtonOperator.whileTrue(moveMid);
-    rightBumperOperator.whileTrue(shootDefault);
-    rightjoyAnalogTrigger.whileTrue(shootDefault);
+
 
     startButtonOperator.whileTrue(goUpWNoSafety);
     backButtonOperator.whileTrue(goDownWNoSafety);
