@@ -10,6 +10,7 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.common.hardware.VisionLEDMode;
 
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -190,9 +191,14 @@ public class Drivetrain extends SubsystemBase {
       // latency delay -- on
       // a real robot, this must be calculated based either on known latency or
       // timestamps.
-      m_poseEstimator.addVisionMeasurement(estimatedGlobalPose.estimatedPose.toPose2d(),
+      var updated2d = estimatedGlobalPose.estimatedPose.toPose2d();
+
+      m_poseEstimator.addVisionMeasurement(updated2d,
           estimatedGlobalPose.timestampSeconds);
 
+      SmartDashboard.putNumber("Vision:x", updated2d.getX());
+      SmartDashboard.putNumber("Vision:y", updated2d.getY());
+      SmartDashboard.putNumber("Vision:degrees", updated2d.getRotation().getDegrees());
     }
 
   }
@@ -288,6 +294,9 @@ public class Drivetrain extends SubsystemBase {
     double xSpeedCommanded;
     double ySpeedCommanded;
 
+    cam.setDriverMode(true);
+    cam.setLED(VisionLEDMode.kBlink);
+    
     var alliance = DriverStation.getAlliance();
     if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
       xSpeed = -1 * xSpeed;
