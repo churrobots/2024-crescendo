@@ -53,9 +53,10 @@ public class RobotContainer {
   // Logitech flight controller button and joystick axes assignments.
   // Driver uses this controller.
   final LogitechX3D x3dController = new LogitechX3D(Constants.kFlightstickControllerPort);
-  final Trigger button1Trigger = new JoystickButton(x3dController, 1);
-  final Trigger button2Trigger = new JoystickButton(x3dController, 2);
-  final Trigger button7Trigger = new JoystickButton(x3dController, 7);
+  final Trigger button1Trigger = new JoystickButton(x3dController, 1); // trigger
+  final Trigger button2Trigger = new JoystickButton(x3dController, 2); // side thumb button
+  final Trigger button7Trigger = new JoystickButton(x3dController, 7); // numbered buttons...
+  final Trigger button9Trigger = new JoystickButton(x3dController, 9);
   final Trigger button10Trigger = new JoystickButton(x3dController, 10);
   final Trigger button11Trigger = new JoystickButton(x3dController, 11);
   final Trigger button12Trigger = new JoystickButton(x3dController, 12);
@@ -290,11 +291,18 @@ public class RobotContainer {
 
   void configureButtonBindings() {
 
+    // possible mappings for single-xbox control
+    /*
+     * 
+     */
+
     // Driver
     button1Trigger.whileTrue(shootDefault);
     button2Trigger.whileTrue(slowDrive);
     button7Trigger.whileTrue(recalibrateDrivetrain);
+    button9Trigger.whileTrue(eject);
     button10Trigger.whileTrue(anchorInPlace);
+    button11Trigger.whileTrue(betterIntakeWeMadeInWorlds);
     button12Trigger.whileTrue(prepShot);
 
     // Operator
