@@ -47,7 +47,7 @@ public class RobotContainer {
   // Driver controller.
   final XboxController driverController = new XboxController(Constants.kDriverControllerPort);
   final Trigger startButtonDriver = new JoystickButton(driverController, Button.kStart.value);
-  final Trigger backButtonDriver = new JoystickButton(driverController, Button.kStart.value);
+  final Trigger backButtonDriver = new JoystickButton(driverController, Button.kBack.value);
   final Trigger leftBumperDriver = new JoystickButton(driverController, Button.kLeftBumper.value);
   final Trigger rightBumperDriver = new JoystickButton(driverController, Button.kRightBumper.value);
 
