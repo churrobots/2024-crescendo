@@ -42,6 +42,10 @@ public class RobotContainer {
     public static final double kDriveDeadband = 0.1;
     public static final double kSlowDriveScaling = 0.25;
     public static final double kSuperSlowDriveScaling = .15;
+
+    // Whether the driver wants to use the Logitech X3D flightstick controller.
+    // If false, assume driver is using an Xbox controller.
+    public static final boolean kUseFlightstick = false;
   }
 
   // SmartDashboard interface.
@@ -55,7 +59,10 @@ public class RobotContainer {
   final LogitechX3D x3dController = new LogitechX3D(Constants.kFlightstickControllerPort);
   final Trigger button1Trigger = new JoystickButton(x3dController, 1); // trigger
   final Trigger button2Trigger = new JoystickButton(x3dController, 2); // side thumb button
+  final Trigger button3Trigger = new JoystickButton(x3dController, 3); // hook up
+  final Trigger button5Trigger = new JoystickButton(x3dController, 5); // hook down
   final Trigger button7Trigger = new JoystickButton(x3dController, 7); // numbered buttons...
+  final Trigger button8Trigger = new JoystickButton(x3dController, 8);
   final Trigger button9Trigger = new JoystickButton(x3dController, 9);
   final Trigger button10Trigger = new JoystickButton(x3dController, 10);
   final Trigger button11Trigger = new JoystickButton(x3dController, 11);
@@ -72,10 +79,25 @@ public class RobotContainer {
   final Trigger backButtonDriver = new JoystickButton(driverController, Button.kStart.value);
   final Trigger leftBumperDriver = new JoystickButton(driverController, Button.kLeftBumper.value);
   final Trigger rightBumperDriver = new JoystickButton(driverController, Button.kRightBumper.value);
-
   final Trigger startAndBackButtonDriver = new Trigger(() -> {
     return startButtonDriver.getAsBoolean() && backButtonDriver.getAsBoolean();
   });
+  final Trigger aButtonDriver = new JoystickButton(driverController, Button.kA.value);
+  final Trigger bButtonDriver = new JoystickButton(driverController, Button.kB.value);
+  final Trigger yButtonDriver = new JoystickButton(driverController, Button.kY.value);
+  final Trigger xButtonDriver = new JoystickButton(driverController, Button.kX.value);
+  final Trigger rightjoyAnalogTrigger = new Trigger(() -> {
+    boolean triggerIsPressedEnough = driverController.getRightTriggerAxis() > 0.28;
+    return triggerIsPressedEnough;
+  });
+  final Trigger leftJoyAnalogTrigger = new Trigger(() -> {
+    boolean triggerIsPressedEnough = driverController.getLeftTriggerAxis() > 0.28;
+    return triggerIsPressedEnough;
+  });
+
+  final DoubleSupplier forwardAxisXbox = driverController::getLeftY;
+  final DoubleSupplier sidewaysAxisXbox = driverController::getLeftX;
+  final DoubleSupplier rotationAxisXbox = driverController::getRightX;
 
   // Operator controller.
   final XboxController operatorController = new XboxController(Constants.kOperatorrControllerPort);
@@ -84,8 +106,8 @@ public class RobotContainer {
   // Button.kRightBumper.value);
   final Trigger aButtonOperator = new JoystickButton(operatorController, Button.kA.value);
   final Trigger xButtonOperator = new JoystickButton(operatorController, Button.kX.value);
-  final Trigger yButtonOperator = new JoystickButton(operatorController, Button.kY.value);
   final Trigger bButtonOperator = new JoystickButton(operatorController, Button.kB.value);
+  final Trigger yButtonOperator = new JoystickButton(operatorController, Button.kY.value);
   final Trigger startButtonOperator = new JoystickButton(operatorController, Button.kStart.value);
   final Trigger backButtonOperator = new JoystickButton(operatorController, Button.kBack.value);
   final Trigger povUpOperator = new POVButton(operatorController, 0);
@@ -93,10 +115,12 @@ public class RobotContainer {
   final Trigger leftjoyTrigger = new JoystickButton(operatorController, Button.kLeftStick.value);
   final Trigger rightjoyTrigger = new JoystickButton(operatorController,
       Button.kRightStick.value);
-  final Trigger rightjoyAnalogTrigger = new Trigger(() -> {
-    boolean triggerIsPressedEnough = operatorController.getRightTriggerAxis() > 0.28;
-    return triggerIsPressedEnough;
-  });
+
+  // Variables that will be set to either xbox or flightstick axes in
+  // configureButtonBindings().
+  DoubleSupplier driverForwardAxis;
+  DoubleSupplier driverSidewaysAxis;
+  DoubleSupplier driverRotationAxis;
 
   // JJ's comments on what he wants each button to do
   // 1 shoot
@@ -160,20 +184,20 @@ public class RobotContainer {
 
   final Command slowDrive = new RunCommand(
       () -> drivetrain.drive(
-          -MathUtil.applyDeadband(forwardAxisFlightstick.getAsDouble() * Constants.kSlowDriveScaling,
+          -MathUtil.applyDeadband(driverForwardAxis.getAsDouble() * Constants.kSlowDriveScaling,
               Constants.kDriveDeadband),
-          -MathUtil.applyDeadband(sidewaysAxisFlightstick.getAsDouble() * Constants.kSlowDriveScaling,
+          -MathUtil.applyDeadband(driverSidewaysAxis.getAsDouble() * Constants.kSlowDriveScaling,
               Constants.kDriveDeadband),
-          -MathUtil.applyDeadband(rotationAxisFlightstick.getAsDouble() * Constants.kSlowDriveScaling,
+          -MathUtil.applyDeadband(driverRotationAxis.getAsDouble() * Constants.kSlowDriveScaling,
               Constants.kDriveDeadband),
           true, true),
       drivetrain);
 
   final Command superSlowDrive = new RunCommand(
       () -> drivetrain.drive(
-          -MathUtil.applyDeadband(forwardAxisFlightstick.getAsDouble() * Constants.kSuperSlowDriveScaling,
+          -MathUtil.applyDeadband(driverForwardAxis.getAsDouble() * Constants.kSuperSlowDriveScaling,
               Constants.kDriveDeadband),
-          -MathUtil.applyDeadband(sidewaysAxisFlightstick.getAsDouble() * Constants.kSuperSlowDriveScaling,
+          -MathUtil.applyDeadband(driverSidewaysAxis.getAsDouble() * Constants.kSuperSlowDriveScaling,
               Constants.kDriveDeadband),
           -MathUtil.applyDeadband(rotationAxisFlightstick.getAsDouble() * Constants.kSuperSlowDriveScaling,
               Constants.kDriveDeadband),
@@ -182,11 +206,11 @@ public class RobotContainer {
 
   final Command fastDrive = new RunCommand(
       () -> drivetrain.drive(
-          -MathUtil.applyDeadband(forwardAxisFlightstick.getAsDouble(),
+          -MathUtil.applyDeadband(driverForwardAxis.getAsDouble(),
               Constants.kDriveDeadband),
-          -MathUtil.applyDeadband(sidewaysAxisFlightstick.getAsDouble(),
+          -MathUtil.applyDeadband(driverSidewaysAxis.getAsDouble(),
               Constants.kDriveDeadband),
-          -MathUtil.applyDeadband(rotationAxisFlightstick.getAsDouble(),
+          -MathUtil.applyDeadband(driverRotationAxis.getAsDouble(),
               Constants.kDriveDeadband),
           true, true),
       drivetrain);
@@ -287,32 +311,48 @@ public class RobotContainer {
 
   void configureButtonBindings() {
 
-    // possible mappings for single-xbox control
-    /*
-     * 
-     */
+    if (Constants.kUseFlightstick) {
+      driverForwardAxis = forwardAxisFlightstick;
+      driverSidewaysAxis = sidewaysAxisFlightstick;
+      driverRotationAxis = rotationAxisFlightstick;
 
-    // Driver Joystick
-    button1Trigger.whileTrue(shootDefault);
-    button2Trigger.whileTrue(slowDrive);
-    button7Trigger.whileTrue(recalibrateDrivetrain);
-    button9Trigger.whileTrue(eject);
-    button10Trigger.whileTrue(anchorInPlace);
-    button11Trigger.whileTrue(betterIntakeWeMadeInWorlds);
-    button12Trigger.whileTrue(prepShot);
+      // Driver Joystick
+      button1Trigger.whileTrue(shootDefault);
+      button2Trigger.whileTrue(slowDrive);
+      button3Trigger.whileTrue(goUpWNoSafety);
+      button5Trigger.whileTrue(goDownWNoSafety);
+      button7Trigger.whileTrue(recalibrateDrivetrain);
+      button8Trigger.whileTrue(prepAmp);
+      button9Trigger.whileTrue(eject);
+      button10Trigger.whileTrue(anchorInPlace);
+      button11Trigger.whileTrue(betterIntakeWeMadeInWorlds);
+      button12Trigger.whileTrue(prepShot);
+    } else {
+      driverForwardAxis = forwardAxisXbox;
+      driverSidewaysAxis = sidewaysAxisXbox;
+      driverRotationAxis = rotationAxisXbox;
 
-    // Driver Controller
+      // Driver Controller
+      xButtonDriver.whileTrue(shootSpeaker);
+      yButtonDriver.whileTrue(prepAmp);
+      aButtonDriver.whileTrue(goUpWNoSafety);
+      bButtonDriver.whileTrue(goDownWNoSafety);
+      rightBumperDriver.whileTrue(shootDefault);
+      leftBumperDriver.whileTrue(slowDrive);
+      rightjoyAnalogTrigger.whileTrue(prepShot);
+      leftJoyAnalogTrigger.whileTrue(betterIntakeWeMadeInWorlds);
+      backButtonDriver.whileTrue(recalibrateDrivetrain);
+      startButtonDriver.whileTrue(moveMid);
+    }
 
     // Operator
     aButtonOperator.whileTrue(betterIntakeWeMadeInWorlds);
     yButtonOperator.whileTrue(prepAmp);
     bButtonOperator.whileTrue(moveMid);
-
     startButtonOperator.whileTrue(goUpWNoSafety);
     backButtonOperator.whileTrue(goDownWNoSafety);
     povUpOperator.whileTrue(goUp);
     povDownOperator.whileTrue(goDown);
-
     rightjoyTrigger.whileTrue(eject);
 
     // Sensors
