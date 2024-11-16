@@ -20,6 +20,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -143,6 +144,7 @@ public class Drivetrain extends SubsystemBase {
 
   public Drivetrain() {
     SmartDashboard.putData("Field", m_field);
+    m_fieldLayout.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
     AutoBuilder.configureHolonomic(
         this::getPose, // Robot pose supplier
         this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
@@ -183,7 +185,11 @@ public class Drivetrain extends SubsystemBase {
     m_field.setRobotPose(getPose());
 
     Optional<EstimatedRobotPose> optionalEstimatedGlobalPose = getEstimatedGlobalPose(getPose());
-    if (!optionalEstimatedGlobalPose.isEmpty()) {
+    SmartDashboard.putBoolean("Vision:hasRobotPose", !optionalEstimatedGlobalPose.isPresent());
+    double visionX = 0;
+    double visionY = 0;
+    double degrees = 0;
+    if (optionalEstimatedGlobalPose.isPresent()) {
 
       EstimatedRobotPose estimatedGlobalPose = optionalEstimatedGlobalPose.get();
 
@@ -195,11 +201,13 @@ public class Drivetrain extends SubsystemBase {
 
       m_poseEstimator.addVisionMeasurement(updated2d,
           estimatedGlobalPose.timestampSeconds);
-
-      SmartDashboard.putNumber("Vision:x", updated2d.getX());
-      SmartDashboard.putNumber("Vision:y", updated2d.getY());
-      SmartDashboard.putNumber("Vision:degrees", updated2d.getRotation().getDegrees());
+      visionX = updated2d.getX();
+      visionY = updated2d.getY();
+      degrees = updated2d.getRotation().getDegrees();
     }
+    SmartDashboard.putNumber("Vision:x", visionX);
+    SmartDashboard.putNumber("Vision:y", visionY);
+    SmartDashboard.putNumber("Vision:degrees", degrees);
 
   }
 
@@ -296,7 +304,7 @@ public class Drivetrain extends SubsystemBase {
 
     cam.setDriverMode(true);
     cam.setLED(VisionLEDMode.kBlink);
-    
+
     var alliance = DriverStation.getAlliance();
     if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
       xSpeed = -1 * xSpeed;
