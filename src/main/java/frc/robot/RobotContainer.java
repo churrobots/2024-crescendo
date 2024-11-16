@@ -334,26 +334,22 @@ public class RobotContainer {
 
       // Driver Controller
       xButtonDriver.whileTrue(shootSpeaker);
-      yButtonDriver.whileTrue(prepAmp);
-      aButtonDriver.whileTrue(goUpWNoSafety);
-      bButtonDriver.whileTrue(goDownWNoSafety);
-      rightBumperDriver.whileTrue(shootDefault);
+      rightjoyAnalogTrigger.whileTrue(shootDefault);
       leftBumperDriver.whileTrue(slowDrive);
-      rightjoyAnalogTrigger.whileTrue(prepShot);
+      rightBumperDriver.whileTrue(prepShot);
       leftJoyAnalogTrigger.whileTrue(betterIntakeWeMadeInWorlds);
-      backButtonDriver.whileTrue(recalibrateDrivetrain);
-      startButtonDriver.whileTrue(moveMid);
+      startAndBackButtonDriver.whileTrue(recalibrateDrivetrain);
+      yButtonDriver.whileTrue(moveMid);
+      rightjoyTrigger.whileTrue(eject);
     }
 
-    // Operator
-    aButtonOperator.whileTrue(betterIntakeWeMadeInWorlds);
-    yButtonOperator.whileTrue(prepAmp);
+    // Operator;
     bButtonOperator.whileTrue(moveMid);
-    startButtonOperator.whileTrue(goUpWNoSafety);
-    backButtonOperator.whileTrue(goDownWNoSafety);
+    yButtonOperator.whileTrue(prepAmp);
+    aButtonOperator.whileTrue(goUpWNoSafety);
+    bButtonOperator.whileTrue(goDownWNoSafety);
     povUpOperator.whileTrue(goUp);
     povDownOperator.whileTrue(goDown);
-    rightjoyTrigger.whileTrue(eject);
 
     // Sensors
     armIsHigh.whileTrue(superSlowDrive);
