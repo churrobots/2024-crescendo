@@ -341,15 +341,13 @@ public class RobotContainer {
       startAndBackButtonDriver.whileTrue(recalibrateDrivetrain);
       yButtonDriver.whileTrue(moveMid);
       rightjoyTrigger.whileTrue(eject);
+      bButtonDriver.whileTrue(prepAmp);
     }
+    // Driver conrols now have apm function button b
 
     // Operator;
-    bButtonOperator.whileTrue(moveMid);
-    yButtonOperator.whileTrue(prepAmp);
     aButtonOperator.whileTrue(goUpWNoSafety);
     bButtonOperator.whileTrue(goDownWNoSafety);
-    povUpOperator.whileTrue(goUp);
-    povDownOperator.whileTrue(goDown);
 
     // Sensors
     armIsHigh.whileTrue(superSlowDrive);
